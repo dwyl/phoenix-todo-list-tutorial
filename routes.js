@@ -1,6 +1,8 @@
 module.exports = [
   { path: '/', method: 'GET',
     config: { auth: false, handler: require('./handlers/home.js') } },
+  { path: '/email', method: '*',
+    config: { auth: false, handler: require('./handlers/email.js') } },
   { path: '/anonymous', method: 'GET',
     config: { auth: false, handler: require('./handlers/anonymous.js') } },
   { path: '/login', method: 'POST',
