@@ -10,7 +10,11 @@ console.log(mail)
 module.exports = function handler(req, reply) {
   var email;
   if(req.payload && req.payload.email) {
-    email = req.payload.email;
+    // var user   = req.payload.email.split('@')[0];
+    // var domain = req.payload.email.split('@')[1];
+    // // when people use an email such as dwyl.test+sufix@gmail.com
+    // email = encodeURIComponent(user) + '@' + domain;
+    email = req.payload.email.trim().replace(' ', '+');
   } else {
     email = 'dwyl.test@gmail.com';
   }
