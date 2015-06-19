@@ -1,0 +1,8 @@
+{
+  "login-unreg": {
+    "status"  : 404,
+    "message" : "Email address not registered",
+    "code"    : 4041
+  }
+
+}
