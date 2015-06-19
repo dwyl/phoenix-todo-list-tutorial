@@ -13,14 +13,22 @@ Steps:
 + Start Vagrant VM with ElasticSearch `vagrant up`
 + Start API server: `npm install && npm start`
 
-
 ## Send Welcome Email
+
+### Local
 
 ```sh
 curl --data "email=dwyl.smith+1234@gmail.com" http://localhost:1337/email
 ```
 
-### *Expected* Environment Variables˜
+### heroku
+
+```
+curl --data "email=dwyl.smith+1234@gmail.com" https://dwylapi.herokuapp.com/email
+```
+
+
+## *Expected* Environment Variables˜
 
 The API server will *not* work unless these
 environment variables are set.
@@ -33,7 +41,7 @@ export MANDRILL_APIKEY='AskUsForTheKey!'
 ```
 
 
-### Troubleshooting
+## Troubleshooting
 
 Get list of records in ES:
 

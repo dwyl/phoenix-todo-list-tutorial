@@ -23,7 +23,9 @@ module.exports = function handler(req, reply) {
     index: process.env.ES_INDEX,
     type: "person",
     id: personid,
-    email: email
+    email: email,
+    confirmed: false,
+    stage: 'intersted'
   }
   console.log(' - - - - - - - - - - person')
   console.log(person);
