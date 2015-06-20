@@ -1,16 +1,15 @@
 {
   "name": "dwyl",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Track any time-based activity",
   "main": "index.js",
   "scripts": {
-    "api": "node ./api/server.js",
     "codeclimate": "CODECLIMATE_REPO_TOKEN=90f8074b0608f5d539502db0d1bd862339f85eaac0e723883df2efdf6b5eec6e ./node_modules/codeclimate-test-reporter/bin/codeclimate.js < ./coverage/lcov.info",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./api/test/*.js | node_modules/tap-spec/bin/cmd.js && ./node_modules/.bin/istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
     "faster": "node ./node_modules/faster/bin/faster.js",
     "jshint": "./node_modules/jshint/bin/jshint -c .jshintrc --exclude-path .gitignore .",
-    "start": "node web.js",
-    "test": "istanbul cover ./node_modules/tape/bin/tape ./api/test/*.js | node_modules/tap-spec/bin/cmd.js",
+    "start": "node server.js",
+    "test": "istanbul cover ./node_modules/tape/bin/tape ./test/*.js | node_modules/tap-spec/bin/cmd.js",
     "spec": "node ./node_modules/tape/bin/tape ./api/test/*.js | node_modules/tap-spec/bin/cmd.js"
   },
   "repository": {
@@ -32,7 +31,7 @@
     "aguid": "^1.0.3",
     "bcrypt": "^0.8.2",
     "boom": "^2.7.0",
-    "esta": "^4.0.0",
+    "esta": "^4.0.4",
     "handlebars": "^3.0.0",
     "hapi": "^8.4.0",
     "hapi-auth-basic": "^2.0.0",
