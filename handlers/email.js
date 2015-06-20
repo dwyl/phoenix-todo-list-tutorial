@@ -25,7 +25,7 @@ module.exports = function handler(req, reply) {
     id: personid,
     email: email,
     confirmed: false,
-    stage: 'intersted'
+    stage: 'interested'
   }
   console.log(' - - - - - - - - - - person')
   console.log(person);
