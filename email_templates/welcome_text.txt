@@ -1,11 +1,13 @@
 Hi!
 
-Thanks so much for joining us to alpha test dwyl, we’re excited to have you!
+Welcome to dwyl! Thanks so much for your interest, we're excited to have you!
 
-For now, dwyl will help you track your time and soon it will help you do much more, including making time for what you love. https://github.com/ideaq/start-here/blob/master/manifesto.md
+At dwyl we work to help you do what you love (whether you know what that is yet or not). We do this through technology and we hold certain beliefs strongly, including that *your data belongs to you* and no one else. You can see those here: href="https://github.com/ideaq/start-here/blob/master/manifesto.md
 
-If you have any questions or find any bugs, big or small, please drop us a note or add an issue to github:
-https://github.com/ideaq/time/labels/MVP We really appreciate it!
+As we develop dwyl, you'll be the first to hear of the progress and the first to use the app.
 
-Happy dwyling
+If you have any questions or suggestions, please reply to this email or add an issue to github here (if that's your kind of thing): https://github.com/dwyl/time/labels/MVP
+We really appreciate it!
+
+Happy dwyling,
 Ines & Nelson
