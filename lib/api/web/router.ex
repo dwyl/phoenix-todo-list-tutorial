@@ -1,5 +1,6 @@
 defmodule Api.Web.Router do
   use Api.Web, :router
+  use Coherence.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,8 +14,26 @@ defmodule Api.Web.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :public do
+    plug Coherence.Authentication.Session
+  end
+
+  pipeline :protected do
+    plug Coherence.Authentication.Session, protected: true
+  end
+
+  scope "/" do
+    pipe_through [:browser, :public]
+    coherence_routes()
+  end
+
+  scope "/" do
+    pipe_through [:browser, :protected]
+    coherence_routes :protected
+  end
+
   scope "/", Api.Web do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :public]
 
     get "/", PageController, :index
   end
