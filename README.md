@@ -1,17 +1,37 @@
-# api
+# Api
 
 The dwyl REST &amp; WebSocket API.
 
 ![perfection-intro-image](https://cloud.githubusercontent.com/assets/194400/8255483/2fc78e6c-1698-11e5-8c27-d1b9db99f020.png)
 
-## Run the API Locally
+## How?
 
-You will need a running instance of ElasticSearch for this API to work on your localhost.
+> The API is built using using the Phoenix Web Framework.
+If you are `new` to Elixir or Phoenix please
+see the Learning section below.
 
-Steps:
-+ Learn Vagrant: https://github.com/docdis/learn-vagrant
-+ Start Vagrant VM with ElasticSearch `vagrant up`
-+ Start API server: `npm install && npm start`
+
+
+## *Required* Environment Variables
+
+The API server will *not* work unless these
+environment variables are set.
+
+Run the following command to set up your local machine:
+```sh
+export AWS_API_SECRET='AskUsForTheKey!'
+```
+
+To start your Phoenix app:
+
+  * Install dependencies with `mix deps.get`
+  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+  * Install Node.js dependencies with `npm install`
+  * Start Phoenix endpoint with `mix phoenix.server`
+
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
 ## Send Welcome Email
 
@@ -28,39 +48,8 @@ curl --data "email=dwyl.smith+1234@gmail.com" https://dwylapi.herokuapp.com/emai
 ```
 
 
-## *Expected* Environment Variables˜
+## Learning
 
-The API server will *not* work unless these
-environment variables are set.
-
-Run the following command to set up your local machine:
-```sh
-export ES_INDEX=dwyl
-export MANDRILL_APIKEY='AskUsForTheKey!'
-
-```
-
-
-## Troubleshooting
-
-Get list of records in ES:
-
-```sh
-curl -XGET 'localhost:9200/dwyl/_search?search_type=scan&scroll=10m&size=50' -d '
-{
-    "query" : {
-        "match_all" : {}
-    }
-}'
-```
-
-## Pushing changes from master to Heroku
-+ Make sure your local copy of the `master` branch is up-to-date and passing every test with 100% coverage
-+ Check whether you already have a heroku remote by running `git remote -v` in the command line
-  + If you do, you should see something like this:
-  ![heroku remote](https://cloud.githubusercontent.com/assets/4185328/8380179/513ad458-1c1c-11e5-9ec4-a279861da254.png)
-  + Otherwise, you need to set up a remote (in this case named heroku) using `git remote add heroku <gitURL>` where you enter the Heroku's Git URL (you can find it in the settings) inside the angle brackets
-+ Push to heroku as standard: `git push heroku master`
-
-**Note: _You can only only do this if you have collaborator access in heroku._**
-  
++ Learn Elixir: https://github.com/dwyl/learn-elixir
++ Learn Phoenix https://github.com/dwyl/learn-phoenix-framework
++ Learn Vagrant: https://github.com/dwyl/learn-vagrant
