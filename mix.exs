@@ -2,14 +2,21 @@ defmodule Api.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :api,
-     version: "0.0.1",
-     elixir: "~> 1.4",
-     elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix, :gettext] ++ Mix.compilers,
-     start_permanent: Mix.env == :prod,
-     aliases: aliases(),
-     deps: deps()]
+    [
+    app: :api,
+    version: "0.0.1",
+    elixir: "~> 1.4",
+    elixirc_paths: elixirc_paths(Mix.env),
+    compilers: [:phoenix, :gettext] ++ Mix.compilers,
+    start_permanent: Mix.env == :prod,
+    aliases: aliases(),
+    deps: deps(),
+    test_coverage: [tool: ExCoveralls],
+    preferred_cli_env: ["coveralls": :test,
+                        "coveralls.detail": :test,
+                        "coveralls.post": :test,
+                        "coveralls.html": :test]
+   ]
   end
 
   # Configuration for the OTP application.
@@ -37,7 +44,13 @@ defmodule Api.Mixfile do
      {:absinthe, "~> 1.3.0-rc.0"},
      {:absinthe_plug, "~> 1.3.0-rc.0"},
      {:absinthe_ecto, git: "https://github.com/absinthe-graphql/absinthe_ecto.git"},
-     {:faker, "~> 0.7"},
+
+    # dev only
+    {:excoveralls, "~> 0.6.2", only: :dev},
+    {:ex_doc, "~> 0.11", only: :dev},
+    {:dogma, "~> 0.1", only: :dev},
+    {:earmark, "~> 1.2", only: :dev},
+    {:faker, "~> 0.7", only: :dev},
    ]
   end
 
