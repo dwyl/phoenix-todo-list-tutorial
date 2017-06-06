@@ -16,8 +16,11 @@ see the Learning section below.
 The API server will *not* work unless these
 environment variables are set.
 
-Run the following command to set up your local machine:
+Copy-paste the following set commands to set up
+the Env Variables on your local machine:
 ```sh
+export DATABASE_URL=postgres://postgres:@localhost/api_dev
+export SECRET_KEY_BASE=TotesMcSafeSuperLongStringOfRandomCharactersSnNW25bz7s1izRtn06DswDoZEKecCqeCgryjPs
 export AWS_API_SECRET='AskUsForTheKey!'
 ```
 
