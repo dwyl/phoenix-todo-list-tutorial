@@ -11,7 +11,6 @@ If you are `new` to Elixir or Phoenix please
 see the Learning section below.
 
 
-
 ## *Required* Environment Variables
 
 The API server will *not* work unless these
