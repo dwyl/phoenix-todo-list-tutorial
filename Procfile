@@ -1,1 +1,1 @@
-web: node server.js
+web: MIX_ENV=prod mix phoenix.server
