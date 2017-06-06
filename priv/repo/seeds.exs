@@ -1,17 +1,22 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Api.Repo.insert!(%Api.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+alias Api.Repo
+alias Api.People.Person
+alias Api.Content.Rows
 
-Api.Repo.delete_all Api.Users.User
+# Create 10 seed users
 
-Api.Users.User.changeset(%Api.Users.User{}, %{name: "Test User", email: "testuser@example.com", password: "secret", password_confirmation: "secret"})
-|> Api.Repo.insert!
-|> Coherence.ControllerHelpers.confirm!
+for _ <- 1..10 do
+  Repo.insert!(%Person{
+    name: Faker.Name.name,
+    email: Faker.Internet.safe_email
+  })
+end
+
+# Create 40 seed posts
+
+for _ <- 1..40 do
+  Repo.insert!(%Rows{
+    title: Faker.Lorem.sentence,
+    body: Faker.Lorem.sentences(%Range{first: 1, last: 3}) |> Enum.join("\n\n"),
+    people_id: Enum.random(1..10) # Pick random user for post to belong to
+  })
+end
