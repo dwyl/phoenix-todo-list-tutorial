@@ -15,7 +15,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :api, Api.Web.Endpoint,
   on_init: {Api.Web.Endpoint, :load_from_system_env, []},
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
   http: [port: {:system, "PORT"}],
   url: [scheme: "http", host: System.get_env("HEROKU_URL") , port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
