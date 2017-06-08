@@ -27,22 +27,40 @@ Or, anyone who want's their own easy to deploy/scale "backend".
 If you are `new` to Elixir or Phoenix please
 see the Learning section below.
 
-### Try It!
+### Try It! (Heroku)
 
 Visit: https://dwylapi.herokuapp.com/rows
 
 Create a new Person (User)
 ```
-curl -H "Content-Type: application/json" -X POST -d '{"person": {"name":"Jimmy","email":"jimmy@test.net"}}' https://dwylapi.herokuapp.com/people
+curl -H "Content-Type: application/json" -X POST -d '{"person": {"name":"Simon","email":"simon@dwyl.io"}}' https://dwylapi.herokuapp.com/people
 ```
 
 Now create a Row (record):
 ```
-curl -H "Content-Type: application/json" -X POST -d '{"rows": {"id":1, "title":"Hello World","body":"This is my amazing post!", "people_id":"1"}}' https://dwylapi.herokuapp.com/rows
+curl -H "Content-Type: application/json" -X POST -d '{"rows": {"id":1, "title":"Simon Says Hi!","body":"This is my amazing post!", "people_id":"2"}}' https://dwylapi.herokuapp.com/rows
 ```
 You should see your record when you visit:
 https://dwylapi.herokuapp.com/rows
 
+
+### localhost
+
+Create a new Person (User)
+```
+curl -H "Content-Type: application/json" -X POST -d '{"person": {"name":"Simon","email":"simon@dwyl.io"}}' http://localhost:4000/people
+```
+
+Now create a Row (record):
+```
+curl -H "Content-Type: application/json" -X POST -d '{"rows": {"id":1, "title":"Simon Says Hi!","body":"This is my amazing post!", "people_id":"22"}}' http://localhost:4000/rows
+```
+
+/register a new person
+```
+```
+curl -H "Content-Type: application/json" -X POST -d '{"person": {"name":"Simon","email":"simon@dwyl.io"}}' http://localhost:4000/register
+```
 
 
 ## *Required* Environment Variables
@@ -65,7 +83,7 @@ To start your Phoenix app:
 + (_Optionally_) Seed the database with dummy data: `mix run priv/repo/seeds.exs`
 + Start Phoenix endpoint with `mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Now you can visit [`localhost:4000/rows`](http://localhost:4000/rows) from your browser.
 
 <!--
 

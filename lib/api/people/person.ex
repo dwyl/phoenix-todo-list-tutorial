@@ -9,6 +9,7 @@ defmodule Api.People.Person do
     field :name, :string
     has_many :content, Api.Content.Rows, foreign_key: :people_people_id
 
+
     timestamps()
   end
 
@@ -17,5 +18,6 @@ defmodule Api.People.Person do
     person
     |> cast(attrs, [:name, :email])
     |> validate_required([:name, :email])
+    |> unique_constraint(:email)
   end
 end

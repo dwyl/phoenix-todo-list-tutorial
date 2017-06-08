@@ -9,6 +9,7 @@ defmodule Api.Web.Router do
     pipe_through :api
 
     resources "/people", PersonController, except: [:new, :edit]
+    post "/register", PersonController, :create
     resources "/rows", RowsController, except: [:new, :edit]
   end
 

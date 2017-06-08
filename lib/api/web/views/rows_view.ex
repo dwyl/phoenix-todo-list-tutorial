@@ -11,8 +11,12 @@ defmodule Api.Web.RowsView do
   end
 
   def render("rows.json", %{rows: rows}) do
-    %{id: rows.id,
+    %{
+      id: rows.id,
       title: rows.title,
-      body: rows.body}
+      body: rows.body,
+      people_id: rows.people_id,
+      inserted_at: rows.inserted_at
+    }
   end
 end
