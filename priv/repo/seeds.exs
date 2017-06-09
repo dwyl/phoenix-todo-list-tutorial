@@ -7,7 +7,8 @@ alias Api.Content.Rows
 for _ <- 1..10 do
   Repo.insert!(%Person{
     name: Faker.Name.name,
-    email: Faker.Internet.safe_email
+    email: Faker.Internet.safe_email,
+    password_hash: Comeonin.Bcrypt.hashpwsalt("password")
   })
 end
 

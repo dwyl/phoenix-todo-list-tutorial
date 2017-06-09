@@ -7,8 +7,8 @@ defmodule Api.People.Person do
   schema "people" do
     field :email, :string
     field :name, :string
+    field :password_hash, :string
     has_many :content, Api.Content.Rows, foreign_key: :people_people_id
-
 
     timestamps()
   end
@@ -16,7 +16,7 @@ defmodule Api.People.Person do
   @doc false
   def changeset(%Person{} = person, attrs) do
     person
-    |> cast(attrs, [:name, :email])
+    |> cast(attrs, [:name, :email]) #, :password_hash])
     |> validate_required([:name, :email])
     |> unique_constraint(:email)
   end

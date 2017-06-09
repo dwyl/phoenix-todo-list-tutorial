@@ -5,7 +5,7 @@ defmodule Api.Repo.Migrations.CreateApi.People.Person do
     create table(:people) do
       add :name, :string
       add :email, :string
-
+      add :password_hash, :string
       timestamps()
     end
 

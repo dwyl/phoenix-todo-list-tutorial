@@ -3,13 +3,37 @@ defmodule Api.Web.RowsControllerTest do
 
   alias Api.Content
   alias Api.Content.Rows
+  alias Api.People
+  # alias Api.Repo
 
-  @create_attrs %{body: "some body", title: "some title"}
-  @update_attrs %{body: "some updated body", title: "some updated title"}
+  @create_attrs %{body: "some body", title: "some title", people_id: "1"}
+  @update_attrs %{body: "some updated body",
+    title: "some updated title", people_id: "1"}
   @invalid_attrs %{body: nil, title: nil}
+  @n 100000000000000
+  @valid_person %{name: "Jimmy", email: "jimmy@dwyl.io"}
+
+  def person_fixture(attrs \\ %{}) do
+    {:ok, person} =
+      attrs
+      |> Enum.into(%{ @valid_person | email:
+        @valid_person.email <> Integer.to_string(:rand.uniform(@n)) })
+      # |> Repo.preload(content: :content)
+      |> People.create_person()
+
+    person
+  end
+
+  def valid_row_fixture() do
+    person = person_fixture()
+    valid_row = %{@create_attrs | people_id: person.id }
+
+    valid_row
+  end
 
   def fixture(:rows) do
-    {:ok, rows} = Content.create_rows(@create_attrs)
+    row = valid_row_fixture()
+    {:ok, rows} = Content.create_rows(row)
     rows
   end
 
@@ -23,14 +47,24 @@ defmodule Api.Web.RowsControllerTest do
   end
 
   test "creates rows and renders rows when data is valid", %{conn: conn} do
-    conn = post conn, rows_path(conn, :create), rows: @create_attrs
+
+    person = person_fixture()
+
+
+    conn = post conn, rows_path(conn, :create),
+      rows: %{@create_attrs | people_id: person.id}
     assert %{"id" => id} = json_response(conn, 201)["data"]
 
     conn = get conn, rows_path(conn, :show, id)
-    assert json_response(conn, 200)["data"] == %{
+    res = json_response(conn, 200)["data"]
+
+    assert res == %{
       "id" => id,
       "body" => "some body",
-      "title" => "some title"}
+      "title" => "some title",
+      "people_id" => person.id,
+      "inserted_at" => res.inserted_at # is there a better way to do this?
+    }
   end
 
   test "does not create rows and renders errors when data is invalid", %{conn: conn} do
@@ -38,16 +72,29 @@ defmodule Api.Web.RowsControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  test "updates chosen rows and renders rows when data is valid", %{conn: conn} do
+  test "updates chosen row and renders row when data is valid", %{conn: conn} do
     %Rows{id: id} = rows = fixture(:rows)
-    conn = put conn, rows_path(conn, :update, rows), rows: @update_attrs
+    person = person_fixture()
+    # IO.puts "- - - - - - - person:"
+    # IO.inspect person
+    IO.puts "- - - - - - - person.id:"
+    IO.inspect person.id
+
+    conn = put conn, rows_path(conn, :update, rows),
+      rows: %{@update_attrs | people_id: person.id}
     assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
     conn = get conn, rows_path(conn, :show, id)
-    assert json_response(conn, 200)["data"] == %{
+    res = json_response(conn, 200)["data"]
+    IO.puts "- - - - - - - res.inserted_at:"
+    IO.inspect res
+    assert res == %{
       "id" => id,
       "body" => "some updated body",
-      "title" => "some updated title"}
+      "title" => "some updated title",
+      "people_id" => person.id,
+      "inserted_at" => res.inserted_at # is there a better way to do this?
+    }
   end
 
   test "does not update chosen rows and renders errors when data is invalid", %{conn: conn} do

@@ -22,9 +22,14 @@ defmodule Api.Mixfile do
   # Configuration for the OTP application.
   #
   # Type `mix help compile.app` for more information.
-  def application do
-    [mod: {Api.Application, []},
-     extra_applications: [:logger, :runtime_tools]]
+  def application do [
+    mod: {Api.Application, []},
+    extra_applications: [
+      :logger,
+      :runtime_tools,
+      :comeonin
+      ]
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -35,23 +40,27 @@ defmodule Api.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.3.0-rc", },
-     {:phoenix_pubsub, "~> 1.0"},
-     {:phoenix_ecto, "~> 3.2"},
-     {:postgrex, ">= 0.0.0"},
-     {:gettext, "~> 0.11"},
-     {:cowboy, "~> 1.0"},
-     {:absinthe, "~> 1.3.0-rc.0"},
-     {:absinthe_plug, "~> 1.3.0-rc.0"},
-     {:absinthe_ecto, git: "https://github.com/absinthe-graphql/absinthe_ecto.git"},
+    [
+    {:phoenix, "~> 1.3.0-rc", },
+    {:phoenix_pubsub, "~> 1.0"},
+    {:phoenix_ecto, "~> 3.2"},
+    {:postgrex, ">= 0.0.0"},
+    {:gettext, "~> 0.11"},
+    {:cowboy, "~> 1.0"},
+
+    # Hex Deps
+    {:comeonin, "~> 3.0.2"}, # bcrypt password hashing
+    {:absinthe, "~> 1.3.0-rc.0"},
+    {:absinthe_plug, "~> 1.3.0-rc.0"},
+    {:absinthe_ecto, git: "https://github.com/absinthe-graphql/absinthe_ecto.git"},
 
     # dev only
     {:excoveralls, "~> 0.6.2", only: :dev},
     {:ex_doc, "~> 0.11", only: :dev},
     {:dogma, "~> 0.1", only: :dev},
     {:earmark, "~> 1.2", only: :dev},
-    {:faker, "~> 0.7", only: :dev},
-   ]
+    {:faker, "~> 0.7", only: :dev}
+    ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

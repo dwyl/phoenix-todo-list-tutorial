@@ -58,7 +58,6 @@ curl -H "Content-Type: application/json" -X POST -d '{"rows": {"id":1, "title":"
 
 /register a new person
 ```
-```
 curl -H "Content-Type: application/json" -X POST -d '{"person": {"name":"Simon","email":"simon@dwyl.io"}}' http://localhost:4000/register
 ```
 
@@ -78,7 +77,7 @@ export AWS_API_SECRET='AskUsForTheKey!'
 
 To start your Phoenix app:
 
-+ Install dependencies with `mix deps.get`
++ Install dependencies with ` `
 + Create and migrate your database with `mix ecto.create && mix ecto.migrate`
 + (_Optionally_) Seed the database with dummy data: `mix run priv/repo/seeds.exs`
 + Start Phoenix endpoint with `mix phx.server`
@@ -117,7 +116,7 @@ Now you can visit http://localhost:4000/graphiql from your browser.
 Run the following GraphQL Query:
 ```
 {
-  blogPosts {
+  rows {
     title,
     id
   }
