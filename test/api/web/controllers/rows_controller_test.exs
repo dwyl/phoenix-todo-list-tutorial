@@ -63,7 +63,7 @@ defmodule Api.Web.RowsControllerTest do
       "body" => "some body",
       "title" => "some title",
       "people_id" => person.id,
-      "inserted_at" => res.inserted_at # is there a better way to do this?
+      "inserted_at" => res["inserted_at"]
     }
   end
 
@@ -75,8 +75,6 @@ defmodule Api.Web.RowsControllerTest do
   test "updates chosen row and renders row when data is valid", %{conn: conn} do
     %Rows{id: id} = rows = fixture(:rows)
     person = person_fixture()
-    # IO.puts "- - - - - - - person:"
-    # IO.inspect person
     IO.puts "- - - - - - - person.id:"
     IO.inspect person.id
 
@@ -93,7 +91,7 @@ defmodule Api.Web.RowsControllerTest do
       "body" => "some updated body",
       "title" => "some updated title",
       "people_id" => person.id,
-      "inserted_at" => res.inserted_at # is there a better way to do this?
+      "inserted_at" => res["inserted_at"]
     }
   end
 
