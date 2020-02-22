@@ -33,7 +33,7 @@
     "boom": "^2.7.0",
     "esta": "^4.0.4",
     "handlebars": "^3.0.0",
-    "hapi": "^8.4.0",
+    "hapi": "^18.1.0",
     "hapi-auth-basic": "^2.0.0",
     "hapi-auth-jwt2": "^4.2.1",
     "hiredis": "^0.4.0",
