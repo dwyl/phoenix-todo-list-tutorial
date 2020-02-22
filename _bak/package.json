@@ -32,7 +32,7 @@
     "bcrypt": "^0.8.2",
     "boom": "^2.7.0",
     "esta": "^4.0.4",
-    "handlebars": "^3.0.0",
+    "handlebars": "^4.7.3",
     "hapi": "^8.4.0",
     "hapi-auth-basic": "^2.0.0",
     "hapi-auth-jwt2": "^4.2.1",
