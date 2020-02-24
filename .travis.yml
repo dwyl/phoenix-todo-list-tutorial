@@ -10,7 +10,7 @@ cache:
   - _build
   - deps
 script:
-- mix do deps.get, compile --warnings-as-errors, coveralls.json
+- mix do deps.get, compile --warnings-as-errors, coveralls
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 env:
