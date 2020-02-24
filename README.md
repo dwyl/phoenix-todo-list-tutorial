@@ -44,23 +44,58 @@ We have included _all_ the steps required to build the app.
 
 
 
-### Run it on your `localhost` 💻
+## _How_? 🚧
 
-Before you start building your own version of the Todo List App,
+
+### Before You Start!
+
+Before you attempt to _build_ the Todo List,
+make sure you have everything you need installed on you computer.
+See:
+[prerequisites](https://github.com/dwyl/phoenix-chat-example#0-pre-requisites-before-you-start)
+
+Once you have confirmed that you have Phoenix & PostgreSQL installed,
+try running the _finished_ App.
+
+### Run The _Finished_ App on Your `localhost` 💻
+
+_Before_ you start building your own version of the Todo List App,
 run the _finished_ version on your `localhost`
 to confirm that it works.
 
 Clone the project from GitHub:
 
 ```sh
-git clone git@github.com:dwyl/phoenix-todo-list-tutorial.git
+git clone git@github.com:dwyl/phoenix-todo-list-tutorial.git && cd phoenix-todo-list-tutorial
 ```
 
+Install dependencies:
 
+```sh
+mix deps.get
+cd assets && npm install && cd ..
+```
 
+Setup the database:
 
+```sh
+mix ecto.setup
+```
 
-## How? 🚧
+Start the Phoenix server:
+
+```sh
+mix phx.server
+```
+
+Visit
+[`localhost:4000`](http://localhost:4000)
+in your web browser.
+
+You should see:
+
+# TODO: add screenshot of todo list home page
+
 
 Now that you have the _finished_ example app
 running on your localhost,
