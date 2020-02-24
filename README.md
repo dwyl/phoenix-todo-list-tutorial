@@ -15,7 +15,7 @@ A complete beginners tutorial building a Todo List in Phoenix.
 ## Why? 🤷‍
 
 Todo lists are familiar to most people. <br />
-Building a Todo list from scratch is a great way to learn Phoenix.
+_Building_ a Todo list from scratch is a great way to learn Phoenix.
 You can learn to navigate the folders & files of a _boring_
 Phoenix App that you _already_ understand.
 
@@ -23,24 +23,32 @@ Phoenix App that you _already_ understand.
 
 ## What? 💭
 
+A todo list example created from scratch in Elixir/Phoenix.
+
+### Try it on Heroku: [phxtodo.herokuapp.com](https://phxtodo.herokuapp.com)
 
 
+### TodoMVC
 
-
-### Try it on Heroku:
-
+We are using the
+[TodoMVC](https://github.com/dwyl/javascript-todo-list-tutorial#todomvc)
+CSS to make our UI look good and simplify our code.
 
 
 
 ## Who? 👤
 
 This example/tutorial is targeted
-at anyone who is new to Elixir/Phoenix.
+at anyone who is learning to Elixir/Phoenix.
+We have included _all_ the steps required to build the app.
 
 
 
+### Run it on your `localhost` 💻
 
-### Run it on your `localhost`
+Before you start building your own version of the Todo List App,
+run the _finished_ version on your `localhost`
+to confirm that it works.
 
 Clone the project from GitHub:
 
@@ -52,7 +60,7 @@ git clone git@github.com:dwyl/phoenix-todo-list-tutorial.git
 
 
 
-## How? 💻
+## How? 🚧
 
 Now that you have the _finished_ example app
 running on your localhost,
