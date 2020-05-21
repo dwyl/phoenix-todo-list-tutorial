@@ -17,7 +17,8 @@ app-*.tar
 erl_crash.dump
 
 # Static artifacts
-/node_modules
+node_modules
+node_modules/*
 npm-debug.log
 
 # Since we are building assets from web/static,

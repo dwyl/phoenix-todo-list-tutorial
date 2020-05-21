@@ -69,17 +69,10 @@ Clone the project from GitHub:
 git clone git@github.com:dwyl/phoenix-todo-list-tutorial.git && cd phoenix-todo-list-tutorial
 ```
 
-Install dependencies ad setup the database:
+Install dependencies and setup the database:
 
 ```sh
-mix deps.get
-cd assets && npm install && cd ..
-```
-
-Setup the database:
-
-```sh
-mix ecto.setup
+mix setup
 ```
 
 Start the Phoenix server:
@@ -91,6 +84,9 @@ mix phx.server
 Visit
 [`localhost:4000`](http://localhost:4000)
 in your web browser.
+
+
+
 
 You should see:
 
@@ -104,7 +100,7 @@ and understand all the steps.
 
 
 
-### 1. Create a Phoenix Project 🆕
+### 1. Create a New Phoenix Project 🆕
 
 In your terminal, create a new Phoenix app using the command:
 
@@ -135,9 +131,11 @@ Now you can visit
 [`localhost:4000`](http://localhost:4000)
 from your web browser.
 
-![phoenix-default-homepage](https://user-images.githubusercontent.com/194400/74361992-c2c4ef80-4dbf-11ea-8112-2dcf6dcf1c51.png)
+![welcome-to-phoenix](https://user-images.githubusercontent.com/194400/82494801-11caa100-9ae2-11ea-821d-8181580201cb.png)
 
-Also make sure you run the tests to ensure everything works as expected:
+Shut down the Phoenix server <kbd>ctrl</kbd>+<kbd>C</kbd>.
+
+Run the tests to ensure everything works as expected:
 
 ```sh
 mix test
@@ -156,16 +154,66 @@ Finished in 0.04 seconds
 3 tests, 0 failures
 ```
 
-Having established that your Phoenix App works as expected,
-let's dive into the fun part!
+Having established that the Phoenix App works as expected,
+let's move on to creating the list!
+
+<br />
+
+### 2. Create `items` Schema
+
+In creating a basic Todo List we only need one schema: `items`.
+Later we can add separate lists and tags to organise/categorise
+our `items` but for now this is all we need.
+
+Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) command to create the  
+
+```
+mix phx.gen.html Ctx Item items text:string person_id:integer status:integer
+```
+
+Strictly speaking we only _need_ the `text` and `status` fields,
+but since we know we want to associate items with people
+(_later in the tutorial),
+we are adding the field _now_.
 
 
+You will see the following output:
+
+```
+mix phx.gen.html Ctx Item items text:string person_id:integer status:integer
+* creating lib/app_web/controllers/item_controller.ex
+* creating lib/app_web/templates/item/edit.html.eex
+* creating lib/app_web/templates/item/form.html.eex
+* creating lib/app_web/templates/item/index.html.eex
+* creating lib/app_web/templates/item/new.html.eex
+* creating lib/app_web/templates/item/show.html.eex
+* creating lib/app_web/views/item_view.ex
+* creating test/app_web/controllers/item_controller_test.exs
+* creating lib/app/ctx/item.ex
+* creating priv/repo/migrations/20200521145424_create_items.exs
+* creating lib/app/ctx.ex
+* injecting lib/app/ctx.ex
+* creating test/app/ctx_test.exs
+* injecting test/app/ctx_test.exs
+
+Add the resource to your browser scope in lib/app_web/router.ex:
+
+    resources "/items", ItemController
 
 
+Remember to update your repository by running migrations:
 
+    $ mix ecto.migrate
+```
+
+That created a _bunch_ of files.
+Some of which we don't strictly _need_.
+See the commit: 
+
+
+<br />
 
 ## Learning
 
 + Learn Elixir: https://github.com/dwyl/learn-elixir
 + Learn Phoenix https://github.com/dwyl/learn-phoenix-framework
-+ Learn Vagrant: https://github.com/dwyl/learn-vagrant
