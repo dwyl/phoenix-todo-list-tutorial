@@ -4,9 +4,9 @@
 
 A complete beginners tutorial building a Todo List in Phoenix.
 
-[![Build Status](https://img.shields.io/travis/dwyl/elixir-invoke-lambda-example/master.svg?style=flat-square)](https://travis-ci.org/dwyl/elixir-invoke-lambda-example)
-[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/elixir-invoke-lambda-example/master.svg?style=flat-square)](http://codecov.io/github/dwyl/elixir-invoke-lambda-example?branch=master)
-[![HitCount](http://hits.dwyl.com/dwyl/elixir-invoke-lambda-example.svg)](http://hits.dwyl.com/dwyl/elixir-invoke-lambda-example)
+[![Build Status](https://img.shields.io/travis/dwyl/phoenix-todo-list-tutorial/master.svg?style=flat-square)](https://travis-ci.org/dwyl/phoenix-todo-list-tutorial)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/phoenix-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/phoenix-todo-list-tutorial?branch=master)
+<!-- [![HitCount](http://hits.dwyl.com/dwyl/phoenix-todo-list-tutorial.svg)](http://hits.dwyl.com/dwyl/phoenix-todo-list-tutorial) -->
 
 </div>
 <br />
@@ -16,14 +16,12 @@ A complete beginners tutorial building a Todo List in Phoenix.
 
 Todo lists are familiar to most people. <br />
 _Building_ a Todo list from scratch is a great way to learn Phoenix.
-You can learn to navigate the folders & files of a _boring_
-Phoenix App that you _already_ understand.
 
-
+<br />
 
 ## What? 💭
 
-A todo list example created from scratch in Elixir/Phoenix.
+A todo list example created from scratch step-by-step in Elixir/Phoenix.
 
 ### Try it on Heroku: [phxtodo.herokuapp.com](https://phxtodo.herokuapp.com)
 
@@ -34,7 +32,7 @@ We are using the
 [TodoMVC](https://github.com/dwyl/javascript-todo-list-tutorial#todomvc)
 CSS to make our UI look good and simplify our code.
 
-
+<br />
 
 ## Who? 👤
 
@@ -43,6 +41,7 @@ at anyone who is learning to Elixir/Phoenix.
 We have included _all_ the steps required to build the app.
 
 
+<br />
 
 ## _How_? 🚧
 
@@ -57,6 +56,7 @@ See:
 Once you have confirmed that you have Phoenix & PostgreSQL installed,
 try running the _finished_ App.
 
+
 ### Run The _Finished_ App on Your `localhost` 💻
 
 _Before_ you start building your own version of the Todo List App,
@@ -69,7 +69,7 @@ Clone the project from GitHub:
 git clone git@github.com:dwyl/phoenix-todo-list-tutorial.git && cd phoenix-todo-list-tutorial
 ```
 
-Install dependencies:
+Install dependencies ad setup the database:
 
 ```sh
 mix deps.get
