@@ -20,6 +20,7 @@ erl_crash.dump
 node_modules
 node_modules/*
 npm-debug.log
+assets/package-lock.json
 
 # Since we are building assets from web/static,
 # we ignore priv/static. You may want to comment
