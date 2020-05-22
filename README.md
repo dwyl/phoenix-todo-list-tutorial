@@ -32,6 +32,7 @@ We are using the
 [TodoMVC](https://github.com/dwyl/javascript-todo-list-tutorial#todomvc)
 CSS to make our UI look good and simplify our code.
 
+
 <br />
 
 ## Who? 👤
@@ -90,7 +91,7 @@ in your web browser.
 
 You should see:
 
-# TODO: add screenshot of todo list home page
+# TODO: add screenshot/GIF of todo list home page
 
 
 Now that you have the _finished_ example app
@@ -266,7 +267,71 @@ Here is a _list_ of items; a "Todo List":
 
 Let's improve the UX by using the TodoMVC CSS!
 
+<br />
+
 ### 3. Create the TodoMVC UI/UX
+
+To recreate the TodoMVC UI/UX,
+we need to borrow the code directly.
+
+Visit: http://todomvc.com/examples/vanillajs
+and inspect the source.
+e.g:
+
+![todomvc-view-source](https://user-images.githubusercontent.com/194400/82698634-0b176780-9c63-11ea-9e1d-7aa6e2328766.png)
+
+The `HTML` code is:
+
+
+```html
+<section class="todoapp">
+  <header class="header">
+  	<h1>todos</h1>
+  	<input class="new-todo" placeholder="What needs to be done?" autofocus="">
+  </header>
+  <section class="main" style="display: block;">
+  	<input id="toggle-all" class="toggle-all" type="checkbox">
+  	<label for="toggle-all">Mark all as complete</label>
+  	<ul class="todo-list">
+      <li data-id="1590167947253" class="">
+        <div class="view">
+          <input class="toggle" type="checkbox">
+          <label>Learn how to build a Todo list in Phoenix</label>
+          <button class="destroy"></button>
+        </div>
+      </li>
+      <li data-id="1590167956628" class="completed">
+        <div class="view">
+          <input class="toggle" type="checkbox">
+          <label>Completed item</label>
+          <button class="destroy"></button>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <footer class="footer" style="display: block;">
+  	<span class="todo-count"><strong>1</strong> item left</span>
+  	<ul class="filters">
+  		<li>
+  			<a href="#/" class="selected">All</a>
+  		</li>
+  		<li>
+  			<a href="#/active">Active</a>
+  		</li>
+  		<li>
+  			<a href="#/completed">Completed</a>
+  		</li>
+  	</ul>
+  	<button class="clear-completed" style="display: block;">Clear completed</button>
+  </footer>
+</section>
+```
+
+Let's convert this `HTML` to an Embedded Elixir
+([`EEx`](https://hexdocs.pm/eex/EEx.html)) template.
+
+
+
 
 
 
