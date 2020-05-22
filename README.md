@@ -208,7 +208,67 @@ Remember to update your repository by running migrations:
 
 That created a _bunch_ of files.
 Some of which we don't strictly _need_.
-See the commit: 
+We could create _only_ the files we _need_,
+but this is the "official" way of creating a CRUD App in Phoenix,
+so we are using it for speed.
+See the commit:
+[40d4e8d](https://github.com/dwyl/phoenix-todo-list-tutorial/pull/35/commits/40d4e8dd98bae7c517e9a0b59bc2491f4b3c7a0f)
+
+### 2.1 Add the `/items` Resources to `router.ex`
+
+Follow the instructions presented by the generator to
+add the `resources "/items", ItemController` line to the `router.ex` file.
+
+Open the `lib/app_web/router.ex` file
+and locate the `scope "/", AppWeb do` section.
+Add the line to the end of the block, e.g:
+
+```elixir
+scope "/", AppWeb do
+  pipe_through :browser
+
+  get "/", PageController, :index
+  resources "/items", ItemController
+end
+```
+
+Your `router.ex` file should look like this:
+[`router.ex#L20`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f66184b58b7dd1ef593680e7a1a446247909cae7/lib/app_web/router.ex#L20)
+
+
+### 2.2 _Run_ The App!
+
+At this point we _already_ have a functional Todo List
+(_if we were willing to use the default Phoenix UI_).
+Try running the app on your `localhost`:
+
+```
+mix phx.server
+```
+
+Visit: http://localhost:4000/items/new
+and input some data.
+
+![todo-list-phoenix-default-ui](https://user-images.githubusercontent.com/194400/82673112-3edd9780-9c39-11ea-84d3-f62c3e456a6b.png)
+
+Click the "Save" button
+and you will be redirected to the "show" page:
+[/items/1](http://localhost:4000/items/1)
+
+![todo-list-phoenix-default-ui-show-item](https://user-images.githubusercontent.com/194400/82674191-d7c0e280-9c3a-11ea-9c52-9a37525d0626.png)
+
+This is not an attractive User Experience (UX),
+but it _works_!
+Here is a _list_ of items; a "Todo List":
+
+![todo-list-phoenix-default-ui-show-items-list](https://user-images.githubusercontent.com/194400/82674676-967d0280-9c3b-11ea-999f-bf5fbe1ab2d4.png)
+
+
+Let's improve the UX by using the TodoMVC CSS!
+
+### 3. Create the TodoMVC UI/UX
+
+
 
 
 <br />
