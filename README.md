@@ -435,17 +435,84 @@ is the addition of these two CSS stylesheets:
 
 With the layout template saved, your `/items` page should now look like this:
 
-![items-with-todomvc-css](https://user-images.githubusercontent.com/194400/82725718-af86c180-9cd6-11ea-83a3-058a3bd6efe8.png)
+![items-with-todomvc-css](https://user-images.githubusercontent.com/194400/82726927-3049bb80-9cdf-11ea-9522-084327c05ed5.png)
 
 
-> **Note**: we are loading these files from a remote source.
+
+> **Note**: we are loading these CSS files from a remote source.
 > If you prefer to load the CSS locally for any reason,
 simply download the files and add them to the `/assets/css` directory.
-Then update the links accordingly.
-e.g: 
+And import them in the `app.scss` file
+e.g: [`#7bfbfd4`](https://github.com/dwyl/phoenix-todo-list-tutorial/pull/35/commits/7bfbfd4faf0e40b1d881685faa1f26af95703aee#r429529917)
+We just do the direct linking of the Stylesheets to save steps.
+
+
+So our Todo List is starting to look like TodoMVC,
+but it's still just a dummy list.
+
+<br />
+
+### 3.3 Render Real Data in the TodoMVC Layout
+
+Open the
+`lib/app_web/views/item_view.ex` file
+and add the following two functions to it:
+
+```elixir
+# add class "completed" to a list item if item.status=1
+def complete(item) do
+  case item.status do
+    1 -> "completed"
+    _ -> "" # empty string means empty class so no style applied
+  end
+end
+
+# add "checked" to input if item.status=1
+def checked(item) do
+  case item.status do
+    1 -> "checked"
+    _ -> "" # empty string means empty class so no style applied
+  end
+end
+```
+
+e.g:
+[`/lib/app_web/views/item_view.ex#L4-L18`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0d55a4ea0d5f58a364a23070da52ddfe0f9d55ea/lib/app_web/views/item_view.ex#L4-L18)
+
+
+Now that we have created these two view functions,
+let's _use_ them in our template!
+
+Open the `lib/app_web/templates/item/index.html.eex` file
+and locate the line:
+
+```html
+<ul class="todo-list">
+```
+
+Replace the _contents_ of the `<ul>` with the following:
+
+```html
+<%= for item <- @items do %>
+  <li data-id="<%= item.id %>" class="<%= complete(item) %>">
+    <div class="view">
+      <input <%= checked(item) %> class="toggle" type="checkbox">
+      <label><%= item.text %></label>
+      <%= link "", class: "destroy",
+        to: Routes.item_path(@conn, :delete, item), method: :delete,
+        data: [confirm: "Are you sure?"] %>
+    </div>
+  </li>
+<% end %>
+```
+
+e.g:
+[``]
 
 
 
+
+### 4. Create View Functions to
 
 
 <br />
