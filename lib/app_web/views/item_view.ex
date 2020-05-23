@@ -9,10 +9,10 @@ defmodule AppWeb.ItemView do
     end
   end
 
-  # add checked="true" to input if item.status=1
+  # add "checked" to input if item.status=1
   def checked(item) do
     case item.status do
-      1 -> "true"
+      1 -> "checked"
       _ -> "" # empty string means empty class so no style applied
     end
   end
