@@ -452,11 +452,65 @@ but it's still just a dummy list.
 
 <br />
 
-### 3.3 Render Real Data in the TodoMVC Layout
+### 4. Render _Real_ Data in the TodoMVC Layout
+
+We are going to need a handful of
+[View functions](https://hexdocs.pm/phoenix/views.html)
+in order to render our `item` data in the TodoMVC template.
+Let's create the first two which are fairly basic.
+
+This is our first chance to do a bit of Test Driven Development (TDD),
+Create a new file with the path `test/app_web/views/item_view_test.exs`.
+
+Paste (_or type_) the following code into the file:
+
+```elixir
+defmodule AppWeb.ItemViewTest do
+  use AppWeb.ConnCase, async: true
+  alias AppWeb.ItemView
+
+  test "complete/1 returns completed if item.status == 1" do
+    assert ItemView.complete(%{status: 1}) == "completed"
+  end
+
+  test "complete/1 returns empty string if item.status == 0" do
+    assert ItemView.complete(%{status: 0}) == ""
+  end
+
+  test "checked/1 returns checked if item.status == 1" do
+    assert ItemView.checked(%{status: 1}) == "checked"
+  end
+
+  test "checked/1 returns empty string if item.status == 0" do
+    assert ItemView.checked(%{status: 0}) == ""
+  end
+end
+```
+
+e.g:
+[`/test/app_web/views/item_view_test.exs`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/test/app_web/views/item_view_test.exs)
+
+
+If you attempt to run this test file:
+
+```sh
+mix test test/app_web/views/item_view_test.exs
+```
+
+You will see the following error (because the function does not yet exist!):
+
+```
+== Compilation error in file lib/app_web/views/item_view.ex ==
+** (CompileError) lib/app_web/templates/item/index.html.eex:44: undefined function complete/1
+```
 
 Open the
 `lib/app_web/views/item_view.ex` file
-and add the following two functions to it:
+and write the functions to make the tests pass.
+
+<br />
+
+This is how we implemented the functions.
 
 ```elixir
 # add class "completed" to a list item if item.status=1
@@ -479,8 +533,24 @@ end
 e.g:
 [`/lib/app_web/views/item_view.ex#L4-L18`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0d55a4ea0d5f58a364a23070da52ddfe0f9d55ea/lib/app_web/views/item_view.ex#L4-L18)
 
+Re-run the tests and they should now pass:
+
+```sh
+mix test test/app_web/views/item_view_test.exs
+```
+
+You should see:
+
+```sh
+....
+
+Finished in 0.1 seconds
+4 tests, 0 failures
+```
+
 
 Now that we have created these two view functions,
+and our tests are passing,
 let's _use_ them in our template!
 
 Open the `lib/app_web/templates/item/index.html.eex` file
@@ -507,14 +577,82 @@ Replace the _contents_ of the `<ul>` with the following:
 ```
 
 e.g:
-[`/lib/app_web/templates/item/index.html.eex#L43-L53`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8425bc8d80cd3120c90cdafb7bd5be724f8f3c75/lib/app_web/templates/item/index.html.eex#L43-L53)
+[`/lib/app_web/templates/item/index.html.eex#L43-L53`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1fbea19f0b2b74baa4c88ad1518bf2291507b499/lib/app_web/templates/item/index.html.eex#L41-L55)
+
+
+With those two files saved,
+if you run the app now: `mix phx.server`
+and visit [`/items`](http://localhost:4000/items)
+You will see the _real_ `items` you created in step 2.2 (above):
+
+![todo-list-real-items](https://user-images.githubusercontent.com/194400/82729253-f46a2280-9ced-11ea-940f-75d6ff4c4ece.png)
+
+
+Now that we have our items rendering in the TodoMVC layout,
+let's work on creating new items in the "single page app" style.
+
+<br />
+
+### 5. In-line the New Item Creation Form
+
+At present our "New Item" form is available at:
+http://localhost:4000/items/new
+(_as noted in step 2 above_)
+
+We want the person to be able to create a new item
+without having to navigate to a different page.
+
+Let's open `lib/app_web/templates/item/form.html.eex`
+and simplify it to just the essentials:
+
+
+
+Given that we have removed two of the fields from the `form.html.eex`
+we need to ensure there are default values for these in
+the schema.
+Open the `lib/app/ctx/item.ex` file
+and replace the contents with the following:
+
+```elixir
+defmodule App.Ctx.Item do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  schema "items" do
+    field :person_id, :integer, default: 0
+    field :status, :integer, default: 0
+    field :text, :string
+
+    timestamps()
+  end
+
+  @doc false
+  def changeset(item, attrs) do
+    item
+    |> cast(attrs, [:text, :person_id, :status])
+    |> validate_required([:text])
+  end
+end
+```
+
+Here we are updating the "items" `schema`
+to set a default value of `0`
+for both `person_id` and `status`.
+And in the `changeset/2` we are removing the _requirement_
+for `person_id` and `status`.
+That way our new `item` form
+can be submitted with _just_ the `text` field.
+
+
+Before:
+[`/lib/app/ctx/item.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app/ctx/item.ex) <br />
+After:
 
 
 
 
 
 
-### 4. 
 
 
 <br />
