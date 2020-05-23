@@ -382,19 +382,69 @@ and scroll to the bottom.
 Then (_without removing the code that is already there_)
 paste the `HTML` code we sourced from TodoMVC.
 
+> e.g:
+[`/lib/app_web/templates/item/index.html.eex#L33-L73`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bddacda93ecd892fe0907210bab335e6b6e5e489/lib/app_web/templates/item/index.html.eex#L33-L73)
 
+If you attempt to run the app now
+and visit
+[http://localhost:4000/items/](http://localhost:4000/items/)
+You will see this (without the TodoMVC CSS):
 
-TodoMVC without the TodoMVC styles:
 ![before-adding-css](https://user-images.githubusercontent.com/194400/82725401-af85c200-9cd4-11ea-8717-714477fc3157.png)
 
+That's obviously not what we want, so let's add the TodoMVC CSS!
 
-### 3.2 Add TodoMVC CSS
+### 3.2 Add TodoMVC CSS to Layout
 
+Open your `lib/app_web/templates/layout/app.html.eex` file
+and replace the contents with the following code:
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Phoenix Todo List</title>
+    <link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-common-base.css">
+    <link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-app.css">
+  </head>
+  <body>
+    <main role="main" class="container">
+      <%= @inner_content %>
+    </main>
+
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>
 ```
+
+The important bit that has changed
+is the addition of these two CSS stylesheets:
+
+```html
 <link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-common-base.css">
 <link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-app.css">
 ```
+
+> Before:
+[`/lib/app_web/templates/layout/app.html.eex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bddacda93ecd892fe0907210bab335e6b6e5e489/lib/app_web/templates/layout/app.html.eex) <br />
+> After: [`/lib/app_web/templates/layout/app.html.eex#L8-L9`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1d9198013d2db1e0e219b0b61b0173428aab0ba8/lib/app_web/templates/layout/app.html.eex#L8-L9)
+
+
+With the layout template saved, your `/items` page should now look like this:
+
+![items-with-todomvc-css](https://user-images.githubusercontent.com/194400/82725718-af86c180-9cd6-11ea-83a3-058a3bd6efe8.png)
+
+
+> **Note**: we are loading these files from a remote source.
+> If you prefer to load the CSS locally for any reason,
+simply download the files and add them to the `/assets/css` directory.
+Then update the links accordingly.
+e.g: 
+
+
 
 
 
