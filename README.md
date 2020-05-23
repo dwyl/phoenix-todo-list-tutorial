@@ -168,7 +168,7 @@ our `items` but for now this is all we need.
 
 Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) command to create the  
 
-```
+```sh
 mix phx.gen.html Ctx Item items text:string person_id:integer status:integer
 ```
 
@@ -181,7 +181,6 @@ we are adding the field _now_.
 You will see the following output:
 
 ```
-mix phx.gen.html Ctx Item items text:string person_id:integer status:integer
 * creating lib/app_web/controllers/item_controller.ex
 * creating lib/app_web/templates/item/edit.html.eex
 * creating lib/app_web/templates/item/form.html.eex
@@ -215,6 +214,24 @@ so we are using it for speed.
 See the commit:
 [40d4e8d](https://github.com/dwyl/phoenix-todo-list-tutorial/pull/35/commits/40d4e8dd98bae7c517e9a0b59bc2491f4b3c7a0f)
 
+
+> **Note**: Phoenix
+[Contexts](https://hexdocs.pm/phoenix/contexts.html)
+denoted in this example as `Ctx`,
+are "_dedicated modules that expose and group related functionality_."
+We feel they _unnecessarily complicate_ basic Phoenix Apps,
+with layers of "interface" and we _really_ wish we could
+[avoid](https://github.com/phoenixframework/phoenix/issues/3832) them.
+But given that they are baked into the generators,
+and the _creator_ of the framework
+[_likes_](https://youtu.be/tMO28ar0lW8?t=376) them
+(_regardless of them complicating simple apps and confusing beginners_),
+we have a choice: either get on board with Contexts
+or _manually_ create all the files in our Phoenix projects.
+
+
+<br />
+
 ### 2.1 Add the `/items` Resources to `router.ex`
 
 Follow the instructions presented by the generator to
@@ -236,6 +253,7 @@ end
 Your `router.ex` file should look like this:
 [`router.ex#L20`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f66184b58b7dd1ef593680e7a1a446247909cae7/lib/app_web/router.ex#L20)
 
+<br />
 
 ### 2.2 _Run_ The App!
 
@@ -272,13 +290,26 @@ Let's improve the UX by using the TodoMVC CSS!
 ### 3. Create the TodoMVC UI/UX
 
 To recreate the TodoMVC UI/UX,
-we need to borrow the code directly.
+let's borrow the code directly from the example.
+
+
 
 Visit: http://todomvc.com/examples/vanillajs
 and inspect the source.
 e.g:
 
 ![todomvc-view-source](https://user-images.githubusercontent.com/194400/82698634-0b176780-9c63-11ea-9e1d-7aa6e2328766.png)
+
+Right-click on the source you want and select "Edit as HTML":
+
+![edit-as-html](https://user-images.githubusercontent.com/194400/82721624-b8679b00-9cb6-11ea-8d3f-2405f2bd301f.png)
+
+
+Once the `HTML` for the `<section>` is editable,
+select it and copy it.
+
+![todomvc-html-editable-copy](https://user-images.githubusercontent.com/194400/82721711-b05c2b00-9cb7-11ea-85c2-083d2981440d.png)
+
 
 The `HTML` code is:
 
@@ -331,8 +362,39 @@ Let's convert this `HTML` to an Embedded Elixir
 ([`EEx`](https://hexdocs.pm/eex/EEx.html)) template.
 
 
+> **Note**: the _reason_ that we are copying this `HTML`
+from the browser inspector instead of _directly_ from the source
+on GitHub:
+[`examples/vanillajs/index.html`](https://github.com/tastejs/todomvc/blob/c50cc922495fd76cb44844e3b1cd77e35a5d6be1/examples/vanillajs/index.html#L18)
+is that this is a "single page app",
+so the `<ul class="todo-list"></ul>`
+only gets populated in the browser.
+So copying it from the browser Dev Tools
+is the easiest way to get the _complete_ `HTML`.
 
 
+
+### 3.1 Paste the HTML into `index.html.eex`
+
+Open the `lib/app_web/templates/item/index.html.eex` file
+and scroll to the bottom.
+
+Then (_without removing the code that is already there_)
+paste the `HTML` code we sourced from TodoMVC.
+
+
+
+TodoMVC without the TodoMVC styles:
+![before-adding-css](https://user-images.githubusercontent.com/194400/82725401-af85c200-9cd4-11ea-8717-714477fc3157.png)
+
+
+### 3.2 Add TodoMVC CSS
+
+
+```
+<link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-common-base.css">
+<link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-app.css">
+```
 
 
 
