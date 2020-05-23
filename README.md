@@ -507,12 +507,14 @@ Replace the _contents_ of the `<ul>` with the following:
 ```
 
 e.g:
-[``]
+[`/lib/app_web/templates/item/index.html.eex#L43-L53`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8425bc8d80cd3120c90cdafb7bd5be724f8f3c75/lib/app_web/templates/item/index.html.eex#L43-L53)
 
 
 
 
-### 4. Create View Functions to
+
+
+### 4. 
 
 
 <br />

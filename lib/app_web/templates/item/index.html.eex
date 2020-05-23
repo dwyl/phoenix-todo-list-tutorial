@@ -38,7 +38,7 @@
   <section class="main" style="display: block;">
   	<input id="toggle-all" class="toggle-all" type="checkbox">
   	<label for="toggle-all">Mark all as complete</label>
-  	<ul class="todo-list">
+    <ul class="todo-list">
 
       <%= for item <- @items do %>
         <li data-id="<%= item.id %>" class="<%= complete(item) %>">
@@ -46,8 +46,8 @@
             <input <%= checked(item) %> class="toggle" type="checkbox">
             <label><%= item.text %></label>
             <%= link "", class: "destroy",
-              to: Routes.item_path(@conn, :delete, item), method: :delete,
-              data: [confirm: "Are you sure?"] %>
+            to: Routes.item_path(@conn, :delete, item), method: :delete,
+            data: [confirm: "Are you sure?"] %>
           </div>
         </li>
       <% end %>
