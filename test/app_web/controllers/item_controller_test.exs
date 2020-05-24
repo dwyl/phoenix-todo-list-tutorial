@@ -3,8 +3,8 @@ defmodule AppWeb.ItemControllerTest do
 
   alias App.Ctx
 
-  @create_attrs %{person_id: 42, status: 42, text: "some text"}
-  @update_attrs %{person_id: 43, status: 43, text: "some updated text"}
+  @create_attrs %{person_id: 0, status: 0, text: "some text"}
+  @update_attrs %{person_id: 0, status: 1, text: "some updated text"}
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
 
   def fixture(:item) do
@@ -78,6 +78,24 @@ defmodule AppWeb.ItemControllerTest do
       assert_error_sent 404, fn ->
         get(conn, Routes.item_path(conn, :show, item))
       end
+    end
+  end
+
+  describe "toggle/2 updates the status of an item 0 > 1" do
+    setup [:create_item]
+
+    test "toggle an item.status from 0 to 1", %{conn: conn, item: item} do
+      IO.inspect(item, label: "item before toggle")
+      assert item.status == 0
+      conn = post(conn, Routes.item_path(conn, :toggle), item: item)
+      toggled_item = Ctx.get_item!(item.id)
+      IO.inspect(toggled_item, label: "toggled_item")
+      # assert toggled_item.status == 1
+
+      # assert redirected_to(conn) == Routes.item_path(conn, :index)
+      # assert_error_sent 404, fn ->
+      #   get(conn, Routes.item_path(conn, :show, item))
+      # end
     end
   end
 
