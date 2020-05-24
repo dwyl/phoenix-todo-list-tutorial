@@ -33,7 +33,7 @@
 <section class="todoapp">
   <header class="header">
   	<h1>todos</h1>
-  	<input class="new-todo" placeholder="What needs to be done?" autofocus="">
+  	<%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
   </header>
   <section class="main" style="display: block;">
   	<input id="toggle-all" class="toggle-all" type="checkbox">
