@@ -1,6 +1,6 @@
 <div align="center">
 
-# `Phoenix` Todo List Tutorial!
+# Phoenix Todo List Tutorial
 
 A complete beginners tutorial building a Todo List in Phoenix.
 
@@ -16,6 +16,7 @@ A complete beginners tutorial building a Todo List in Phoenix.
 
 Todo lists are familiar to most people. <br />
 _Building_ a Todo list from scratch is a great way to learn Phoenix.
+This tutorial does not assume any prior Phoenix knowledge/experience.
 
 <br />
 
@@ -875,8 +876,39 @@ Finished in 0.5 seconds
 
 ### 6. Update Number of Items in UI
 
-At present
-The
+So far the main functionality of the TodoMVC UI is working,
+we can create new items and they appear in our list.
+In this step we are going to enhance the UI to include
+
+<br />
+
+### 7. Update a Todo Item's `status` To `1` ("Done")
+
+
+
+<br />
+
+### 8. Footer Navigation
+
+
+
+
+
+<br />
+
+### 9. Clear Completed
+
+
+### Done!
+
+
+
+<br />
+
+### Part 2: Authentication!
+
+
+
 
 
 
