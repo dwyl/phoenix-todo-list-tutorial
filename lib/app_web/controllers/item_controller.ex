@@ -17,7 +17,7 @@ defmodule AppWeb.ItemController do
 
   def create(conn, %{"item" => item_params}) do
     case Ctx.create_item(item_params) do
-      {:ok, item} ->
+      {:ok, _item} ->
         conn
         |> put_flash(:info, "Item created successfully.")
         |> redirect(to: Routes.item_path(conn, :index))
@@ -59,5 +59,18 @@ defmodule AppWeb.ItemController do
     conn
     |> put_flash(:info, "Item deleted successfully.")
     |> redirect(to: Routes.item_path(conn, :index))
+  end
+
+  def toggle_status(item) do
+    case item.status do
+      1 -> 0
+      0 -> 1
+    end
+  end
+
+  def toggle(conn, %{"id" => id}) do
+    item = Ctx.get_item!(id)
+    Ctx.update_item(item, %{status: toggle_status(item)})
+    redirect(conn, to: Routes.item_path(conn, :index))
   end
 end
