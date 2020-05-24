@@ -40,7 +40,10 @@ CSS to make our UI look good and simplify our code.
 This example/tutorial is targeted
 at anyone who is learning to Elixir/Phoenix.
 We have included _all_ the steps required to build the app.
-
+If you get stuck on any step,
+please open an
+[issue](https://github.com/dwyl/phoenix-todo-list-tutorial/issues)
+on GitHub where we can help you get unstuck!
 
 <br />
 
@@ -601,13 +604,50 @@ http://localhost:4000/items/new
 
 We want the person to be able to create a new item
 without having to navigate to a different page.
+In order to achieve that goal,
+we will include the `form.html` template (_partial_)
+inside the `index.html` template. e.g:
+
+```elixir
+<%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+```
+
+Before we can do that, we need to tidy up the `form.html`
+template to remove the fields we don't _need_.
 
 Let's open `lib/app_web/templates/item/form.html.eex`
-and simplify it to just the essentials:
+and simplify it to just the essential field `:text`:
+
+```elixir
+<%= form_for @changeset, @action, fn f -> %>
+  <%= text_input f, :text, placeholder: "what needs to be done?",
+    class: "new-todo", autofocus: "" %>
+  <div style="display: none;"> <%= submit "Save" %> </div>
+<% end %>
+```
+
+> Before:
+[`/lib/app_web/templates/item/form.html.eex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/cc287975eef5ca8b738f49723fe8a03d9da52a19/lib/app_web/templates/item/form.html.eex) <br />
+> After:
+[`/lib/app_web/templates/item/form.html.eex#L2-L3`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/50a6f9ab9e2cb7d9ed3023fc64590992a2ee73af/lib/app_web/templates/item/form.html.eex#L2-L3)
 
 
+If you run the Phoenix App now and visit
+[http://localhost:4000/items/new](http://localhost:4000/items/new)
+you will see the _single_ `:text` input field and no "Save" button:
 
-Given that we have removed two of the fields from the `form.html.eex`
+![new-item-single-text-field-no-save-button](https://user-images.githubusercontent.com/194400/82753057-a7a04d80-9dba-11ea-9a08-3d904702e1e8.png)
+
+Don't worry, you can still submit the form with <kbd>Enter</kbd> (Return) key.
+However if you attempt to submit the form now,
+it won't work because we removed two of the fields required by the `changeset`!
+Let's fix that.
+
+
+### 5.1 Update the `items` Schema to Set `default` Values
+
+Given that we have removed two of the fields (`:person_id` and `:status`)
+from the `form.html.eex`,
 we need to ensure there are default values for these in
 the schema.
 Open the `lib/app/ctx/item.ex` file
@@ -647,9 +687,104 @@ can be submitted with _just_ the `text` field.
 Before:
 [`/lib/app/ctx/item.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app/ctx/item.ex) <br />
 After:
+[`/lib/app/ctx/item.ex#L6-L7`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/cc287975eef5ca8b738f49723fe8a03d9da52a19/lib/app/ctx/item.ex#L6-L7)
+
+
+Now that we have `default` values for `person_id` and `status`
+if you submit the `/items/new` form it will succeed.
 
 
 
+### 5.2 Update `index/2` in `ItemController`
+
+In order to in-line the new item form (`form.html.eex`)
+in the `index.html.eex` template,
+we need to update the `AppWeb.ItemController.inded/2`
+to include a Changeset.
+
+Open the `lib/app_web/controllers/item_controller.ex` file
+and update the `index/2` function to the following:
+
+```elixir
+def index(conn, _params) do
+  items = Ctx.list_items()
+  changeset = Ctx.change_item(%Item{})
+  render(conn, "index.html", items: items, changeset: changeset)
+end
+```
+
+Before:
+[`/lib/app_web/controllers/item_controller.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/controllers/item_controller.ex) <br />
+After:
+[`/lib/app_web/controllers/item_controller.ex#L9-L10`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/aed0b2c037ea0cdf5461b2287fc4b63d61cd7b14/lib/app_web/controllers/item_controller.ex#L9-L10)
+
+
+You will not _see_ any change in the UI or tests after this step.
+Just move on to 5.3 where the "aha" moment happens.
+
+
+### 5.3 Render The `form.html.eex` inside `index.html.eex`
+
+Now that we have done all the preparation work,
+the next step is to render the `form.html.eex` (_partial_)
+inside `index.html.eex` template.
+
+Open the `lib/app_web/templates/item/index.html.eex` file
+and locate the line:
+
+```html
+<input class="new-todo" placeholder="What needs to be done?" autofocus="">
+```
+
+Replace it with this:
+
+```elixir
+<%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+```
+
+Before:
+[`/lib/app_web/templates/item/index.html.eex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/templates/item/index.html.eex#L36) <br />
+After:
+[`/lib/app_web/templates/item/index.html.eex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/41ad6d445e6d9b8cc85cccbee5ed64adcdad0eef/lib/app_web/templates/item/index.html.eex#L36)
+
+
+
+If you run the app now and visit:
+[http://localhost:4000/items](http://localhost:4000/items)
+You can create an item by typing your text
+and submit it with the <kbd>Enter</kbd> (Return) key.
+
+<div align="center">
+
+![todo-list-tutorial-step-5](https://user-images.githubusercontent.com/194400/82753376-f4852380-9dbc-11ea-9003-2015ffee79f5.gif)
+
+</div>
+
+Redirecting to the "show" template
+is "OK", but we can do better UX by
+redirecting to back to the `index.html` template.
+Thankfully this is as easy as updating a single line in the code.
+
+### 5.4 Update the `redirect` in `create/2`
+
+Open the `lib/app_web/controllers/item_controller.ex` file
+and locate the `create` function.
+Specificaly the line:
+
+```elixir
+|> redirect(to: Routes.item_path(conn, :show, item))
+```
+
+Update the line to:
+
+```elixir
+|> redirect(to: Routes.item_path(conn, :index))
+```
+
+Before:
+[`/lib/app_web/controllers/item_controller.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/controllers/item_controller.ex#L22) <br />
+After:
+[`/lib/app_web/templates/item/index.html.eex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/41ad6d445e6d9b8cc85cccbee5ed64adcdad0eef/lib/app_web/templates/item/index.html.eex#L36)
 
 
 

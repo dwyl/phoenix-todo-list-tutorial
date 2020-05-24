@@ -20,7 +20,7 @@ defmodule AppWeb.ItemController do
       {:ok, item} ->
         conn
         |> put_flash(:info, "Item created successfully.")
-        |> redirect(to: Routes.item_path(conn, :show, item))
+        |> redirect(to: Routes.item_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
