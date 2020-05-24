@@ -18,7 +18,7 @@ Todo lists are familiar to most people;
 we make lists all the time.
 _Building_ a Todo list from scratch is a great way to learn Phoenix
 because the UI/UX is simple,
-so we can just focus on Phoenix implementation.
+so we can focus on implementation.
 This tutorial shows complete beginners how to build a Todo list
 in Phoenix without assuming any prior Phoenix knowledge/experience.
 
@@ -121,14 +121,7 @@ mix phx.new app
 Ensure you install all the dependencies:
 
 ```sh
-mix deps.get
-cd assets && npm install && cd ..
-```
-
-Setup the database:
-
-```sh
-mix ecto.setup
+mix setup
 ```
 
 Start the Phoenix server:
@@ -403,7 +396,7 @@ You will see this (without the TodoMVC CSS):
 
 That's obviously not what we want, so let's add the TodoMVC CSS!
 
-### 3.2 Add TodoMVC CSS to Layout
+### 3.2 Add Simplify Layout Template
 
 Open your `lib/app_web/templates/layout/app.html.eex` file
 and replace the contents with the following code:
@@ -416,44 +409,51 @@ and replace the contents with the following code:
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Phoenix Todo List</title>
-    <link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-common-base.css">
-    <link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-app.css">
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+        <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
     <main role="main" class="container">
       <%= @inner_content %>
     </main>
-
-    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
 ```
 
-The important bit that has changed
-is the addition of these two CSS stylesheets:
-
-```html
-<link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-common-base.css">
-<link rel="stylesheet" href="https://todomvc-app.herokuapp.com/lib/todomvc-app.css">
-```
 
 > Before:
 [`/lib/app_web/templates/layout/app.html.eex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bddacda93ecd892fe0907210bab335e6b6e5e489/lib/app_web/templates/layout/app.html.eex) <br />
-> After: [`/lib/app_web/templates/layout/app.html.eex#L8-L9`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1d9198013d2db1e0e219b0b61b0173428aab0ba8/lib/app_web/templates/layout/app.html.eex#L8-L9)
+> After:
+[`/lib/app_web/templates/layout/app.html.eex#L8-L15`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/65bec23b92307527a414f77b667b29ea10619e5a/lib/app_web/templates/layout/app.html.eex#L8-L15)
 
+### 3.3 Save the TodoMVC CSS to `/assets/css`
 
-With the layout template saved, your `/items` page should now look like this:
+Visit
+http://todomvc.com/examples/vanillajs/node_modules/todomvc-app-css/index.css
+and save the file to `/assets/css/todomvc-app.css`.
+
+e.g:
+[`/assets/css/todomvc-app.css`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/65bec23b92307527a414f77b667b29ea10619e5a/assets/css/todomvc-app.css)
+
+### 3.4 Import the `todomvc-app.css` in
+
+Open the `assets/css/app.scss` file and replace it with the following:
+
+```css
+/* This file is for your main application css. */
+/* @import "./phoenix.css"; */
+@import "./todomvc-app.css";
+```
+
+e.g:
+[`/assets/css/app.scss#L3`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/5fd673089be616c9bb783277ae2d4f0e310b8413/assets/css/app.scss#L3)
+
+With the layout template saved,
+the TodoMVC CSS file saved to `/asssets/css/todomvc-app.css`
+and the `todomvc-app.css` imported in `app.scss`,
+your `/items` page should now look like this:
 
 ![items-with-todomvc-css](https://user-images.githubusercontent.com/194400/82726927-3049bb80-9cdf-11ea-9522-084327c05ed5.png)
-
-
-
-> **Note**: we are loading these CSS files from a remote source.
-> If you prefer to load the CSS locally for any reason,
-simply download the files and add them to the `/assets/css` directory.
-And import them in the `app.scss` file
-e.g: [`#7bfbfd4`](https://github.com/dwyl/phoenix-todo-list-tutorial/pull/35/commits/7bfbfd4faf0e40b1d881685faa1f26af95703aee#r429529917)
-We just do the direct linking of the Stylesheets to save steps.
 
 
 So our Todo List is starting to look like TodoMVC,
@@ -947,20 +947,168 @@ with the List of `@items` which will return the integer count
 of remaining items that have not yet been "done".
 
 E.g:
-[]()
+[`/lib/app_web/templates/item/index.html.eex#L58`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8b9ce7c99b06d58f8d11e59f77c32bb687edd812/lib/app_web/templates/item/index.html.eex#L58)
+
+
+At this point the (remaining) items counter
+in the bottom left of the TodoMVC UI is working.
+Add an (unfinished) item to your list and watch the count increase to 2:
+
+![item-count-increases-to-2](https://user-images.githubusercontent.com/194400/82764853-fd501680-9e09-11ea-980e-d3bac18c8a33.gif)
 
 
 
 
 <br />
 
-### 7. Update a Todo Item's `status` To `1` ("Done")
+### 7. Toggle a Todo Item's `status` to `1`
+
+One of the core functions of a Todo List is
+toggling the `status` of an `item` from `0` to `1` ("complete").
+Our `toggle` function also needs to
+In our schema a completed `item`
+has the `status` of `1`.
+
+> Grab yourself a fresh glass of water,
+this section is the most advanced one.
+
+
+### 7.1 Create the Controller Tests
+
+We are going to need two functions in our controller:
+1. `toggle_status/1` toggles the status of an item
+e.g: 0 to 1 and 1 to 0.
+2. `toggle/2` the handler function for HTTP requests
+to toggle the status of an item.
+
+Open the `test/app_web/controllers/item_controller_test.exs` file
+and append the following code to the end:
+
+```elixir
+describe "toggle updates the status of an item 0 > 1 | 1 > 0" do
+  setup [:create_item]
+
+  test "toggle_status/1 item.status 1 > 0", %{item: item} do
+    assert item.status == 0
+    # first toggle
+    toggled_item = %{item | status: AppWeb.ItemController.toggle_status(item)}
+    assert toggled_item.status == 1
+    # second toggle sets status back to 0
+    assert AppWeb.ItemController.toggle_status(toggled_item) == 0
+  end
+
+  test "toggle/2 updates an item.status 0 > 1", %{conn: conn, item: item} do
+    assert item.status == 0
+    get(conn, Routes.item_path(conn, :toggle, item.id))
+    toggled_item = Ctx.get_item!(item.id)
+    assert toggled_item.status == 1
+  end
+end
+```
+
+e.g:
+[`/test/app_web/controllers/item_controller_test.exs#L84-L102`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f5fbc8a642178f3a7633313481753f5f50cee93f/test/app_web/controllers/item_controller_test.exs#L84-L102)
+
+<br />
+
+### 7.2 Create the Functions to Make Tests Pass
+
+Open the
+`lib/app_web/controllers/item_controller.ex`
+file and add the following functions to it:
+
+```elixir
+def toggle_status(item) do
+  case item.status do
+    1 -> 0
+    0 -> 1
+  end
+end
+
+def toggle(conn, %{"id" => id}) do
+  item = Ctx.get_item!(id)
+  Ctx.update_item(item, %{status: toggle_status(item)})
+  redirect(conn, to: Routes.item_path(conn, :index))
+end
+```
+
+e.g:
+[]()
+
+<br />
+
+### 7.3 Create `get /items/toggle/:id` Route that Invokes `toggle/2`
+
+Open the `lib/app_web/router.ex`
+and locate the line `resources "/items", ItemController`.
+Add a new line:
+
+```elixir
+get "/items/toggle/:id", ItemController, :toggle
+```
+
+e.g:
+[]()
+
+Now our tests will _finally_ pass:
+
+```sh
+mix test
+```
+
+You should see:
+```sh
+22:39:42.231 [info]  Already up
+...........................
+
+Finished in 0.5 seconds
+27 tests, 0 failures
+```
+
+
+<br />
+
+### 7.4 Invoke the `toggle/2` in our `index.html` Template
 
 
 
+
+> Before:
+[`/lib/app_web/templates/item/index.html.eex#L46`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a31bbe30ce593a4aa3e4fd96ac233a36d4b494b4/lib/app_web/templates/item/index.html.eex#L46) <br />
+> After:
+
+
+
+`lib/app_web/templates/item/index.html.eex`
+
+<%= link "", to: Routes.item_path(@conn, :toggle, item),
+method: :post, class: "toggle" %>
+
+<%= link "", to: Routes.item_path(@conn, :toggle, item.id) %>
+
+This works but uses JS:
+```html
+<input <%= checked(item) %> type="checkbox" class="toggle"
+onclick="location.href='
+  <%= Routes.item_path(@conn, :toggle, item.id) %>';">
+```
+
+Unfortunately, we do not have
+so we need to add:
+
+```css
+.todo-list li .checked + label {
+	background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23bddad5%22%20stroke-width%3D%223%22/%3E%3Cpath%20fill%3D%22%235dc2af%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22/%3E%3C/svg%3E');
+	background-repeat: no-repeat;
+}
+```
 
 
 ### 7.x Remove Old Template from `index.html`
+
+Now that we have the `toggle` feature working,
+we can finally remove the default Phoenix (table) layout
+from the `index.html.eex` template.
 
 
 <br />
@@ -974,6 +1122,10 @@ E.g:
 <br />
 
 ### 9. Clear Completed
+
+<br />
+
+### 10. _Edit_ an Item!
 
 
 ### Done!
