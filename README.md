@@ -14,15 +14,20 @@ A complete beginners tutorial building a Todo List in Phoenix.
 
 ## Why? 🤷‍
 
-Todo lists are familiar to most people. <br />
-_Building_ a Todo list from scratch is a great way to learn Phoenix.
-This tutorial does not assume any prior Phoenix knowledge/experience.
+Todo lists are familiar to most people;
+we make lists all the time.
+_Building_ a Todo list from scratch is a great way to learn Phoenix
+because the UI/UX is simple,
+so we can just focus on Phoenix implementation.
+This tutorial shows complete beginners how to build a Todo list
+in Phoenix without assuming any prior Phoenix knowledge/experience.
 
 <br />
 
 ## What? 💭
 
-A todo list example created from scratch step-by-step in Elixir/Phoenix.
+A Todo list tutorial created from scratch step-by-step in Elixir/Phoenix.
+
 
 ### Try it on Heroku: [phxtodo.herokuapp.com](https://phxtodo.herokuapp.com)
 
@@ -48,12 +53,12 @@ on GitHub where we can help you get unstuck!
 
 <br />
 
-## _How_? 🚧
+## _How_? 👩‍💻
 
 
-### Before You Start!
+### Before You Start! 💡
 
-Before you attempt to _build_ the Todo List,
+_Before_ you attempt to _build_ the Todo List,
 make sure you have everything you need installed on you computer.
 See:
 [prerequisites](https://github.com/dwyl/phoenix-chat-example#0-pre-requisites-before-you-start)
@@ -874,7 +879,7 @@ Finished in 0.5 seconds
 
 <br />
 
-### 6. Update Number of Items in UI
+### 6. Display Count of Items in UI
 
 So far the main functionality of the TodoMVC UI is working,
 we can create new items and they appear in our list.
@@ -905,7 +910,7 @@ end
 ```
 
 e.g:
-[]()
+[`/test/app_web/views/item_view_test.exs#L22-L38`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f55292e2074ee4f1d4ad0e363ab9b991373a4bc6/test/app_web/views/item_view_test.exs#L22-L38)
 
 These tests will fail because the `ItemView.remaining_items/1`
 function does not exist.
@@ -921,7 +926,7 @@ end
 ```
 
 e.g:
-[]()
+[`/lib/app_web/views/item_view.ex#L20-L23`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f55292e2074ee4f1d4ad0e363ab9b991373a4bc6/lib/app_web/views/item_view.ex#L20-L23)
 
 Now that the tests are passing,
 _use_ the `remaining_items/1` in the `index.html` template.
@@ -929,7 +934,7 @@ Open the `lib/app_web/templates/item/index.html.eex` file
 and locate the line of code:
 
 ```html
-<span class="todo-count"><strong>1</strong> items left</span>
+<span class="todo-count"><strong>1</strong> item left</span>
 ```
 
 Replace it with this line:
