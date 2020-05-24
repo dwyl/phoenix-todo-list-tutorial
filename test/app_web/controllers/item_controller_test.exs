@@ -81,21 +81,23 @@ defmodule AppWeb.ItemControllerTest do
     end
   end
 
-  describe "toggle/2 updates the status of an item 0 > 1" do
+  describe "toggle updates the status of an item 0 > 1 | 1 > 0" do
     setup [:create_item]
 
-    test "toggle an item.status from 0 to 1", %{conn: conn, item: item} do
-      IO.inspect(item, label: "item before toggle")
+    test "toggle_status/1 item.status 1 > 0", %{item: item} do
       assert item.status == 0
-      conn = post(conn, Routes.item_path(conn, :toggle), item: item)
-      toggled_item = Ctx.get_item!(item.id)
-      IO.inspect(toggled_item, label: "toggled_item")
-      # assert toggled_item.status == 1
+      # first toggle
+      toggled_item = %{item | status: AppWeb.ItemController.toggle_status(item)}
+      assert toggled_item.status == 1
+      # second toggle sets status back to 0
+      assert AppWeb.ItemController.toggle_status(toggled_item) == 0
+    end
 
-      # assert redirected_to(conn) == Routes.item_path(conn, :index)
-      # assert_error_sent 404, fn ->
-      #   get(conn, Routes.item_path(conn, :show, item))
-      # end
+    test "toggle/2 updates an item.status 0 > 1", %{conn: conn, item: item} do
+      assert item.status == 0
+      get(conn, Routes.item_path(conn, :toggle, item.id))
+      toggled_item = Ctx.get_item!(item.id)
+      assert toggled_item.status == 1
     end
   end
 
