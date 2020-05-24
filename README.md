@@ -769,7 +769,7 @@ Thankfully this is as easy as updating a single line in the code.
 
 Open the `lib/app_web/controllers/item_controller.ex` file
 and locate the `create` function.
-Specificaly the line:
+_Specifically_ the line:
 
 ```elixir
 |> redirect(to: Routes.item_path(conn, :show, item))
@@ -784,7 +784,18 @@ Update the line to:
 Before:
 [`/lib/app_web/controllers/item_controller.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/controllers/item_controller.ex#L22) <br />
 After:
-[`/lib/app_web/templates/item/index.html.eex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/41ad6d445e6d9b8cc85cccbee5ed64adcdad0eef/lib/app_web/templates/item/index.html.eex#L36)
+[`/lib/app_web/controllers/item_controller.ex#L23`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/69226e331ca7909d6e74b245a1ae066f22ebab38/lib/app_web/controllers/item_controller.ex#L23)
+
+Now when we create a new item we are redirected to the `index.html` template:
+
+<div align="center">
+
+![todo-list-tutorial-redirect-to-index](https://user-images.githubusercontent.com/194400/82753765-23e95f80-9dc0-11ea-87b5-a33692a3f374.gif)
+
+</div>
+
+
+### 6. Update UI
 
 
 
