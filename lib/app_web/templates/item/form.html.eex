@@ -1,9 +1,4 @@
 <%= form_for @changeset, @action, fn f -> %>
-  <%= label f, :text %>
-  <%= text_input f, :text %>
-  <%= error_tag f, :text %>
-
-  <div>
-    <%= submit "Save" %>
-  </div>
+  <%= text_input f, :text, placeholder: "what needs to be done?" %>
+  <div style="display: none;"> <%= submit "Save" %> </div>
 <% end %>
