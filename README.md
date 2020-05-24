@@ -786,7 +786,8 @@ Before:
 After:
 [`/lib/app_web/controllers/item_controller.ex#L23`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/69226e331ca7909d6e74b245a1ae066f22ebab38/lib/app_web/controllers/item_controller.ex#L23)
 
-Now when we create a new item we are redirected to the `index.html` template:
+Now when we create a new `item`
+we are redirected to the `index.html` template:
 
 <div align="center">
 
@@ -794,10 +795,88 @@ Now when we create a new item we are redirected to the `index.html` template:
 
 </div>
 
+### 5.5 Update `item_controller_test.exs` to Redirect to `index`
 
-### 6. Update UI
+The change we just made in Step 5.4 (_above_) works in the UI,
+but it breaks one of our automated tests.
 
+Run the tests:
 
+```sh
+mix test
+```
+
+You will see the following output:
+
+```
+13:46:49.861 [info]  Already up
+.........
+
+  1) test create item redirects to show when data is valid (AppWeb.ItemControllerTest)
+     test/app_web/controllers/item_controller_test.exs:30
+     match (=) failed
+     code:  assert %{id: id} = redirected_params(conn)
+     left:  %{id: id}
+     right: %{}
+     stacktrace:
+       test/app_web/controllers/item_controller_test.exs:33: (test)
+
+.............
+
+Finished in 0.4 seconds
+23 tests, 1 failure
+```
+
+Open the `test/app_web/controllers/item_controller_test.exs` file and
+scroll to the line of the failing test.
+
+Replace the test:
+```elixir
+test "redirects to show when data is valid", %{conn: conn} do
+  conn = post(conn, Routes.item_path(conn, :create), item: @create_attrs)
+
+  assert %{id: id} = redirected_params(conn)
+  assert redirected_to(conn) == Routes.item_path(conn, :show, id)
+
+  conn = get(conn, Routes.item_path(conn, :show, id))
+  assert html_response(conn, 200) =~ "Show Item"
+end
+```
+
+With this updated test:
+
+```elixir
+test "redirects to :index page when item data is valid", %{conn: conn} do
+  conn = post(conn, Routes.item_path(conn, :create), item: @create_attrs)
+
+  assert redirected_to(conn) == Routes.item_path(conn, :index)
+  assert html_response(conn, 302) =~ "redirected"
+
+  conn = get(conn, Routes.item_path(conn, :index))
+  assert html_response(conn, 200) =~ @create_attrs.text
+end
+```
+
+> Updated code:
+[`/test/app_web/controllers/item_controller_test.exs#L30-L38`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/7a54bcff9b635c533dfea19f28cf364e944aeece/test/app_web/controllers/item_controller_test.exs#L30-L38)
+
+If you re-run the tests `mix test` the will now all pass again.
+
+```sh
+13:53:59.714 [info]  Already up
+.......................
+
+Finished in 0.5 seconds
+23 tests, 0 failures
+
+```
+
+<br />
+
+### 6. Update Number of Items in UI
+
+At present
+The
 
 
 
