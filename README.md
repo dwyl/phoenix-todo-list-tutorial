@@ -879,11 +879,83 @@ Finished in 0.5 seconds
 So far the main functionality of the TodoMVC UI is working,
 we can create new items and they appear in our list.
 In this step we are going to enhance the UI to include
+the count of remaining items in the bottom left corner.
+
+Open the `test/app_web/views/item_view_test.exs` file
+and create the following two tests:
+
+```elixir
+test "remaining_items/1 returns count of items where item.status==0" do
+  items = [
+    %{text: "one", status: 0},
+    %{text: "two", status: 0},
+    %{text: "done", status: 1}
+  ]
+  assert ItemView.remaining_items(items) == 2
+end
+
+test "remaining_items/1 returns 0 (zero) when no items are status==0" do
+  items = [
+    %{text: "one", status: 1},
+    %{text: "two", status: 1},
+    %{text: "done", status: 1}
+  ]
+  assert ItemView.remaining_items(items) == 0
+end
+```
+
+e.g:
+[]()
+
+These tests will fail because the `ItemView.remaining_items/1`
+function does not exist.
+
+Make the tests _pass_ by adding the following code to
+the `lib/app_web/views/item_view.ex` file:
+
+```elixir
+# returns integer value of items where item.status == 0 (not "done")
+def remaining_items(items) do
+  Enum.filter(items, fn i -> i.status == 0 end) |> Enum.count
+end
+```
+
+e.g:
+[]()
+
+Now that the tests are passing,
+_use_ the `remaining_items/1` in the `index.html` template.
+Open the `lib/app_web/templates/item/index.html.eex` file
+and locate the line of code:
+
+```html
+<span class="todo-count"><strong>1</strong> items left</span>
+```
+
+Replace it with this line:
+```html
+<span class="todo-count"><%= remaining_items(@items) %> items left</span>
+```
+
+This just invokes the `ItemView.remaining_items/1` function
+with the List of `@items` which will return the integer count
+of remaining items that have not yet been "done".
+
+E.g:
+[]()
+
+
+
 
 <br />
 
 ### 7. Update a Todo Item's `status` To `1` ("Done")
 
+
+
+
+
+### 7.x Remove Old Template from `index.html`
 
 
 <br />

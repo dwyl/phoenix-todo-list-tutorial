@@ -27,4 +27,13 @@ defmodule AppWeb.ItemViewTest do
     ]
     assert ItemView.remaining_items(items) == 2
   end
+
+  test "remaining_items/1 returns 0 (zero) when no items are status==0" do
+    items = [
+      %{text: "one", status: 1},
+      %{text: "two", status: 1},
+      %{text: "done", status: 1}
+    ]
+    assert ItemView.remaining_items(items) == 0
+  end
 end
