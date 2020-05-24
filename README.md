@@ -1033,7 +1033,11 @@ end
 ```
 
 e.g:
-[]()
+[`/lib/app_web/controllers/item_controller.ex#L64-L75`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/dff006256b43b92a335472726fe43d464e23621d/lib/app_web/controllers/item_controller.ex#L64-L75)
+
+The tests will still _fail_ at this point because
+the route we are invoking in our test does not yet exist.
+Let's fix that.
 
 <br />
 
@@ -1048,7 +1052,7 @@ get "/items/toggle/:id", ItemController, :toggle
 ```
 
 e.g:
-[]()
+[`/lib/app_web/router.ex#L21`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/ada48cbf9718b155fe40ed76b0fb98cae203e783/lib/app_web/router.ex#L21)
 
 Now our tests will _finally_ pass:
 
@@ -1068,7 +1072,7 @@ Finished in 0.5 seconds
 
 <br />
 
-### 7.4 Invoke the `toggle/2` in our `index.html` Template
+### 7.4 Invoke the `toggle/2` When a Checkbox is clicked in `index.html`
 
 
 
@@ -1076,7 +1080,7 @@ Finished in 0.5 seconds
 > Before:
 [`/lib/app_web/templates/item/index.html.eex#L46`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a31bbe30ce593a4aa3e4fd96ac233a36d4b494b4/lib/app_web/templates/item/index.html.eex#L46) <br />
 > After:
-
+[]()
 
 
 `lib/app_web/templates/item/index.html.eex`
@@ -1085,13 +1089,6 @@ Finished in 0.5 seconds
 method: :post, class: "toggle" %>
 
 <%= link "", to: Routes.item_path(@conn, :toggle, item.id) %>
-
-This works but uses JS:
-```html
-<input <%= checked(item) %> type="checkbox" class="toggle"
-onclick="location.href='
-  <%= Routes.item_path(@conn, :toggle, item.id) %>';">
-```
 
 Unfortunately, we do not have
 so we need to add:
@@ -1102,6 +1099,21 @@ so we need to add:
 	background-repeat: no-repeat;
 }
 ```
+
+**Note**: we are very deliberately _not_ using an `JavaScript` in this tutorial
+because we are demonstrating how to do a 100% server-side rendered App
+that _always_ works even when JS is disabled in the browser
+or the device is super old and does not have a modern we browser.
+We could easily have added an `onclick` attribute to the `<input>` tag,
+e.g:
+
+```html
+<input <%= checked(item) %> type="checkbox" class="toggle"
+onclick="location.href='
+  <%= Routes.item_path(@conn, :toggle, item.id) %>';">
+```
+
+But `onclick` is `JavaScript` and we have a perfectly semantic non-js method.
 
 
 ### 7.x Remove Old Template from `index.html`
