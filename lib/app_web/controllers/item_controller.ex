@@ -6,7 +6,8 @@ defmodule AppWeb.ItemController do
 
   def index(conn, _params) do
     items = Ctx.list_items()
-    render(conn, "index.html", items: items)
+    changeset = Ctx.change_item(%Item{})
+    render(conn, "index.html", items: items, changeset: changeset)
   end
 
   def new(conn, _params) do
