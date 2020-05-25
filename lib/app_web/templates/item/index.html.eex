@@ -43,7 +43,9 @@
       <%= for item <- @items do %>
         <li data-id="<%= item.id %>" class="<%= complete(item) %>">
           <div class="view">
-            <input <%= checked(item) %> class="toggle" type="checkbox">
+            <a href="<%= Routes.item_path(@conn, :toggle, item.id) %>"
+              class="toggle <%= checked(item) %>">
+            </a>
             <label><%= item.text %></label>
             <%= link "", class: "destroy",
             to: Routes.item_path(@conn, :delete, item), method: :delete,
