@@ -37,10 +37,13 @@
 <style>
 .click span {
   position: relative;
+  border: red 1px solid;
+  display: block;
 }
 .click span a {
   position: relative;
   z-index: 2;
+  text-decoration: none;
 }
 .click span a:hover, .click span a:active {
   z-index: 4;
@@ -53,13 +56,12 @@
   top: -1px;
   left: 0;
   width: 101%;  /* Hacky */
-  height: 301%; /* Hacky */
+  height: 101%; /* Hacky */
   z-index: 3;
 }
+/* hide the input on the first click */
 .click span input:focus {
-  background: transparent;
-  border: 0;
-  z-index: 1;
+  display: none;
 }
 </style>
 
@@ -93,10 +95,15 @@
                 Map.put(assigns, :action,
                   Routes.item_path(@conn, :update, item)) %>
             <%= else %>
-              <a href="<%= Routes.item_path(@conn, :edit, item) %>"
-                  class="todo">
-                <label><%= item.text %></label>
-              </a>
+              <div class="click">
+                <span>
+                  <input type="text" value="&nbsp;" readonly="true" />
+                <a href="<%= Routes.item_path(@conn, :edit, item) %>"
+                    class="todo" style="display:block;">
+                  <label><%= item.text %></label>
+                </a>
+                </span>
+              </div>
             <%= end %>
 
             <%= link "", class: "destroy",
