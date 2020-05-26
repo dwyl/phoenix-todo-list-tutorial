@@ -29,11 +29,53 @@
 
 <span><%= link "New Item", to: Routes.item_path(@conn, :new) %></span>
 
+<div class="click">
+  <span><input type="text" value="&nbsp;" readonly="true" />
+  <a href="http://localhost:4000/">Double click me</a></span>
+</div>
+
+<style>
+.click span {
+  position: relative;
+}
+.click span a {
+  position: relative;
+  z-index: 2;
+}
+.click span a:hover, .click span a:active {
+  z-index: 4;
+}
+.click span input {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 101%;  /* Hacky */
+  height: 301%; /* Hacky */
+  z-index: 3;
+}
+.click span input:focus {
+  background: transparent;
+  border: 0;
+  z-index: 1;
+}
+</style>
+
 
 <section class="todoapp">
   <header class="header">
   	<h1>todos</h1>
-  	<%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+    <%= if @editing.id do %>
+      <a href="<%= Routes.item_path(@conn, :index) %>" class="new-todo" >
+        <label>Click here to create a new item!</label>
+      </a>
+      <!-- <input class="new-todo" placeholder="What needs to be done?" autofocus=""> -->
+    <%= else %>
+      <%= render "form.html",
+        Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+    <%= end %>
   </header>
   <section class="main" style="display: block;">
   	<input id="toggle-all" class="toggle-all" type="checkbox">
@@ -44,9 +86,19 @@
         <li data-id="<%= item.id %>" class="<%= complete(item) %>">
           <div class="view">
             <a href="<%= Routes.item_path(@conn, :toggle, item.id) %>"
-              class="toggle <%= checked(item) %>">
-            </a>
-            <label><%= item.text %></label>
+              class="toggle <%= checked(item) %>"></a>
+
+            <%= if item.id == @editing.id do %>
+              <%= render "form.html",
+                Map.put(assigns, :action,
+                  Routes.item_path(@conn, :update, item)) %>
+            <%= else %>
+              <a href="<%= Routes.item_path(@conn, :edit, item) %>"
+                  class="todo">
+                <label><%= item.text %></label>
+              </a>
+            <%= end %>
+
             <%= link "", class: "destroy",
             to: Routes.item_path(@conn, :delete, item), method: :delete,
             data: [confirm: "Are you sure?"] %>
