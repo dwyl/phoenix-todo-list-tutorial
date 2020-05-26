@@ -1157,14 +1157,19 @@ is the ability to _edit_ an item's text.
 
 ### 8.1 Double-Click Item Text to Edit
 
+The _reason_ for requiring two clicks to edit an item,
+is so that people don't _accidentally_ edit an item while scrolling.
+So they have to deliberately click/tap _twice_ in order to edit.
+
 In the TodoMVC spec this is achieved
 by creating an event listener for the double-click event
 and replacing the `<label>` element with an `<input>`.
 We are trying to _avoid_ using `JavaScript`
 in our server-side rendered Phoenix App (_for now_),
 so we want to use an alternative approach.
-Thankfully we can simulate the double-click event in CSS.
-https://css-tricks.com/double-click-in-css
+Thankfully we can simulate the double-click event
+using just `HTML` and `CSS`.
+see: https://css-tricks.com/double-click-in-css
 (_we recommend reading that post and the Demo
   to fully understand how this CSS works_!)
 
@@ -1173,13 +1178,10 @@ a more accurate description would be "two click"
 because the two clicks can occur with an arbitrary delay.
 i.e. first click followed by 10sec wait and second click
 will have the same effect as two clicks in quick succession.
-If you want to impliment true double-click,
+If you want to implement true double-click,
 see:
 [github.com/dwyl/javascript-todo-list-tutorial#52-double-click-item-label-to-edit](https://github.com/dwyl/javascript-todo-list-tutorial/tree/e6736add9df1f46035f8a9d1dbdc14c71a7cdb41#52-double-click-item-label-to-edit)
 
-The reason we want to have two clicks to edit an item,
-is so that people don't accidentally click/tap an item when scrolling.
-So they have to deliberately click _twice_ in order to edit.
 
 
 
