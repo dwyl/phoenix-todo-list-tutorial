@@ -1074,24 +1074,44 @@ Finished in 0.5 seconds
 
 ### 7.4 Invoke the `toggle/2` When a Checkbox is clicked in `index.html`
 
+Now that our tests are passing,
+it's time actually _use_ all this functionality we have been building
+in the UI.
+Open the `/lib/app_web/templates/item/index.html.eex` file
+and locate the line:
 
+```html
+<input <%= checked(item) %> class="toggle" type="checkbox">
+```
+
+Replace it with the following:
+
+```html
+<a href="<%= Routes.item_path(@conn, :toggle, item.id) %>"
+  class="toggle <%= checked(item) %>"></a>
+```
+
+When this link is clicked/tapped
+the `get /items/toggle/:id` endpoint is invoked,
+which in turn triggers the `toggle/2` handler
+we defined above.
 
 
 > Before:
 [`/lib/app_web/templates/item/index.html.eex#L46`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a31bbe30ce593a4aa3e4fd96ac233a36d4b494b4/lib/app_web/templates/item/index.html.eex#L46) <br />
 > After:
-[]()
+[`/lib/app_web/templates/item/index.html.eex#L46-L48`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/e76ab862ff2363c0dd293414f4ee0a3cb37c8d76/lib/app_web/templates/item/index.html.eex#L46-L48)
 
 
-`lib/app_web/templates/item/index.html.eex`
 
-<%= link "", to: Routes.item_path(@conn, :toggle, item),
-method: :post, class: "toggle" %>
+### 7.5 Add a `.checked` CSS to `app.scss`
 
-<%= link "", to: Routes.item_path(@conn, :toggle, item.id) %>
 
-Unfortunately, we do not have
-so we need to add:
+Unfortunately, `<a>` tags cannot have a `:checked` pseudo selector,
+so the default TodoMVC styles that worked on the `<input>` tag
+will not work for the link.
+So we need to add a couple of lines of CSS to our `app.scss`.
+Open the `assets/css/app.scss` file and add the following lines to it:
 
 ```css
 .todo-list li .checked + label {
@@ -1100,9 +1120,19 @@ so we need to add:
 }
 ```
 
-**Note**: we are very deliberately _not_ using an `JavaScript` in this tutorial
-because we are demonstrating how to do a 100% server-side rendered App
-that _always_ works even when JS is disabled in the browser
+After saving the file you should have:
+[`/assets/css/app.scss#L5-L8`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f1d76ef42ba80e209d8af4675216aaa7c73aa319/assets/css/app.scss#L5-L8)
+
+And when you view the app,
+the Toggle functionality is working as expected:
+
+![todo-app-toggle](https://user-images.githubusercontent.com/194400/82806639-1c888b80-9e7e-11ea-8053-8dd6a770a923.gif)
+
+
+**Implementation Note**: we are very deliberately
+_not_ using an `JavaScript` in this tutorial
+because we are demonstrating how to do a 100% server-side rendered App.
+This _always_ works even when `JS` is disabled in the browser
 or the device is super old and does not have a modern we browser.
 We could easily have added an `onclick` attribute to the `<input>` tag,
 e.g:
@@ -1113,31 +1143,72 @@ onclick="location.href='
   <%= Routes.item_path(@conn, :toggle, item.id) %>';">
 ```
 
-But `onclick` is `JavaScript` and we have a perfectly semantic non-js method.
+But `onclick` is `JavaScript` and we don't _need_ to resort to `JS`.
+The `<a>` (link) is a perfectly semantic non-js approach to toggling
+`item.status`.
 
 
-### 7.x Remove Old Template from `index.html`
+<br />
+
+### 8. _Edit_ an Item!
+
+The final piece of _functionality_ we need to add to our UI
+is the ability to _edit_ an item's text.
+
+### 8.1 Double-Click Item Text to Edit
+
+In the TodoMVC spec this is achieved
+by creating an event listener for the double-click event
+and replacing the `<label>` element with an `<input>`.
+We are trying to _avoid_ using `JavaScript`
+in our server-side rendered Phoenix App (_for now_),
+so we want to use an alternative approach.
+Thankfully we can simulate the double-click event in CSS.
+https://css-tricks.com/double-click-in-css
+(_we recommend reading that post and the Demo
+  to fully understand how this CSS works_!)
+
+> **Note**: the CSS implementation is not a true double-click,
+a more accurate description would be "two click"
+because the two clicks can occur with an arbitrary delay.
+i.e. first click followed by 10sec wait and second click
+will have the same effect as two clicks in quick succession.
+If you want to impliment true double-click,
+see:
+[github.com/dwyl/javascript-todo-list-tutorial#52-double-click-item-label-to-edit](https://github.com/dwyl/javascript-todo-list-tutorial/tree/e6736add9df1f46035f8a9d1dbdc14c71a7cdb41#52-double-click-item-label-to-edit)
+
+The reason we want to have two clicks to edit an item,
+is so that people don't accidentally click/tap an item when scrolling.
+So they have to deliberately click _twice_ in order to edit.
+
+
+
+
+
+### 8.X Remove Old Template from `index.html`
 
 Now that we have the `toggle` feature working,
 we can finally remove the default Phoenix (table) layout
 from the `index.html.eex` template.
 
 
-<br />
-
-### 8. Footer Navigation
-
-
-
 
 
 <br />
 
-### 9. Clear Completed
+### 9. Footer Navigation
+
+
+
+
 
 <br />
 
-### 10. _Edit_ an Item!
+### 10. Clear Completed
+
+
+### 11. Tidy Up!
+
 
 
 ### Done!
