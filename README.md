@@ -1439,10 +1439,23 @@ Randomized with seed 956565
 
 ### 8.5 Remove Old Template from `index.html`
 
-Now that we have the `toggle` feature working,
+Now that we have the `toggle` and `edit` features working,
 we can finally remove the default Phoenix (table) layout
 from the `index.html.eex` template.
 
+<img width="872" alt="phoenix-todo-list-table-layout" src="https://user-images.githubusercontent.com/194400/83200932-54245b80-a13c-11ea-92a3-6b55fc2b2652.png">
+
+Open the `lib/app_web/templates/item/index.html.eex` file
+and remove all code before the line:
+```html
+<section class="todoapp">
+```
+
+e.g:
+[commits/3f5e3e](https://github.com/dwyl/phoenix-todo-list-tutorial/pull/35/commits/3f5e3e3c0e9e745c0c76fdc7f078d05e632a13eb)
+
+Your app should now look like this:
+![phoenix-todo-app-without-default-table-layout](https://user-images.githubusercontent.com/194400/83201568-afa31900-a13d-11ea-9511-aadb5988cc23.png)
 
 
 
