@@ -4,10 +4,15 @@ defmodule AppWeb.ItemController do
   alias App.Ctx
   alias App.Ctx.Item
 
-  def index(conn, _params) do
+  def index(conn, params) do
+    item = if not is_nil(params) and Map.has_key?(params, "id") do
+      Ctx.get_item!(params["id"])
+    else
+      %Item{}
+    end
     items = Ctx.list_items()
-    changeset = Ctx.change_item(%Item{})
-    render(conn, "index.html", items: items, changeset: changeset)
+    changeset = Ctx.change_item(item)
+    render(conn, "index.html", items: items, changeset: changeset, editing: item)
   end
 
   def new(conn, _params) do
@@ -32,20 +37,18 @@ defmodule AppWeb.ItemController do
     render(conn, "show.html", item: item)
   end
 
-  def edit(conn, %{"id" => id}) do
-    item = Ctx.get_item!(id)
-    changeset = Ctx.change_item(item)
-    render(conn, "edit.html", item: item, changeset: changeset)
+  def edit(conn, params) do
+    index(conn, params)
   end
 
   def update(conn, %{"id" => id, "item" => item_params}) do
     item = Ctx.get_item!(id)
 
     case Ctx.update_item(item, item_params) do
-      {:ok, item} ->
+      {:ok, _item} ->
         conn
-        |> put_flash(:info, "Item updated successfully.")
-        |> redirect(to: Routes.item_path(conn, :show, item))
+        # |> put_flash(:info, "Item updated successfully.")
+        |> redirect(to: Routes.item_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", item: item, changeset: changeset)
