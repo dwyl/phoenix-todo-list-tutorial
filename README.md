@@ -1152,8 +1152,10 @@ The `<a>` (link) is a perfectly semantic non-js approach to toggling
 
 ### 8. _Edit_ an Item!
 
-The final piece of _functionality_ we need to add to our UI
+The final piece of _functionality_
+we need to add to our UI
 is the ability to _edit_ an item's text.
+
 
 ### 8.1 Double-Click Item Text to Edit
 
@@ -1173,16 +1175,264 @@ see: https://css-tricks.com/double-click-in-css
 (_we recommend reading that post and the Demo
   to fully understand how this CSS works_!)
 
-> **Note**: the CSS implementation is not a true double-click,
+> **Note**: the CSS implementation is not a _true_ double-click,
 a more accurate description would be "two click"
 because the two clicks can occur with an arbitrary delay.
 i.e. first click followed by 10sec wait and second click
 will have the same effect as two clicks in quick succession.
 If you want to implement true double-click,
 see:
-[github.com/dwyl/javascript-todo-list-tutorial#52-double-click-item-label-to-edit](https://github.com/dwyl/javascript-todo-list-tutorial/tree/e6736add9df1f46035f8a9d1dbdc14c71a7cdb41#52-double-click-item-label-to-edit)
+[github.com/dwyl/javascript-todo-list-tutorial#52-double-click](https://github.com/dwyl/javascript-todo-list-tutorial/tree/e6736add9df1f46035f8a9d1dbdc14c71a7cdb41#52-double-click-item-label-to-edit)
+
+Let's get on with it!
+Open the
+`lib/app_web/templates/item/index.html.eex`
+file and locate the line:
+
+```elixir
+<%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+```
+
+Replace it with:
+
+```elixir
+<%= if @editing.id do %>
+  <a href="<%= Routes.item_path(@conn, :index) %>" class="new-todo">
+    Click here to create a new item!
+  </a>
+<%= else %>
+  <%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+<%= end %>
+```
+
+This code is the first `if/else` block in our project.
+It checks if we are editing an item,
+and renders a link instead of the form,
+we do this to avoid having multiple forms on the page.
+If we are _not_ editing an item,
+render the `form.html` as before.
+
+e.g:
+[`lib/app_web/templates/item/index.html.eex#L35-L41`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/88c2f838ec10bd0bbf218200907bed922362f880/lib/app_web/templates/item/index.html.eex#L35-L41)
+
+_Next_, still in the `index.html.eex` file,
+locate the line:
+
+```html
+<div class="view">
+```
+
+Replace the `<a>` tag with the following code:
+
+```elixir
+<%= if item.id == @editing.id do %>
+  <%= render "form.html", Map.put(assigns, :action,
+    Routes.item_path(@conn, :update, item)) %>
+<%= else %>
+  <a href="<%= Routes.item_path(@conn, :edit, item) %>" class="dblclick">
+    <label><%= item.text %></label>
+  </a>
+  <span></span> <!-- used for CSS Double Click -->
+<%= end %>
+```
+
+e.g:
+[`lib/app_web/templates/item/index.html.eex#L56-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/da7fc22784aed1108390b64cbe5aa382f88ef37f/lib/app_web/templates/item/index.html.eex#L56-L64)
+
+The `else` block is renders a link (`<a>`),
+which when clicked will render the App in "edit" mode.
+We will make the adjustments to the controller
+to enable editing in the `index.html` template shortly.
+The `<span></span>` as the comment suggests,
+is only there for the CSS double-click effect.
+
+<br />
+
+### 8.2 Update `CSS` For Editing
+
+To enable the CSS double-click effect,
+we need to add the following CSS
+to our `assets/css/app.scss` file:
+
+```css
+.dblclick {
+  position: relative; /* So z-index works later, but no surprises now */
+}
+
+.dblclick + span {
+  position: absolute;
+  top: -1px; /* these negative numbers are to ensure */
+  left: -1px; /* that the <span> covers the <a> */
+  width: 103%; /* Gotta do this instead of right: 0; */
+  bottom: -1px;
+  z-index: 1;
+}
+
+.dblclick + span:active {
+  left: -9999px;
+}
+
+.dblclick:hover {
+  z-index: 2;
+}
+```
+
+e.g:
+[`assets/css/app.scss#L48-L67`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3894013996d4d19f825c57216438653458d0bd80/assets/css/app.scss#L48-L67)
 
 
+Additionally, since our markup is _slightly_ different
+to the TodoMVC markup, we need to add a bit more CSS
+to keep the UI consistent:
+
+```css
+.todo-list li .toggle + div > a > label {
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23ededed%22%20stroke-width%3D%223%22/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: center left;
+}
+
+.todo-list li .checked + div > a > label
+{
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23bddad5%22%20stroke-width%3D%223%22/%3E%3Cpath%20fill%3D%22%235dc2af%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: center left;
+}
+
+.toggle {
+  width: 10%;
+  z-index: 3; /* keep the toggle checkmark above the rest */
+}
+
+a.new-todo {
+  display: block;
+  text-decoration: none;
+}
+
+.todo-list .new-todo {
+  border: 1px #1abc9c solid;
+}
+
+.view a, .view a:visited {
+  display: block;
+  text-decoration: none;
+  color: #2b2d2f;
+}
+
+.todo-list li .destroy {
+  text-decoration: none;
+  text-align: center;
+  z-index: 3; /* keep the delete link above the text */
+}
+```
+
+This is what your `app.scss` file should look like
+at the end of this step:
+[`assets/css/app.scss#L7-L44`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3894013996d4d19f825c57216438653458d0bd80/assets/css/app.scss#L7-L44)
+
+<br />
+
+### 8.3 Update the `ItemController.edit/2` Function
+
+In order to enable in-line editing,
+we need to modify the `edit/2` function.
+Open the `lib/app_web/controllers/item_controller.ex` file
+and replace the `edit/2` function with the following:
+
+```elixir
+def edit(conn, params) do
+  index(conn, params)
+end
+```
+
+Additionally, given that we are asking our `index/2` function
+to handle editing, we need to update `index/2`:
+
+```elixir
+def index(conn, params) do
+  item = if not is_nil(params) and Map.has_key?(params, "id") do
+    Ctx.get_item!(params["id"])
+  else
+    %Item{}
+  end
+  items = Ctx.list_items()
+  changeset = Ctx.change_item(item)
+  render(conn, "index.html", items: items, changeset: changeset, editing: item)
+end
+```
+
+Your `item_controller.ex` file should now look like this:
+[`lib/app_web/controllers/item_controller.ex#L7-L16`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/404ad984a1c5f7650c948997f29521dbdda5ae4c/lib/app_web/controllers/item_controller.ex#L7-L16)
+
+<br />
+
+
+### 8.4 Update the Tests in `ItemControllerTest`
+
+In our quest to build a _Single_ Page App,
+we updated where
+
+Open the
+`test/app_web/controllers/item_controller_test.exs`
+file and locate the test
+that has the following description:
+
+```elixir
+test "renders form for editing chosen item"
+```
+
+Update the assertion from:
+
+```elixir
+assert html_response(conn, 200) =~ "Edit Item"
+```
+
+To:
+
+```elixir
+assert html_response(conn, 200) =~ item.text
+```
+
+e.g:
+[`test/app_web/controllers/item_controller_test.exs#L51`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32ba6ea2a78f0317519a18c133e3c7e8c4eaf9c7/test/app_web/controllers/item_controller_test.exs#L51)
+
+
+Next, locate the test with the following description:
+
+```elixir
+test "redirects when data is valid"
+```
+
+Update the assertion:
+
+Update the assertion from:
+
+```elixir
+assert redirected_to(conn) == Routes.item_path(conn, :show, item)
+```
+
+To:
+
+```elixir
+assert redirected_to(conn) == Routes.item_path(conn, :index)
+```
+
+e.g:
+[`test/app_web/controllers/item_controller_test.exs#L60`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32ba6ea2a78f0317519a18c133e3c7e8c4eaf9c7/test/app_web/controllers/item_controller_test.exs#L60)
+
+If you run the tests now, they should pass again:
+
+```
+mix test
+
+23:08:01.785 [info]  Already up
+...........................
+
+Finished in 0.5 seconds
+27 tests, 0 failures
+
+Randomized with seed 956565
+```
 
 
 
