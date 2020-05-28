@@ -1156,6 +1156,10 @@ The final piece of _functionality_
 we need to add to our UI
 is the ability to _edit_ an item's text.
 
+At the end of this step you will have in-line editing working:
+
+![phoenix-todo-item-inline-editing](https://user-images.githubusercontent.com/194400/83204049-bf712c00-a142-11ea-8560-d68cf79a4fea.gif)
+
 
 ### 8.1 Double-Click Item Text to Edit
 
@@ -1433,8 +1437,6 @@ Finished in 0.5 seconds
 
 Randomized with seed 956565
 ```
-
-
 
 
 ### 8.5 Remove Old Template from `index.html`
