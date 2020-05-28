@@ -1200,9 +1200,9 @@ Replace it with:
   <a href="<%= Routes.item_path(@conn, :index) %>" class="new-todo">
     Click here to create a new item!
   </a>
-<%= else %>
+<% else %>
   <%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
-<%= end %>
+<% end %>
 ```
 
 This code is the first `if/else` block in our project.
@@ -1213,7 +1213,7 @@ If we are _not_ editing an item,
 render the `form.html` as before.
 
 e.g:
-[`lib/app_web/templates/item/index.html.eex#L35-L41`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/88c2f838ec10bd0bbf218200907bed922362f880/lib/app_web/templates/item/index.html.eex#L35-L41)
+[`lib/app_web/templates/item/index.html.eex#L35-L41`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/68f2a337a18e78f2bdfb98fe480b5e262c668844/lib/app_web/templates/item/index.html.eex#L35-L39)
 
 _Next_, still in the `index.html.eex` file,
 locate the line:
@@ -1228,16 +1228,16 @@ Replace the `<a>` tag with the following code:
 <%= if item.id == @editing.id do %>
   <%= render "form.html", Map.put(assigns, :action,
     Routes.item_path(@conn, :update, item)) %>
-<%= else %>
+<% else %>
   <a href="<%= Routes.item_path(@conn, :edit, item) %>" class="dblclick">
     <label><%= item.text %></label>
   </a>
   <span></span> <!-- used for CSS Double Click -->
-<%= end %>
+<% end %>
 ```
 
 e.g:
-[`lib/app_web/templates/item/index.html.eex#L56-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/da7fc22784aed1108390b64cbe5aa382f88ef37f/lib/app_web/templates/item/index.html.eex#L56-L64)
+[`lib/app_web/templates/item/index.html.eex#L56-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/68f2a337a18e78f2bdfb98fe480b5e262c668844/lib/app_web/templates/item/index.html.eex#L56-L64)
 
 The `else` block is renders a link (`<a>`),
 which when clicked will render the App in "edit" mode.
@@ -1437,7 +1437,7 @@ Randomized with seed 956565
 
 
 
-### 8.X Remove Old Template from `index.html`
+### 8.5 Remove Old Template from `index.html`
 
 Now that we have the `toggle` feature working,
 we can finally remove the default Phoenix (table) layout
