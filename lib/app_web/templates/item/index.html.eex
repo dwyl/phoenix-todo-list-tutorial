@@ -33,12 +33,11 @@
   <header class="header">
   	<h1>todos</h1>
     <%= if @editing.id do %>
-      <a href="<%= Routes.item_path(@conn, :index) %>" class="new-todo" >
-        <label>Click here to create a new item!</label>
+      <a href="<%= Routes.item_path(@conn, :index) %>" class="new-todo">
+        Click here to create a new item!
       </a>
     <%= else %>
-      <%= render "form.html",
-        Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+      <%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
     <%= end %>
   </header>
   <section class="main" style="display: block;">
