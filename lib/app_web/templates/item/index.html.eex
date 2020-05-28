@@ -36,9 +36,9 @@
       <a href="<%= Routes.item_path(@conn, :index) %>" class="new-todo">
         Click here to create a new item!
       </a>
-    <%= else %>
+    <% else %>
       <%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
-    <%= end %>
+    <% end %>
   </header>
   <section class="main" style="display: block;">
   	<input id="toggle-all" class="toggle-all" type="checkbox">
@@ -56,12 +56,12 @@
               <%= if item.id == @editing.id do %>
                 <%= render "form.html", Map.put(assigns, :action,
                   Routes.item_path(@conn, :update, item)) %>
-              <%= else %>
+              <% else %>
                 <a href="<%= Routes.item_path(@conn, :edit, item) %>" class="dblclick">
                   <label><%= item.text %></label>
                 </a>
                 <span></span> <!-- used for CSS Double Click -->
-              <%= end %>
+              <% end %>
 
             <%= link "", class: "destroy", method: :delete,
               to: Routes.item_path(@conn, :delete, item),
