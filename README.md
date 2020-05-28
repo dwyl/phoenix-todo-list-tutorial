@@ -1457,6 +1457,33 @@ e.g:
 Your app should now look like this:
 ![phoenix-todo-app-without-default-table-layout](https://user-images.githubusercontent.com/194400/83201568-afa31900-a13d-11ea-9511-aadb5988cc23.png)
 
+Unfortunately, by removing the default layout,
+we have "broken" the tests.
+
+Open the
+`test/app_web/controllers/item_controller_test.exs`
+file and locate the test
+that has the following description:
+
+```elixir
+test "lists all items"
+```
+
+Update the assertion from:
+
+```elixir
+assert html_response(conn, 200) =~ "Listing Items"
+```
+
+To:
+
+```elixir
+assert html_response(conn, 200) =~ "todos"
+```
+
+e.g:
+[`test/app_web/controllers/item_controller_test.exs#L51`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32ba6ea2a78f0317519a18c133e3c7e8c4eaf9c7/test/app_web/controllers/item_controller_test.exs#L51)
+
 
 
 <br />

@@ -15,7 +15,7 @@ defmodule AppWeb.ItemControllerTest do
   describe "index" do
     test "lists all items", %{conn: conn} do
       conn = get(conn, Routes.item_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Items"
+      assert html_response(conn, 200) =~ "todos"
     end
   end
 
