@@ -1482,7 +1482,7 @@ assert html_response(conn, 200) =~ "todos"
 ```
 
 e.g:
-[`test/app_web/controllers/item_controller_test.exs#L51`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32ba6ea2a78f0317519a18c133e3c7e8c4eaf9c7/test/app_web/controllers/item_controller_test.exs#L51)
+[`test/app_web/controllers/item_controller_test.exs#L18`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/60e6d0240ac4c1f42ee7c7ee94db6175242bd2f0/test/app_web/controllers/item_controller_test.exs#L18)
 
 
 
