@@ -29,43 +29,6 @@
 
 <span><%= link "New Item", to: Routes.item_path(@conn, :new) %></span>
 
-<div class="click">
-  <span><input type="text" value="&nbsp;" readonly="true" />
-  <a href="http://localhost:4000/">Double click me</a></span>
-</div>
-
-<style>
-.click span {
-  position: relative;
-  border: red 1px solid;
-  display: block;
-}
-.click span a {
-  position: relative;
-  z-index: 2;
-  text-decoration: none;
-}
-.click span a:hover, .click span a:active {
-  z-index: 4;
-}
-.click span input {
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 101%;  /* Hacky */
-  height: 101%; /* Hacky */
-  z-index: 3;
-}
-/* hide the input on the first click */
-.click span input:focus {
-  display: none;
-}
-</style>
-
-
 <section class="todoapp">
   <header class="header">
   	<h1>todos</h1>
@@ -73,7 +36,6 @@
       <a href="<%= Routes.item_path(@conn, :index) %>" class="new-todo" >
         <label>Click here to create a new item!</label>
       </a>
-      <!-- <input class="new-todo" placeholder="What needs to be done?" autofocus=""> -->
     <%= else %>
       <%= render "form.html",
         Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
@@ -86,29 +48,27 @@
 
       <%= for item <- @items do %>
         <li data-id="<%= item.id %>" class="<%= complete(item) %>">
-          <div class="view">
-            <a href="<%= Routes.item_path(@conn, :toggle, item.id) %>"
-              class="toggle <%= checked(item) %>"></a>
 
+            <a href="<%= Routes.item_path(@conn, :toggle, item.id) %>"
+              class="toggle <%= checked(item) %>">
+            </a>
+
+            <div class="view">
             <%= if item.id == @editing.id do %>
               <%= render "form.html",
                 Map.put(assigns, :action,
                   Routes.item_path(@conn, :update, item)) %>
             <%= else %>
-              <div class="click">
-                <span>
-                  <input type="text" value="&nbsp;" readonly="true" />
-                <a href="<%= Routes.item_path(@conn, :edit, item) %>"
-                    class="todo" style="display:block;">
-                  <label><%= item.text %></label>
-                </a>
-                </span>
-              </div>
+              <a href="<%= Routes.item_path(@conn, :edit, item) %>"
+                class="dblclick">
+                <label><%= item.text %></label>
+              </a>
+              <span></span> <!-- used for CSS Double Click -->
             <%= end %>
 
-            <%= link "", class: "destroy",
-            to: Routes.item_path(@conn, :delete, item), method: :delete,
-            data: [confirm: "Are you sure?"] %>
+            <%= link "", class: "destroy", method: :delete,
+              to: Routes.item_path(@conn, :delete, item),
+              data: [confirm: "Are you sure?"] %>
           </div>
         </li>
       <% end %>
