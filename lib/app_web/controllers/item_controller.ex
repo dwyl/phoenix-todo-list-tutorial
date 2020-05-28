@@ -5,14 +5,22 @@ defmodule AppWeb.ItemController do
   alias App.Ctx.Item
 
   def index(conn, params) do
-    item = if not is_nil(params) and Map.has_key?(params, "id") do
-      Ctx.get_item!(params["id"])
-    else
-      %Item{}
-    end
+    item =
+      if not is_nil(params) and Map.has_key?(params, "id") do
+        Ctx.get_item!(params["id"])
+      else
+        %Item{}
+      end
+
     items = Ctx.list_items()
     changeset = Ctx.change_item(item)
-    render(conn, "index.html", items: items, changeset: changeset, editing: item)
+
+    render(conn, "index.html",
+      items: items,
+      changeset: changeset,
+      editing: item,
+      filter: Map.get(params, "filter", "all")
+    )
   end
 
   def new(conn, _params) do

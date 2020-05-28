@@ -18,7 +18,7 @@ defmodule App.Ctx do
 
   """
   def list_items do
-    Item |> order_by(asc: :id)  |> Repo.all()
+    Item |> order_by(asc: :id) |> Repo.all()
   end
 
   @doc """

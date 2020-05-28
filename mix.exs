@@ -12,8 +12,12 @@ defmodule App.MixProject do
       aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: [coveralls: :test, "coveralls.detail": :test,
-                    "coveralls.post": :test, "coveralls.html": :test],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -50,7 +54,7 @@ defmodule App.MixProject do
       {:plug_cowboy, "~> 2.0"},
 
       # Test Code Coverage:
-      {:excoveralls, "~> 0.12.2", only: :test},
+      {:excoveralls, "~> 0.12.2", only: :test}
     ]
   end
 

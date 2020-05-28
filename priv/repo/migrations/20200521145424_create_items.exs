@@ -9,6 +9,5 @@ defmodule App.Repo.Migrations.CreateItems do
 
       timestamps()
     end
-
   end
 end

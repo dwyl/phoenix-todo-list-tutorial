@@ -1370,7 +1370,6 @@ Your `item_controller.ex` file should now look like this:
 
 <br />
 
-
 ### 8.4 Update the Tests in `ItemControllerTest`
 
 In our quest to build a _Single_ Page App,
@@ -1438,6 +1437,7 @@ Finished in 0.5 seconds
 Randomized with seed 956565
 ```
 
+<br />
 
 ### 8.5 Remove Old Template from `index.html`
 
@@ -1486,13 +1486,24 @@ assert html_response(conn, 200) =~ "todos"
 e.g:
 [`test/app_web/controllers/item_controller_test.exs#L18`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/60e6d0240ac4c1f42ee7c7ee94db6175242bd2f0/test/app_web/controllers/item_controller_test.exs#L18)
 
-
-
 <br />
 
 ### 9. Footer Navigation
 
+Now that the core (create, edit/update, delete) functionality is working,
+we can add the final UI enhancements.
+In this step we are going to add the footer navigation/filtering.
 
+<img width="581" alt="phoenix-todo-footer-navigation" src="https://user-images.githubusercontent.com/194400/83204791-96ea3180-a144-11ea-954b-499a4348ef32.png">
+
+The "All" view is the default.
+The "Active" is all the items with `status==0`.
+"Completed" is all items with `status==1`.
+
+
+
+
+### 9.1
 
 
 
