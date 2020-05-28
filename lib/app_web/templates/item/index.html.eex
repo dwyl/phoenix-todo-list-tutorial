@@ -53,17 +53,15 @@
             </a>
 
             <div class="view">
-            <%= if item.id == @editing.id do %>
-              <%= render "form.html",
-                Map.put(assigns, :action,
+              <%= if item.id == @editing.id do %>
+                <%= render "form.html", Map.put(assigns, :action,
                   Routes.item_path(@conn, :update, item)) %>
-            <%= else %>
-              <a href="<%= Routes.item_path(@conn, :edit, item) %>"
-                class="dblclick">
-                <label><%= item.text %></label>
-              </a>
-              <span></span> <!-- used for CSS Double Click -->
-            <%= end %>
+              <%= else %>
+                <a href="<%= Routes.item_path(@conn, :edit, item) %>" class="dblclick">
+                  <label><%= item.text %></label>
+                </a>
+                <span></span> <!-- used for CSS Double Click -->
+              <%= end %>
 
             <%= link "", class: "destroy", method: :delete,
               to: Routes.item_path(@conn, :delete, item),
