@@ -46,22 +46,22 @@ a.new-todo {
 /* This CSS is borrowed from: https://css-tricks.com/examples/CSSDoubleClick */
 
 .dblclick {
-	position: relative; /* So z-index works later, but no surprises now */
+  position: relative; /* So z-index works later, but no surprises now */
 }
 
 .dblclick + span {
-	position: absolute;
-	top: -1px; /* these negative numbers are to ensure */
-	left: -1px; /* that the <span> covers the <a> */
-	width: 103%; /* Gotta do this instead of right: 0; */
-	bottom: -1px;
-	z-index: 1;
+  position: absolute;
+  top: -1px; /* these negative numbers are to ensure */
+  left: -1px; /* that the <span> covers the <a> */
+  width: 103%; /* Gotta do this instead of right: 0; */
+  bottom: -1px;
+  z-index: 1;
 }
 
 .dblclick + span:active {
-	left: -9999px;
+  left: -9999px;
 }
 
 .dblclick:hover {
-	z-index: 2;
+  z-index: 2;
 }
