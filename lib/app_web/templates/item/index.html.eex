@@ -42,6 +42,7 @@
     </ul>
   </section>
 
+<%= if remaining_items(@items) > 0 do %>
   <footer class="footer" style="display: block;">
     <span class="todo-count">
       <%= remaining_items(@items) %> <%= pluralise(@items) %> left
@@ -70,4 +71,5 @@
     [<%= Enum.count(filter(@items, "completed")) %>]
   </a>
   </footer>
+<% end %>
 </section>

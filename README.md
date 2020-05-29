@@ -22,6 +22,13 @@ so we can focus on implementation.
 This tutorial shows complete beginners how to build a Todo list
 in Phoenix without assuming any prior Phoenix knowledge/experience.
 
+For the team @dwyl this TodoMVC implementation
+is a showcase of how server side rendering
+(_with client side progressive enhancement_)
+can provide a excellent balance between
+developer effectiveness (_shipping features fast_)
+and UX
+
 <br />
 
 ## What? 💭
@@ -1719,15 +1726,131 @@ should have the "Clear completed" function working:
 
 <br />
 
-### 11. Tidy Up!
+### 11. Tidy Up! (_Optional?_)
+
+At this point we already have a fully functioning Phoenix Todo List.
+There are a few things we can tidy up to make the App _even_ better!
 
 
+### 11.1 _Pluralise_ Items Left
 
-### 11.1 Pluralise Items Left
+If you are the type of person to notice the _tiny_ details,
+you would have been
+[_itching_](https://en.wikipedia.org/wiki/Obsessive%E2%80%93compulsive_disorder)
+each time you saw
+the "***1 items left***" in the bottom left corner:
+
+![phoenix-todo-pluralisation-BEFORE](https://user-images.githubusercontent.com/194400/83249677-dc3b4d00-a19e-11ea-8176-2f38725c3b50.png)
+
+Open your `test/app_web/views/item_view_test.exs` file
+and add the following test:
+
+```elixir
+test "pluarlise/1 returns item for 1 item and items for 1<" do
+  assert ItemView.pluralise([%{text: "one", status: 0}]) == "item"
+  assert ItemView.pluralise([
+    %{text: "one", status: 0},
+    %{text: "two", status: 0}
+  ]) == "items"
+end
+```
+
+e.g:
+[`test/app_web/views/item_view_test.exs#L41-L47`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/45ac34efe681fe2b6b54a0b352d76b4b24785ed0/test/app_web/views/item_view_test.exs#L41-L47)
+
+
+This test will obviously _fail_ because the
+`AppWeb.ItemView.pluralise/1` is undefined.
+Let's make it pass!
+
+Open your `lib/app_web/views/item_view.ex` file
+and add the following function definition for `pluralise/1`:
+
+```elixir
+def pluralise(items) do
+  case remaining_items(items) > 1 do
+    true -> "items"
+    false -> "item"
+  end
+end
+```
+
+e.g:
+[`lib/app_web/views/item_view.ex#L44-L49`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/d527560a25649e6f1e2898dd4f6067e97bc4e87b/lib/app_web/views/item_view.ex#L44-L49)
+
+> **Note**: we are only pluralising one word in our basic Todo App
+so we are only handling this one case in our `pluralise/1` function.
+In a more advanced app we would use a translation tool
+to do this kind of pluralising.
+See: https://hexdocs.pm/gettext/Gettext.Plural.html
+
+Finally, _use_ the `pluralise/1` in our template.
+Open `lib/app_web/templates/item/index.html.eex`
+
+Locate the line:
+
+```elixir
+<span class="todo-count"><%= remaining_items(@items) %> items left</span>
+```
+
+And replace it with the following code:
+
+```elixir
+<span class="todo-count">
+  <%= remaining_items(@items) %> <%= pluralise(@items) %> left
+</span>
+```
+
+e.g:
+[`lib/app_web/views/item_view.ex#L44-L49`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/d527560a25649e6f1e2898dd4f6067e97bc4e87b/lib/app_web/views/item_view.ex#L44-L49)
+
+At the end of this step
+you will have a working pluralisation
+for the word item/items in the bottom left of the UI:
+
+![phx-todo-pluralise-demo](https://user-images.githubusercontent.com/194400/83257010-6ab5cb80-a1ab-11ea-93e7-e95a9fb256c1.gif)
+
+
+### 11.2 Hide Footer When Zero Items
+
+You may have noticed that in the previous step
+we did not have a `case` for when `items == 0`
+in our `pluralise/1`, this was _deliberate_,
+we don't _want_ one!
+
+If you visit one of the TodoMVC examples, you will see that no `<footer>` is displayed when there are no items in the list: http://todomvc.com/examples/vanillajs
+
+![todo-mvc-vanilla-](https://user-images.githubusercontent.com/194400/83250460-0fcaa700-a1a0-11ea-8f05-f399233fad4d.png)
+
+At present our App _shows_ the `<footer>` even if their are Zero items:
+
+<img width="849" alt="phoenix-todo-zero-items" src="https://user-images.githubusercontent.com/194400/83250895-b3b45280-a1a0-11ea-8f13-d54470cf278a.png">
+
+This is a visual distraction/clutter
+that creates
+[unnecessary questions](https://smile.amazon.com/Dont-Make-Me-Think/dp/0321965515)
+in the user's mind.
+Let's fix it!
+
+Wrap the `<footer>` element in with the following `if` statement:
+
+```
+<%= if remaining_items(@items) > 0 do %>
+
+<% end %>
+```
+
+e.g:
+
 
 
 
 ### 11.2 Route `/` to `ItemController.index/2`
+
+
+
+### Deploy!
+
 
 
 
