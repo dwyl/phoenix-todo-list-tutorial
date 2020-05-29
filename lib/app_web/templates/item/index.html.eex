@@ -42,26 +42,26 @@
     </ul>
   </section>
   <footer class="footer" style="display: block;">
-  	<span class="todo-count"><%= remaining_items(@items) %> items left</span>
-  	<ul class="filters">
-  		<li>
-  			<a href="/items" class='<%= selected(@filter, "all") %>'>
+    <span class="todo-count"><%= remaining_items(@items) %> items left</span>
+    <ul class="filters">
+      <li>
+        <a href="/items" class='<%= selected(@filter, "all") %>'>
           All
         </a>
-  		</li>
-  		<li>
-  			<a href="/active" class='<%= selected(@filter, "active") %>'>
+      </li>
+      <li>
+        <a href="/active" class='<%= selected(@filter, "active") %>'>
           Active
           [<%= Enum.count(filter(@items, "active")) %>]
         </a>
-  		</li>
-  		<li>
-  			<a href="/completed" class='<%= selected(@filter, "completed") %>'>
+      </li>
+      <li>
+        <a href="/completed" class='<%= selected(@filter, "completed") %>'>
           Completed
           [<%= Enum.count(filter(@items, "completed")) %>]
         </a>
-  		</li>
-  	</ul>
-  	<button class="clear-completed" style="display: block;">Clear completed</button>
+      </li>
+    </ul>
+  <button class="clear-completed" style="display: block;">Clear completed</button>
   </footer>
 </section>
