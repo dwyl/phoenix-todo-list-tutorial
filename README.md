@@ -1708,7 +1708,7 @@ With:
 ```
 
 e.g:
-[]()
+[`lib/app_web/templates/item/index.html.eex#L65-L68`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/69b4d2c5f6e8bc9ab9eea0db131bec34e6f8bc9a/lib/app_web/templates/item/index.html.eex#L65-L68)
 
 
 
