@@ -1,19 +1,19 @@
 defmodule AppWeb.ItemController do
   use AppWeb, :controller
 
-  alias App.Ctx
-  alias App.Ctx.Item
+  alias App.Todo
+  alias App.Todo.Item
 
   def index(conn, params) do
     item =
       if not is_nil(params) and Map.has_key?(params, "id") do
-        Ctx.get_item!(params["id"])
+        Todo.get_item!(params["id"])
       else
         %Item{}
       end
 
-    items = Ctx.list_items()
-    changeset = Ctx.change_item(item)
+    items = Todo.list_items()
+    changeset = Todo.change_item(item)
 
     render(conn, "index.html",
       items: items,
@@ -24,12 +24,12 @@ defmodule AppWeb.ItemController do
   end
 
   def new(conn, _params) do
-    changeset = Ctx.change_item(%Item{})
+    changeset = Todo.change_item(%Item{})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"item" => item_params}) do
-    case Ctx.create_item(item_params) do
+    case Todo.create_item(item_params) do
       {:ok, _item} ->
         conn
         |> put_flash(:info, "Item created successfully.")
@@ -41,7 +41,7 @@ defmodule AppWeb.ItemController do
   end
 
   def show(conn, %{"id" => id}) do
-    item = Ctx.get_item!(id)
+    item = Todo.get_item!(id)
     render(conn, "show.html", item: item)
   end
 
@@ -50,9 +50,9 @@ defmodule AppWeb.ItemController do
   end
 
   def update(conn, %{"id" => id, "item" => item_params}) do
-    item = Ctx.get_item!(id)
+    item = Todo.get_item!(id)
 
-    case Ctx.update_item(item, item_params) do
+    case Todo.update_item(item, item_params) do
       {:ok, _item} ->
         conn
         # |> put_flash(:info, "Item updated successfully.")
@@ -64,8 +64,8 @@ defmodule AppWeb.ItemController do
   end
 
   def delete(conn, %{"id" => id}) do
-    item = Ctx.get_item!(id)
-    Ctx.update_item(item, %{status: 2})
+    item = Todo.get_item!(id)
+    Todo.update_item(item, %{status: 2})
 
     conn
     |> redirect(to: Routes.item_path(conn, :index))
@@ -79,8 +79,8 @@ defmodule AppWeb.ItemController do
   end
 
   def toggle(conn, %{"id" => id}) do
-    item = Ctx.get_item!(id)
-    Ctx.update_item(item, %{status: toggle_status(item)})
+    item = Todo.get_item!(id)
+    Todo.update_item(item, %{status: toggle_status(item)})
     redirect(conn, to: Routes.item_path(conn, :index))
   end
 

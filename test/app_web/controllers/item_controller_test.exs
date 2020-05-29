@@ -1,14 +1,14 @@
 defmodule AppWeb.ItemControllerTest do
   use AppWeb.ConnCase
 
-  alias App.Ctx
+  alias App.Todo
 
   @create_attrs %{person_id: 0, status: 0, text: "some text"}
   @update_attrs %{person_id: 0, status: 1, text: "some updated text"}
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
 
   def fixture(:item) do
-    {:ok, item} = Ctx.create_item(@create_attrs)
+    {:ok, item} = Todo.create_item(@create_attrs)
     item
   end
 
@@ -97,7 +97,7 @@ defmodule AppWeb.ItemControllerTest do
     test "toggle/2 updates an item.status 0 > 1", %{conn: conn, item: item} do
       assert item.status == 0
       get(conn, Routes.item_path(conn, :toggle, item.id))
-      toggled_item = Ctx.get_item!(item.id)
+      toggled_item = Todo.get_item!(item.id)
       assert toggled_item.status == 1
     end
   end

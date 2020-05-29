@@ -114,9 +114,18 @@ You should see:
 ![phoenix-todo-list-on-localhost](https://user-images.githubusercontent.com/194400/83285190-bed5a580-a1d5-11ea-9154-80684cf9cc0e.gif)
 
 Now that you have the _finished_ example app
-running on your localhost,
+running on your `localhost`,
 let's build it from scratch
 and understand all the steps.
+
+If you ran the finished app on your `localhost` (_and you really should!_),
+you will need to change up a directory before starting the tutorial:
+
+```
+cd ..
+```
+
+Now you are ready to get building!
 
 <br />
 
@@ -181,7 +190,7 @@ our `items` but for now this is all we need.
 Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) command to create the  
 
 ```sh
-mix phx.gen.html Ctx Item items text:string person_id:integer status:integer
+mix phx.gen.html Todo Item items text:string person_id:integer status:integer
 ```
 
 Strictly speaking we only _need_ the `text` and `status` fields,
@@ -201,12 +210,12 @@ You will see the following output:
 * creating lib/app_web/templates/item/show.html.eex
 * creating lib/app_web/views/item_view.ex
 * creating test/app_web/controllers/item_controller_test.exs
-* creating lib/app/ctx/item.ex
+* creating lib/app/todo/item.ex
 * creating priv/repo/migrations/20200521145424_create_items.exs
-* creating lib/app/ctx.ex
-* injecting lib/app/ctx.ex
-* creating test/app/ctx_test.exs
-* injecting test/app/ctx_test.exs
+* creating lib/app/Todo.ex
+* injecting lib/app/Todo.ex
+* creating test/app/todo_test.exs
+* injecting test/app/todo_test.exs
 
 Add the resource to your browser scope in lib/app_web/router.ex:
 
@@ -229,7 +238,7 @@ See the commit:
 
 > **Note**: Phoenix
 [Contexts](https://hexdocs.pm/phoenix/contexts.html)
-denoted in this example as `Ctx`,
+denoted in this example as `Todo`,
 are "_dedicated modules that expose and group related functionality_."
 We feel they _unnecessarily complicate_ basic Phoenix Apps,
 with layers of "interface" and we _really_ wish we could
@@ -664,11 +673,11 @@ Given that we have removed two of the fields (`:person_id` and `:status`)
 from the `form.html.eex`,
 we need to ensure there are default values for these in
 the schema.
-Open the `lib/app/ctx/item.ex` file
+Open the `lib/app/todo/item.ex` file
 and replace the contents with the following:
 
 ```elixir
-defmodule App.Ctx.Item do
+defmodule App.Todo.Item do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -698,10 +707,8 @@ That way our new `item` form
 can be submitted with _just_ the `text` field.
 
 
-Before:
-[`/lib/app/ctx/item.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app/ctx/item.ex) <br />
-After:
-[`/lib/app/ctx/item.ex#L6-L7`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/cc287975eef5ca8b738f49723fe8a03d9da52a19/lib/app/ctx/item.ex#L6-L7)
+e.g:
+[`/lib/app/todo/item.ex#L6-L7`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/cc287975eef5ca8b738f49723fe8a03d9da52a19/lib/app/todo/item.ex#L6-L7)
 
 
 Now that we have `default` values for `person_id` and `status`
@@ -721,8 +728,8 @@ and update the `index/2` function to the following:
 
 ```elixir
 def index(conn, _params) do
-  items = Ctx.list_items()
-  changeset = Ctx.change_item(%Item{})
+  items = Todo.list_items()
+  changeset = Todo.change_item(%Item{})
   render(conn, "index.html", items: items, changeset: changeset)
 end
 ```
@@ -1008,7 +1015,7 @@ describe "toggle updates the status of an item 0 > 1 | 1 > 0" do
   test "toggle/2 updates an item.status 0 > 1", %{conn: conn, item: item} do
     assert item.status == 0
     get(conn, Routes.item_path(conn, :toggle, item.id))
-    toggled_item = Ctx.get_item!(item.id)
+    toggled_item = Todo.get_item!(item.id)
     assert toggled_item.status == 1
   end
 end
@@ -1034,8 +1041,8 @@ def toggle_status(item) do
 end
 
 def toggle(conn, %{"id" => id}) do
-  item = Ctx.get_item!(id)
-  Ctx.update_item(item, %{status: toggle_status(item)})
+  item = Todo.get_item!(id)
+  Todo.update_item(item, %{status: toggle_status(item)})
   redirect(conn, to: Routes.item_path(conn, :index))
 end
 ```
@@ -1363,12 +1370,12 @@ to handle editing, we need to update `index/2`:
 ```elixir
 def index(conn, params) do
   item = if not is_nil(params) and Map.has_key?(params, "id") do
-    Ctx.get_item!(params["id"])
+    Todo.get_item!(params["id"])
   else
     %Item{}
   end
-  items = Ctx.list_items()
-  changeset = Ctx.change_item(item)
+  items = Todo.list_items()
+  changeset = Todo.change_item(item)
   render(conn, "index.html", items: items, changeset: changeset, editing: item)
 end
 ```

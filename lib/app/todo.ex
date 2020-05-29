@@ -1,12 +1,12 @@
-defmodule App.Ctx do
+defmodule App.Todo do
   @moduledoc """
-  The Ctx context.
+  The Todo context.
   """
 
   import Ecto.Query, warn: false
   alias App.Repo
 
-  alias App.Ctx.Item
+  alias App.Todo.Item
 
   @doc """
   Returns the list of items.

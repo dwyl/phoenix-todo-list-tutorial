@@ -1,4 +1,4 @@
-defmodule App.Ctx.Item do
+defmodule App.Todo.Item do
   use Ecto.Schema
   import Ecto.Changeset
 
