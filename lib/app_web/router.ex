@@ -16,7 +16,7 @@ defmodule AppWeb.Router do
   scope "/", AppWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", ItemController, :index
     resources "/items", ItemController
     get "/items/toggle/:id", ItemController, :toggle
     get "/clear", ItemController, :clear_completed

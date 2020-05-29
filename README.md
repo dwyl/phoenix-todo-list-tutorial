@@ -1867,15 +1867,64 @@ is to have a `?` (question mark) in the name of functions
 that return a `true/false` result.
 
 At the end of this step our `<footer>` element
-is now hidden when there are no items.
+is hidden when there are no items:
 
+![phx-todo-footer-hidden](https://user-images.githubusercontent.com/194400/83268893-2bdd4100-a1be-11ea-88ac-f99f7e6efeda.gif)
 
-
-
+<br />
 
 ### 11.2 Route `/` to `ItemController.index/2`
 
+The final piece of tidying up we can do is
+to change the Controller that gets invoked for the "homepage" (`/`)
+of our app.
+Currently when the person viewing the Todo App  
+visits [`http://localhost:4000/`](http://localhost:4000)
+they see the `lib/app_web/templates/page/index.html.eex` template:
 
+![page_template](https://user-images.githubusercontent.com/194400/83269042-6941ce80-a1be-11ea-80fa-73674576e928.png)
+
+This is the default Phoenix home page
+(_minus the CSS Styles and images that we removed in step 3.4 above_).
+It does not tell us anything about the actual app we have built,
+it doesn't even have a _link_ to the Todo App!
+Let's fix it!
+
+Open the `lib/app_web/router.ex` file and locate the line:
+```elixir
+get "/", PageController, :index
+```
+
+Update the controller to: `ItemController` e.g:
+
+```elixir
+get "/", ItemController, :index
+```
+
+e.g:
+[]
+
+Now when you run your App you will see the todo list on the home page:
+
+![todo-app-on-homepage](https://user-images.githubusercontent.com/194400/83270006-cbe79a00-a1bf-11ea-8972-91097fdabdc1.png)
+
+
+
+
+Given that we are no longer _using_ the `Page`
+Controller, View, Template or Tests,
+we might as well **`delete`** them from our project!
+
+```sh
+git rm lib/app_web/controllers/page_controller.ex
+git rm lib/app_web/templates/page/index.html.eex
+git rm lib/app_web/views/page_view.ex
+git rm test/app_web/controllers/page_controller_test.exs
+```
+
+Deleting files is good hygiene in any software project.
+Don't be _afraid_ to do it, you can always recover files
+that are in your `git` history.
 
 
 ### Deploy!
