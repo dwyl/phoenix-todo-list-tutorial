@@ -1746,12 +1746,13 @@ Open your `test/app_web/views/item_view_test.exs` file
 and add the following test:
 
 ```elixir
-test "pluarlise/1 returns item for 1 item and items for 1<" do
+test "pluralise/1 returns item for 1 item and items for < 1 <" do
   assert ItemView.pluralise([%{text: "one", status: 0}]) == "item"
   assert ItemView.pluralise([
     %{text: "one", status: 0},
     %{text: "two", status: 0}
   ]) == "items"
+  assert ItemView.pluralise([%{text: "one", status: 1}]) == "items"
 end
 ```
 
@@ -1767,8 +1768,10 @@ Open your `lib/app_web/views/item_view.ex` file
 and add the following function definition for `pluralise/1`:
 
 ```elixir
+# pluralise the word item when the number of items is greather/less than 1
 def pluralise(items) do
-  case remaining_items(items) > 1 do
+  # items where status < 1 is equal to Zero or Greater than One:
+  case remaining_items(items) == 0 || remaining_items(items) > 1 do
     true -> "items"
     false -> "item"
   end
@@ -1841,6 +1844,7 @@ Wrap the `<footer>` element in with the following `if` statement:
 ```
 
 e.g:
+[`lib/app_web/templates/item/index.html.eex#L45-L74`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b0c7a0b05aee4488ebeb80276d7b628324d7ffe4/lib/app_web/templates/item/index.html.eex#L45-L74)
 
 
 

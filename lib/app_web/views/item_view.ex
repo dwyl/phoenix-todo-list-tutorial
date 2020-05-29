@@ -21,7 +21,7 @@ defmodule AppWeb.ItemView do
 
   # returns integer value of items where item.status == 0 (not "done")
   def remaining_items(items) do
-    Enum.filter(items, fn i -> i.status == 0 end) |> Enum.count()
+    Enum.filter(items, fn i -> i.status < 1 end) |> Enum.count()
   end
 
   # filter the items based on the filter string
@@ -40,9 +40,10 @@ defmodule AppWeb.ItemView do
     end
   end
 
-  # pluralise the word item when the number of items is greater than 1
+  # pluralise the word item when the number of items is greather/less than 1
   def pluralise(items) do
-    case remaining_items(items) > 1 do
+    # items where status < 1 is equal to Zero or Greater than One:
+    case remaining_items(items) == 0 || remaining_items(items) > 1 do
       true -> "items"
       false -> "item"
     end
