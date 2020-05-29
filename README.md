@@ -1909,7 +1909,17 @@ Now when you run your App you will see the todo list on the home page:
 ![todo-app-on-homepage](https://user-images.githubusercontent.com/194400/83270006-cbe79a00-a1bf-11ea-8972-91097fdabdc1.png)
 
 
+Unfortunately,
+this update will "break" the page test.
+Run the tests and see:
 
+```sh
+1) test GET / (AppWeb.PageControllerTest)
+     test/app_web/controllers/page_controller_test.exs:4
+     Assertion with =~ failed
+     code:  assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+     left:  "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n ..."
+```
 
 Given that we are no longer _using_ the `Page`
 Controller, View, Template or Tests,
@@ -1926,6 +1936,22 @@ Deleting files is good hygiene in any software project.
 Don't be _afraid_ to do it, you can always recover files
 that are in your `git` history.
 
+Re-run the tests:
+
+```
+mix test
+```
+
+You should see them pass now:
+
+```
+...........................
+
+Finished in 0.5 seconds
+27 tests, 0 failures
+```
+
+<br />
 
 ### Deploy!
 
