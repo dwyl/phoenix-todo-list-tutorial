@@ -19,7 +19,7 @@ defmodule AppWeb.ItemController do
       items: items,
       changeset: changeset,
       editing: item,
-      filter: Map.get(params, "filter", "All")
+      filter: Map.get(params, "filter", "all")
     )
   end
 
