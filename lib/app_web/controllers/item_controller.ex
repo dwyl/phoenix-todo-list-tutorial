@@ -84,4 +84,14 @@ defmodule AppWeb.ItemController do
     Ctx.update_item(item, %{status: toggle_status(item)})
     redirect(conn, to: Routes.item_path(conn, :index))
   end
+
+  import Ecto.Query
+  alias App.Repo
+
+  def clear_completed(conn, _param) do
+    person_id = 0
+    query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
+    Repo.update_all(query, set: [status: 2])
+    index(conn, %{filter: "all"})
+  end
 end
