@@ -1634,13 +1634,22 @@ with the following code:
 e.g:
 [`/lib/app_web/templates/item/index.html.eex#L46-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/c613567b6eb85e62c1be4a1ffe0e02b7fdd8754a/lib/app_web/templates/item/index.html.eex#L46-L64)
 
+At the end of this step you will have a
+fully functioning footer filter:
+
+![phoenix-todo-footer-nav](https://user-images.githubusercontent.com/194400/83212591-ea19af80-a157-11ea-9e0b-502af5cb61b2.gif)
+
 
 <br />
 
 ### 10. Clear Completed
 
 
+
+
+
 ### 11. Tidy Up!
+
 
 
 
@@ -1663,3 +1672,7 @@ e.g:
 
 + Learn Elixir: https://github.com/dwyl/learn-elixir
 + Learn Phoenix https://github.com/dwyl/learn-phoenix-framework
+  + Phoenix Chat Tutorial:
+  https://github.com/dwyl/phoenix-chat-example
+  + Phoenix LiveView Counter Tutorial:
+  https://github.com/dwyl/phoenix-liveview-counter-tutorial
