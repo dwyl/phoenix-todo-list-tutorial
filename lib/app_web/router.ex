@@ -19,6 +19,7 @@ defmodule AppWeb.Router do
     get "/", PageController, :index
     resources "/items", ItemController
     get "/items/toggle/:id", ItemController, :toggle
+    get "/clear", ItemController, :clear_completed
     get "/:filter", ItemController, :index
   end
 
