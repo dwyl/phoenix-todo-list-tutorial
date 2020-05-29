@@ -1711,6 +1711,10 @@ e.g:
 [`lib/app_web/templates/item/index.html.eex#L65-L68`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/69b4d2c5f6e8bc9ab9eea0db131bec34e6f8bc9a/lib/app_web/templates/item/index.html.eex#L65-L68)
 
 
+At the end of this section your Todo List
+should have the "Clear completed" function working:
+
+![phoenix-todo-clear-completed](https://user-images.githubusercontent.com/194400/83244744-a3e44080-a197-11ea-90b3-5420f98bbd55.gif)
 
 
 <br />
