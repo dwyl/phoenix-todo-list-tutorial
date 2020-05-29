@@ -1500,11 +1500,139 @@ The "All" view is the default.
 The "Active" is all the items with `status==0`.
 "Completed" is all items with `status==1`.
 
+<br />
+
+### 9.1 Create `/:filter` Route
+
+Open the `lib/app_web/router.ex` and
+add the following route:
+
+```elixir
+get "/:filter", ItemController, :index
+```
+
+e.g:
+[`/lib/app_web/router.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/fcdc3a64a31e6608876d4c290a0424e31f2603f4/lib/app_web/router.ex#L22)
+
+<br />
+
+### 9.2 Update the Controller `index/2` to send `filter` to View/Template
+
+Open the `lib/app_web/controllers/item_controller.ex` file
+and locate the `index/2` function.
+Replace the invocation of `render/3` at the end of `index/2`
+with the following:
+
+```elixir
+render(conn, "index.html",
+  items: items,
+  changeset: changeset,
+  editing: item,
+  filter: Map.get(params, "filter", "all")
+)
+```
+
+e.g:
+[`lib/app_web/controllers/item_controller.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f744e316392398c6ba47ca02303d9a4e5674c0d/lib/app_web/controllers/item_controller.ex#L22)
+
+<br />
+
+### 9.3 Create `filter/2` and `selected/2` View Functions
+
+In order to filter the items by their status,
+we need to create a new function.
+Open the `lib/app_web/views/item_view.ex` file
+and create the `filter/2` function as follows:
+
+```elixir
+def filter(items, str) do
+  case str do
+    "all" -> items
+    "active" -> Enum.filter(items, fn i -> i.status == 0 end)
+    "completed" -> Enum.filter(items, fn i -> i.status == 1 end)
+  end
+end
+```
+
+e.g:
+[`lib/app_web/views/item_view.ex#L28-L34`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b27b0c9eb63afccf114c3b9af3d9236ded2ea638/lib/app_web/views/item_view.ex#L28-L34)
+
+This will allow us to filter the items in the next step.
+
+The other view function we need,
+well help our view know which filter is selected
+so that the UI can reflect it correctly.
+Add the following definition for `selected/2`:
+
+```elixir
+def selected(filter, str) do
+  case filter == str do
+    true -> "selected"
+    false -> ""
+  end
+end
+```
+
+e.g:
+[`lib/app_web/views/item_view.ex#L36-L41`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b27b0c9eb63afccf114c3b9af3d9236ded2ea638/lib/app_web/views/item_view.ex#L36-L41)
+
+This will set the "selected" class
+which will select the appropriate tab
+in the footer navigation.
 
 
+<br />
 
-### 9.1
+### 9.4 Update the Footer in the `index.html` Template
 
+Use the `filter/2` function to filter the items that are displayed.
+Open the `lib/app_web/templates/item/index.html.eex` file
+and locate the `for` loop line:
+
+```elixir
+<%= for item <- @items do %>
+```
+
+Replace it with:
+
+```elixir
+<%= for item <- filter(@items, @filter) do %>
+```
+e.g:
+[`lib/app_web/templates/item/index.html.eex#L17`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/cce1f0bbb13d14ce7f9ae1e7865976a235829271/lib/app_web/templates/item/index.html.eex#L17)
+
+This invokes the `filter/2` function we defined in the previous step
+passing in the list of `@items` and the selected `@filter`.
+
+
+Next, locate the the `<footer>`
+and replace the _contents_
+of the
+`<ul class="filters">`
+with the following code:
+
+```elixir
+<li>
+  <a href="/items" class='<%= selected(@filter, "all") %>'>
+    All
+  </a>
+</li>
+<li>
+  <a href="/active" class='<%= selected(@filter, "active") %>'>
+    Active
+    [<%= Enum.count(filter(@items, "active")) %>]
+  </a>
+</li>
+<li>
+  <a href="/completed" class='<%= selected(@filter, "completed") %>'>
+    Completed
+    [<%= Enum.count(filter(@items, "completed")) %>]
+  </a>
+</li>
+```
+
+e.g:
+[`/lib/app_web/templates/item/index.html.eex#L46-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/c613567b6eb85e62c1be4a1ffe0e02b7fdd8754a/lib/app_web/templates/item/index.html.eex#L46-L64)
 
 
 <br />
