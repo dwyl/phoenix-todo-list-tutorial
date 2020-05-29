@@ -39,4 +39,12 @@ defmodule AppWeb.ItemView do
       false -> ""
     end
   end
+
+  # pluralise the word item when the number of items is greater than 1
+  def pluralise(items) do
+    case remaining_items(items) > 1 do
+      true -> "items"
+      false -> "item"
+    end
+  end
 end
