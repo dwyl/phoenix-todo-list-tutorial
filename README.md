@@ -38,6 +38,12 @@ A Todo list tutorial created from scratch step-by-step in Elixir/Phoenix.
 
 ### Try it on Heroku: [phxtodo.herokuapp.com](https://phxtodo.herokuapp.com)
 
+Try the Heroku version.
+Add a few items to the list and test the functionality.
+
+![todo-app-heroku-version](https://user-images.githubusercontent.com/194400/83279718-6e5a4a00-a1cd-11ea-90b3-f0b29a898b3d.gif)
+
+
 
 ### TodoMVC
 
@@ -103,19 +109,16 @@ Visit
 in your web browser.
 
 
-
-
 You should see:
 
-# TODO: add screenshot/GIF of todo list home page
-
+![phoenix-todo-list-on-localhost](https://user-images.githubusercontent.com/194400/83285190-bed5a580-a1d5-11ea-9154-80684cf9cc0e.gif)
 
 Now that you have the _finished_ example app
 running on your localhost,
 let's build it from scratch
 and understand all the steps.
 
-
+<br />
 
 ### 1. Create a New Phoenix Project 🆕
 
@@ -300,8 +303,6 @@ Let's improve the UX by using the TodoMVC CSS!
 
 To recreate the TodoMVC UI/UX,
 let's borrow the code directly from the example.
-
-
 
 Visit: http://todomvc.com/examples/vanillajs
 and inspect the source.
@@ -1955,17 +1956,47 @@ Finished in 0.5 seconds
 
 ### Deploy!
 
+Deployment to Heroku takes a few minutes,
+but has a few "steps",
+therefore we have created a _separate_
+guide for it:
+ [elixir-phoenix-app-deployment.md](https://github.com/dwyl/learn-heroku/blob/master/elixir-phoenix-app-deployment.md)
+
+Once you have _deployed_ you will will be able
+to view/use your app in any Web/Mobile Browser.
+
+e.g: https://phxtodo.herokuapp.com <br />
+
+![todo-app-heroku-version](https://user-images.githubusercontent.com/194400/83279718-6e5a4a00-a1cd-11ea-90b3-f0b29a898b3d.gif)
+
+<br />
+
 
 
 
 ### Done!
 
+<br />
+
+## What _Next_?
+
+If you found this example useful,
+please ⭐️the GitHub repository
+so we (_and others_) know you liked it!
+
+If you want to learn more Phoenix
+and the magic of **`LiveView`**,
+consider reading our beginner's tutorial:
+[github.com/dwyl/**phoenix-liveview-counter-tutorial**](https://github.com/dwyl/phoenix-liveview-counter-tutorial)
+
+Thank you for learning with us! ☀️
 
 
 <br />
 
+<!--
 ### Part 2: Authentication!
-
+-->
 
 
 
