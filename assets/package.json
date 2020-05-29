@@ -1,6 +1,12 @@
 {
-  "repository": {},
-  "description": " ",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dwyl/phoenix-todo-list-tutorial.git"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "description": "A Phoenix Implementation of TodoMVC",
   "license": "MIT",
   "scripts": {
     "deploy": "webpack --mode production",
