@@ -65,10 +65,9 @@ defmodule AppWeb.ItemController do
 
   def delete(conn, %{"id" => id}) do
     item = Ctx.get_item!(id)
-    {:ok, _item} = Ctx.delete_item(item)
+    Ctx.update_item(item, %{status: 2})
 
     conn
-    |> put_flash(:info, "Item deleted successfully.")
     |> redirect(to: Routes.item_path(conn, :index))
   end
 

@@ -1644,12 +1644,86 @@ fully functioning footer filter:
 
 ### 10. Clear Completed
 
+We are _almost_ done with our Phoenix implementation of TodoMVC.
+The last thing to implement is "clear completed".
+
+Open your `lib/app_web/router.ex` file
+and add the following route:
+
+```elixir
+get "/:filter", ItemController, :index
+```
+
+e.g:
+[`lib/app_web/router.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/cf4aa02c1b98e9900c0366a4f82993d91aaa27e2/lib/app_web/router.ex#L22)
+
+In the `lib/app_web/controllers/item_controller.ex`
+file add the following code:
+
+```elixir
+import Ecto.Query
+alias App.Repo
+
+def clear_completed(conn, _param) do
+  person_id = 0
+  query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
+  Repo.update_all(query, set: [status: 2])
+  # render the main template:
+  index(conn, %{filter: "all"})
+end
+```
+
+e.g:
+[`lib/app_web/controllers/item_controller.ex#L88-L97`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/697059b518e41c312f995882ffb444a75925082e/lib/app_web/controllers/item_controller.ex#L88-L97)
+
+This uses the handy
+[update_all/3`](https://hexdocs.pm/ecto/2.0.0-rc.5/Ecto.Repo.html#c:update_all/3)
+function to update all items that match the `query`.
+In our case we searching for all `items`
+that belong to `person_id==0`
+and have `status==1`.
+
+We are not _deleting_ the items,
+rather we are updating their status to `2`
+which for the purposes of our example means they are "archived".
+
+> **Note**: This is a useful guide to `update_all`:
+https://adamdelong.com/bulk-update-ecto
+
+
+Finally, in the `lib/app_web/templates/item/index.html.eex`
+scroll to the bottom of the file and replace the line:
+
+```elixir
+<button class="clear-completed" style="display: block;">Clear completed</button>
+```
+
+With:
+
+```elixir
+<a class="clear-completed" href="/clear">
+  Clear completed
+  [<%= Enum.count(filter(@items, "completed")) %>]
+</a>
+```
+
+e.g:
+[]()
 
 
 
+
+<br />
 
 ### 11. Tidy Up!
 
+
+
+### 11.1 Pluralise Items Left
+
+
+
+### 11.2 Route `/` to `ItemController.index/2`
 
 
 
