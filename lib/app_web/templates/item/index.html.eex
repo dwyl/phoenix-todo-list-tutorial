@@ -42,7 +42,7 @@
     </ul>
   </section>
 
-<%= if Enum.filter(@items, fn i -> i.status < 2 end) > 0 do %>
+<%= if got_items?(@items) do %>
   <footer class="footer" style="display: block;">
     <span class="todo-count">
       <%= remaining_items(@items) %> <%= pluralise(@items) %> left

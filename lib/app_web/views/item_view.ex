@@ -48,4 +48,9 @@ defmodule AppWeb.ItemView do
       false -> "item"
     end
   end
+
+  # check if there are items with status 0 or 1, used to hide/show footer
+  def got_items?(items) do
+    Enum.filter(@items, fn i -> i.status < 2 end) > 0
+  end
 end

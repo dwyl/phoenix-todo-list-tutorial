@@ -1838,13 +1838,43 @@ Let's fix it!
 Wrap the `<footer>` element in with the following `if` statement:
 
 ```
-<%= if remaining_items(@items) > 0 do %>
+<%= if Enum.filter(@items, fn i -> i.status < 2 end) > 0 do %>
 
 <% end %>
 ```
 
 e.g:
-[`lib/app_web/templates/item/index.html.eex#L45-L74`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b0c7a0b05aee4488ebeb80276d7b628324d7ffe4/lib/app_web/templates/item/index.html.eex#L45-L74)
+[`lib/app_web/templates/item/index.html.eex#L45-L74`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1020bff5748e8a9b16d6e21650dc9204a3da663e/lib/app_web/templates/item/index.html.eex#L45-L74)
+
+We use this `Enum.filter` function because
+we want to know if there are both incomplete (`status==0`)
+_and_ completed (`status==1`) items.
+
+We can easily (_optionally_) refactor this into a View function
+for readability.
+
+Open your `lib/app_web/views/item_view.ex` file
+and add the following function definition `unarchived_items/1`:
+
+```elixir
+def got_items?(items) do
+  Enum.filter(@items, fn i -> i.status < 2 end) > 0
+end
+```
+
+e.g:
+[]()
+
+And _use_ it in the template:
+
+```elixir
+<%= if got_items?(@items) do %>
+```
+
+e.g:
+[]()
+
+This is more readable.
 
 
 
