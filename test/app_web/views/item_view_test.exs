@@ -38,7 +38,7 @@ defmodule AppWeb.ItemViewTest do
     assert ItemView.remaining_items(items) == 0
   end
 
-  test "pluarlise/1 returns item for 1 item and items for < 1 <" do
+  test "pluralise/1 returns item for 1 item and items for < 1 <" do
     assert ItemView.pluralise([%{text: "one", status: 0}]) == "item"
     assert ItemView.pluralise([
       %{text: "one", status: 0},

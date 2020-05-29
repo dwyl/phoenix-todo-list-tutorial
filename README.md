@@ -1835,51 +1835,46 @@ that creates
 in the user's mind.
 Let's fix it!
 
-Wrap the `<footer>` element in with the following `if` statement:
-
-```
-<%= if Enum.filter(@items, fn i -> i.status < 2 end) > 0 do %>
-
-<% end %>
-```
-
-e.g:
-[`lib/app_web/templates/item/index.html.eex#L45-L74`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1020bff5748e8a9b16d6e21650dc9204a3da663e/lib/app_web/templates/item/index.html.eex#L45-L74)
-
-We use this `Enum.filter` function because
-we want to know if there are both incomplete (`status==0`)
-_and_ completed (`status==1`) items.
-
-We can easily (_optionally_) refactor this into a View function
-for readability.
-
 Open your `lib/app_web/views/item_view.ex` file
 and add the following function definition `unarchived_items/1`:
 
 ```elixir
 def got_items?(items) do
-  Enum.filter(@items, fn i -> i.status < 2 end) > 0
+  Enum.filter(items, fn i -> i.status < 2 end) |> Enum.count > 0
 end
 ```
 
 e.g:
-[]()
+[`lib/app_web/views/item_view.ex#L52-L55`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b36765774d4beed0812b3070ecb942e9b97d3800/lib/app_web/views/item_view.ex#L52-L55)
 
-And _use_ it in the template:
+
+And _use_ `got_items?/1` in the template.
+
+Wrap the `<footer>` element in with the following `if` statement:
 
 ```elixir
 <%= if got_items?(@items) do %>
+
+<% end %>
 ```
 
 e.g:
-[]()
+[`lib/app_web/templates/item/index.html.eex#L45`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/fbf22d58eb83a164961cf9c52bff645989c2f424/lib/app_web/templates/item/index.html.eex#L45-L74)
 
-This is more readable.
+
+The convention in Phoenix/Elixir (_which came from Ruby/Rails_)
+is to have a `?` (question mark) in the name of functions
+that return a `true/false` result.
+
+At the end of this step our `<footer>` element
+is now hidden when there are no items.
+
 
 
 
 
 ### 11.2 Route `/` to `ItemController.index/2`
+
 
 
 
