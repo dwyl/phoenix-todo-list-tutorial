@@ -62,6 +62,9 @@
         </a>
       </li>
     </ul>
-  <button class="clear-completed" style="display: block;">Clear completed</button>
+  <a class="clear-completed" href="/clear">
+    Clear completed
+    [<%= Enum.count(filter(@items, "completed")) %>]
+  </a>
   </footer>
 </section>
