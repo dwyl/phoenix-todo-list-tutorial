@@ -92,6 +92,7 @@ defmodule AppWeb.ItemController do
     person_id = 0
     query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
     Repo.update_all(query, set: [status: 2])
+    # render the main template:
     index(conn, %{filter: "all"})
   end
 end
