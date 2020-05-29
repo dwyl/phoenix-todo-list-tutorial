@@ -1779,7 +1779,7 @@ end
 ```
 
 e.g:
-[`lib/app_web/views/item_view.ex#L44-L49`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/d527560a25649e6f1e2898dd4f6067e97bc4e87b/lib/app_web/views/item_view.ex#L44-L49)
+[`lib/app_web/views/item_view.ex#L43-L50`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1020bff5748e8a9b16d6e21650dc9204a3da663e/lib/app_web/views/item_view.ex#L43-L50)
 
 > **Note**: we are only pluralising one word in our basic Todo App
 so we are only handling this one case in our `pluralise/1` function.
@@ -1805,7 +1805,7 @@ And replace it with the following code:
 ```
 
 e.g:
-[`lib/app_web/views/item_view.ex#L44-L49`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/d527560a25649e6f1e2898dd4f6067e97bc4e87b/lib/app_web/views/item_view.ex#L44-L49)
+[`lib/app_web/views/item_view.ex#L47-L49`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1020bff5748e8a9b16d6e21650dc9204a3da663e/lib/app_web/templates/item/index.html.eex#L47-L49)
 
 At the end of this step
 you will have a working pluralisation
