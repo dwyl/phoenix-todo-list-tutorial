@@ -87,14 +87,23 @@ with `CSS` in a `Phoenix` tutorial!
 
 ## Who? 👤
 
-This example/tutorial is targeted
-at anyone who is learning to Elixir/Phoenix.
+This tutorial is for
+anyone who is learning to Elixir/Phoenix.
 No prior experience with Phoenix is assumed/expected.
 We have included _all_ the steps required to build the app.
-If you get stuck on any step,
+
+> If you get stuck on any step,
 please open an
 [issue](https://github.com/dwyl/phoenix-todo-list-tutorial/issues)
 on GitHub where we are happy to help  you get unstuck!
+If you feel that any line of code can use a bit more explanation/clarity,
+please don't hesitate to _inform_ us!
+We _know_ what it's like to be a beginner,
+it can be _frustrating_ when something does not make sense!
+If you're stuck, don't suffer in silence,
+asking questions on GitHub
+helps _everyone_ to learn!
+
 
 <br />
 
@@ -112,7 +121,7 @@ Once you have confirmed that you have Phoenix & PostgreSQL installed,
 try running the _finished_ App.
 
 
-### Run The _Finished_ App on Your `localhost` 💻
+### 0. Run The _Finished_ App on Your `localhost` 💻
 
 _Before_ you start building your own version of the Todo List App,
 run the _finished_ version on your `localhost`
@@ -146,18 +155,19 @@ You should see:
 ![phoenix-todo-list-on-localhost](https://user-images.githubusercontent.com/194400/83285190-bed5a580-a1d5-11ea-9154-80684cf9cc0e.gif)
 
 Now that you have the _finished_ example app
-running on your `localhost`,
+running on your `localhost`, <br />
 let's build it from scratch
 and understand all the steps.
 
-If you ran the finished app on your `localhost` (_and you really should!_),
+If you ran the finished app on your `localhost`
+(_and you really should!_), <br />
 you will need to change up a directory before starting the tutorial:
 
 ```
 cd ..
 ```
 
-Now you are ready to get building!
+Now you are ready to _build_!
 
 <br />
 
@@ -285,11 +295,13 @@ with layers of "interface" and we _really_ wish we could
 [avoid](https://github.com/phoenixframework/phoenix/issues/3832) them.
 But given that they are baked into the generators,
 and the _creator_ of the framework
-[_likes_](https://youtu.be/tMO28ar0lW8?t=376) them
-(_regardless of them complicating simple apps and confusing beginners_),
+[_likes_](https://youtu.be/tMO28ar0lW8?t=376) them,
 we have a choice: either get on board with Contexts
 or _manually_ create all the files in our Phoenix projects.
 Generators are a _much_ faster way to build!
+_Embrace_ them,
+even if you end up having to `delete` a few
+unused files along the way!
 
 <br />
 
@@ -456,18 +468,22 @@ You will see this (without the TodoMVC CSS):
 
 ![before-adding-css](https://user-images.githubusercontent.com/194400/82725401-af85c200-9cd4-11ea-8717-714477fc3157.png)
 
-That's obviously not what we want, so let's add the TodoMVC `CSS`! <br />
-Let's get the TodoMVC `CSS` and save it in our project!
+That's obviously not what we want,
+so let's get the TodoMVC `CSS`
+and save it in our project!
 
+<br />
 
 ### 3.2 Save the TodoMVC CSS to `/assets/css`
 
 Visit
-http://todomvc.com/examples/vanillajs/node_modules/todomvc-app-css/index.css
+http://todomvc.com/examples/vanillajs/node_modules/todomvc-app-css/index.css <br />
 and save the file to `/assets/css/todomvc-app.css`.
 
 e.g:
 [`/assets/css/todomvc-app.css`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/65bec23b92307527a414f77b667b29ea10619e5a/assets/css/todomvc-app.css)
+
+<br />
 
 ### 3.3 Import the `todomvc-app.css` in
 
@@ -481,6 +497,13 @@ Open the `assets/css/app.scss` file and replace it with the following:
 
 e.g:
 [`/assets/css/app.scss#L3`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/5fd673089be616c9bb783277ae2d4f0e310b8413/assets/css/app.scss#L3)
+
+We commented out the
+`@import "./phoenix.css";`
+because we don't want the Phoenix (Milligram) styles
+_conflicting_ with the TodoMVC ones.
+
+<br />
 
 ### 3.4 _Simplify_ The Layout Template
 
@@ -546,13 +569,13 @@ but it's still just a dummy list.
 
 We are going to need a handful of
 [View functions](https://hexdocs.pm/phoenix/views.html)
-in order to render our `item` data in the TodoMVC template.
+in order to render our `item` data in the TodoMVC template. <br />
 Let's create the first two which are fairly basic.
 
-This is our first chance to do a bit of Test Driven Development (TDD),
+This is our first chance to do a bit of Test Driven Development (TDD). <br />
 Create a new file with the path `test/app_web/views/item_view_test.exs`.
 
-Paste (_or type_) the following code into the file:
+Type (_or paste_) the following code into the file:
 
 ```elixir
 defmodule AppWeb.ItemViewTest do
@@ -596,7 +619,7 @@ You will see the following error (because the function does not yet exist!):
 
 Open the
 `lib/app_web/views/item_view.ex` file
-and write the functions to make the tests pass.
+and write the functions to make the tests _pass_.
 
 <br />
 
@@ -672,7 +695,7 @@ e.g:
 
 With those two files saved,
 if you run the app now: `mix phx.server`
-and visit [`/items`](http://localhost:4000/items)
+and visit [`/items`](http://localhost:4000/items) <br />
 You will see the _real_ `items` you created in step 2.2 (above):
 
 ![todo-list-real-items](https://user-images.githubusercontent.com/194400/82729253-f46a2280-9ced-11ea-940f-75d6ff4c4ece.png)
