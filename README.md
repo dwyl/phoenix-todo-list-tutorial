@@ -1916,24 +1916,20 @@ for the word item/items in the bottom left of the UI:
 ![phx-todo-pluralise-demo](https://user-images.githubusercontent.com/194400/83257010-6ab5cb80-a1ab-11ea-93e7-e95a9fb256c1.gif)
 
 
-### 11.2 Hide Footer When Zero Items
-
-You may have noticed that in the previous step
-we did not have a `case` for when `items == 0`
-in our `pluralise/1`, this was _deliberate_,
-we don't _want_ one!
+### 11.2 Hide Footer When There Are _Zero_ Items
 
 If you visit one of the TodoMVC examples, you will see that no `<footer>` is displayed when there are no items in the list: http://todomvc.com/examples/vanillajs
 
 ![todo-mvc-vanilla-](https://user-images.githubusercontent.com/194400/83250460-0fcaa700-a1a0-11ea-8f05-f399233fad4d.png)
 
-At present our App _shows_ the `<footer>` even if their are Zero items:
+At present our App _shows_ the `<footer>`
+even if their are Zero items: 🤦
 
 <img width="849" alt="phoenix-todo-zero-items" src="https://user-images.githubusercontent.com/194400/83250895-b3b45280-a1a0-11ea-8f13-d54470cf278a.png">
 
 This is a visual distraction/clutter
 that creates
-[unnecessary questions](https://smile.amazon.com/Dont-Make-Me-Think/dp/0321965515)
+[unnecessary questions](https://en.wikipedia.org/wiki/Don%27t_Make_Me_Think)
 in the user's mind.
 Let's fix it!
 
@@ -1950,9 +1946,9 @@ e.g:
 [`lib/app_web/views/item_view.ex#L52-L55`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b36765774d4beed0812b3070ecb942e9b97d3800/lib/app_web/views/item_view.ex#L52-L55)
 
 
-And _use_ `got_items?/1` in the template.
+Now _use_ `got_items?/1` in the template.
 
-Wrap the `<footer>` element in with the following `if` statement:
+Wrap the `<footer>` element in the following `if` statement:
 
 ```elixir
 <%= if got_items?(@items) do %>
@@ -1966,7 +1962,7 @@ e.g:
 
 The convention in Phoenix/Elixir (_which came from Ruby/Rails_)
 is to have a `?` (question mark) in the name of functions
-that return a `true/false` result.
+that return a Boolean (`true/false`) result.
 
 At the end of this step our `<footer>` element
 is hidden when there are no items:
@@ -1975,7 +1971,7 @@ is hidden when there are no items:
 
 <br />
 
-### 11.2 Route `/` to `ItemController.index/2`
+### 11.3 Route `/` to `ItemController.index/2`
 
 The final piece of tidying up we can do is
 to change the Controller that gets invoked for the "homepage" (`/`)
@@ -2004,7 +2000,7 @@ get "/", ItemController, :index
 ```
 
 e.g:
-[]
+[`lib/app_web/router.ex#L19`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/82f90706a6a89c040ea552701565fc3a06888961/lib/app_web/router.ex#L19)
 
 Now when you run your App you will see the todo list on the home page:
 
@@ -2082,7 +2078,7 @@ e.g: https://phxtodo.herokuapp.com <br />
 ## What _Next_?
 
 If you found this example useful,
-please ⭐️the GitHub repository
+please ⭐️ the GitHub repository
 so we (_and others_) know you liked it!
 
 If you want to learn more Phoenix

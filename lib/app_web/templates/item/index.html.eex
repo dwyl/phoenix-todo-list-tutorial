@@ -34,7 +34,7 @@
 
             <%= link "", class: "destroy", method: :delete,
               to: Routes.item_path(@conn, :delete, item),
-              data: [confirm: "Are you sure?"] %>
+              data: [confirm: "Are you sure you want to delete it?"] %>
           </div>
         </li>
       <% end %>

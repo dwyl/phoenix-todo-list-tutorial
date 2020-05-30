@@ -66,9 +66,7 @@ defmodule AppWeb.ItemController do
   def delete(conn, %{"id" => id}) do
     item = Todo.get_item!(id)
     Todo.update_item(item, %{status: 2})
-
-    conn
-    |> redirect(to: Routes.item_path(conn, :index))
+    index(conn, %{})
   end
 
   def toggle_status(item) do
