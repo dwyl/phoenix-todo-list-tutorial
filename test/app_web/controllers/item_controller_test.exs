@@ -75,7 +75,8 @@ defmodule AppWeb.ItemControllerTest do
     test "deletes chosen item", %{conn: conn, item: item} do
       conn = delete(conn, Routes.item_path(conn, :delete, item))
       conn = get(conn, Routes.item_path(conn, :show, item))
-      assert html_response(conn, 200) =~ "2" # Status: 2
+      # Status: 2
+      assert html_response(conn, 200) =~ "2"
     end
   end
 
