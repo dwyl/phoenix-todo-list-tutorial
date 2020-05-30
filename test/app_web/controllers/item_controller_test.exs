@@ -100,6 +100,17 @@ defmodule AppWeb.ItemControllerTest do
     end
   end
 
+  describe "clear_completed/2" do
+    setup [:create_item]
+
+    test "clear_completed/2", %{conn: conn, item: item} do
+      get(conn, Routes.item_path(conn, :toggle, item.id))
+      conn = get(conn, Routes.item_path(conn, :clear_completed))
+      updated_item = App.Todo.get_item!(item.id)
+      assert updated_item.status == 2
+    end
+  end
+
   defp create_item(_) do
     item = fixture(:item)
     %{item: item}
