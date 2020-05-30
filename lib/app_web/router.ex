@@ -21,6 +21,9 @@ defmodule AppWeb.Router do
     get "/items/toggle/:id", ItemController, :toggle
     get "/clear", ItemController, :clear_completed
     get "/:filter", ItemController, :index
+
+    # see: https://github.com/dwyl/ping
+    get "/ping", PingController, :ping
   end
 
   # Other scopes may use custom stacks.
