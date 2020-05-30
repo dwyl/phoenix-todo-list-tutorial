@@ -2,7 +2,10 @@
 
 # Phoenix Todo List Tutorial
 
-A complete beginners tutorial building a Todo List in Phoenix.
+A complete beginners step-by-step tutorial
+for building a Todo List in Phoenix.<br/>
+100% functional. 0% JavaScript. Just `HTML`, `CSS` and `Elixir`.
+Fast and maintainable.
 
 [![Build Status](https://img.shields.io/travis/dwyl/phoenix-todo-list-tutorial/master.svg?style=flat-square)](https://travis-ci.org/dwyl/phoenix-todo-list-tutorial)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/phoenix-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/phoenix-todo-list-tutorial?branch=master)
@@ -16,24 +19,33 @@ A complete beginners tutorial building a Todo List in Phoenix.
 
 Todo lists are familiar to most people;
 we make lists all the time.
-_Building_ a Todo list from scratch is a great way to learn Phoenix
+_Building_ a Todo list from scratch is a great way to learn Elixir/Phoenix
 because the UI/UX is simple,
 so we can focus on implementation.
-This tutorial shows complete beginners how to build a Todo list
-in Phoenix without assuming any prior Phoenix knowledge/experience.
 
-For the team @dwyl this TodoMVC implementation
+For the team
+[**`@dwyl`**](https://github.com/dwyl)
+this app/tutorial
 is a showcase of how server side rendering
 (_with client side progressive enhancement_)
 can provide a excellent balance between
-developer effectiveness (_shipping features fast_)
-and UX
+developer effectiveness (_shipping features fast_),
+UX and _accessibility_.
+The server rendered pages take less than 5ms to respond
+so the UX is _fast_.
+On Heroku (_after the "Free" App wakes up!_),
+round-trip response times are sub 100ms for all interactions,
+so it _feels_ like a client-side rendered App.
+
 
 <br />
 
 ## What? 💭
 
-A Todo list tutorial created from scratch step-by-step in Elixir/Phoenix.
+A Todo list tutorial  
+that shows a complete beginner
+how to build an app in Elixir/Phoenix
+from scratch.
 
 
 ### Try it on Heroku: [phxtodo.herokuapp.com](https://phxtodo.herokuapp.com)
@@ -43,13 +55,32 @@ Add a few items to the list and test the functionality.
 
 ![todo-app-heroku-version](https://user-images.githubusercontent.com/194400/83279718-6e5a4a00-a1cd-11ea-90b3-f0b29a898b3d.gif)
 
+Even with a full HTTP round-trip for each interaction,
+the response time is _fast_.
+Pay attention to how Chrome|Firefox|Safari
+waits for the response from the server before re-rendering the page.
+The old full page refresh of yesteryear is _gone_.
+Modern browsers intelligently render the just the changes!
+So the UX approximates "native"!
+Seriously, try the Heroku app on your Phone and see!
 
 
 ### TodoMVC
 
-We are using the
+In this tutorial
+we are using the
 [TodoMVC](https://github.com/dwyl/javascript-todo-list-tutorial#todomvc)
-CSS to make our UI look good and simplify our code.
+CSS to simplify our UI.
+This has several advantages
+the biggest being _minimising_ how much CSS we have to write!
+It also means we have a guide to which _features_
+need to be implemented to achieve full functionality.
+
+> **Note**: we _love_ `CSS` for its incredible power/flexibility,
+but we know that not everyone like it.
+see: [learn-tachyons#why](https://github.com/dwyl/learn-tachyons#why)
+The _last_ thing we want is to waste tons of time
+with `CSS` in a `Phoenix` tutorial!
 
 
 <br />
@@ -58,11 +89,12 @@ CSS to make our UI look good and simplify our code.
 
 This example/tutorial is targeted
 at anyone who is learning to Elixir/Phoenix.
+No prior experience with Phoenix is assumed/expected.
 We have included _all_ the steps required to build the app.
 If you get stuck on any step,
 please open an
 [issue](https://github.com/dwyl/phoenix-todo-list-tutorial/issues)
-on GitHub where we can help you get unstuck!
+on GitHub where we are happy to help  you get unstuck!
 
 <br />
 
@@ -131,13 +163,22 @@ Now you are ready to get building!
 
 ### 1. Create a New Phoenix Project 🆕
 
-In your terminal, create a new Phoenix app using the command:
+In your terminal,
+create a new Phoenix app
+using the following
+[`mix`](https://elixir-lang.org/getting-started/mix-otp/introduction-to-mix.html)
+command:
 
 ```sh
 mix phx.new app
 ```
 
-Ensure you install all the dependencies:
+When prompted to install dependencies,
+type <kbd>Y</kbd> followed by <kbd>Enter</kbd>.
+
+Change into the newly created `app` directory (`cd app`)
+and
+ensure you have everything you need:
 
 ```sh
 mix setup
@@ -151,7 +192,8 @@ mix phx.server
 
 Now you can visit
 [`localhost:4000`](http://localhost:4000)
-from your web browser.
+in your web browser.
+You should see something similar to:
 
 ![welcome-to-phoenix](https://user-images.githubusercontent.com/194400/82494801-11caa100-9ae2-11ea-821d-8181580201cb.png)
 
@@ -177,7 +219,7 @@ Finished in 0.04 seconds
 ```
 
 Having established that the Phoenix App works as expected,
-let's move on to creating the list!
+let's move on to creating some files!
 
 <br />
 
@@ -212,8 +254,8 @@ You will see the following output:
 * creating test/app_web/controllers/item_controller_test.exs
 * creating lib/app/todo/item.ex
 * creating priv/repo/migrations/20200521145424_create_items.exs
-* creating lib/app/Todo.ex
-* injecting lib/app/Todo.ex
+* creating lib/app/todo.ex
+* injecting lib/app/todo.ex
 * creating test/app/todo_test.exs
 * injecting test/app/todo_test.exs
 
@@ -232,15 +274,13 @@ Some of which we don't strictly _need_.
 We could create _only_ the files we _need_,
 but this is the "official" way of creating a CRUD App in Phoenix,
 so we are using it for speed.
-See the commit:
-[40d4e8d](https://github.com/dwyl/phoenix-todo-list-tutorial/pull/35/commits/40d4e8dd98bae7c517e9a0b59bc2491f4b3c7a0f)
 
 
 > **Note**: Phoenix
 [Contexts](https://hexdocs.pm/phoenix/contexts.html)
 denoted in this example as `Todo`,
 are "_dedicated modules that expose and group related functionality_."
-We feel they _unnecessarily complicate_ basic Phoenix Apps,
+We feel they _unnecessarily complicate_ basic Phoenix Apps
 with layers of "interface" and we _really_ wish we could
 [avoid](https://github.com/phoenixframework/phoenix/issues/3832) them.
 But given that they are baked into the generators,
@@ -249,18 +289,19 @@ and the _creator_ of the framework
 (_regardless of them complicating simple apps and confusing beginners_),
 we have a choice: either get on board with Contexts
 or _manually_ create all the files in our Phoenix projects.
-
+Generators are a _much_ faster way to build!
 
 <br />
 
 ### 2.1 Add the `/items` Resources to `router.ex`
 
-Follow the instructions presented by the generator to
-add the `resources "/items", ItemController` line to the `router.ex` file.
+Follow the instructions noted by the generator to
+add the `resources "/items", ItemController` to the `router.ex`.
 
 Open the `lib/app_web/router.ex` file
-and locate the `scope "/", AppWeb do` section.
-Add the line to the end of the block, e.g:
+and locate the `scope "/", AppWeb do` section. <br />
+Add the line to the end of the block.
+e.g:
 
 ```elixir
 scope "/", AppWeb do
@@ -279,7 +320,7 @@ Your `router.ex` file should look like this:
 ### 2.2 _Run_ The App!
 
 At this point we _already_ have a functional Todo List
-(_if we were willing to use the default Phoenix UI_).
+(_if we were willing to use the default Phoenix UI_). <br />
 Try running the app on your `localhost`:
 
 ```
@@ -304,7 +345,7 @@ Here is a _list_ of items; a "Todo List":
 ![todo-list-phoenix-default-ui-show-items-list](https://user-images.githubusercontent.com/194400/82674676-967d0280-9c3b-11ea-999f-bf5fbe1ab2d4.png)
 
 
-Let's improve the UX by using the TodoMVC CSS!
+Let's improve the UX by using the TodoMVC `HTML` and `CSS`!
 
 <br />
 
@@ -314,12 +355,16 @@ To recreate the TodoMVC UI/UX,
 let's borrow the code directly from the example.
 
 Visit: http://todomvc.com/examples/vanillajs
-and inspect the source.
+add a couple of items to the list,
+and then inspect the source
+using your browser's dev tools.
 e.g:
 
 ![todomvc-view-source](https://user-images.githubusercontent.com/194400/82698634-0b176780-9c63-11ea-9e1d-7aa6e2328766.png)
 
-Right-click on the source you want and select "Edit as HTML":
+Right-click on the source you want
+(e.g: `<section class="todoapp">`)
+ and select "Edit as HTML":
 
 ![edit-as-html](https://user-images.githubusercontent.com/194400/82721624-b8679b00-9cb6-11ea-8d3f-2405f2bd301f.png)
 
@@ -411,9 +456,33 @@ You will see this (without the TodoMVC CSS):
 
 ![before-adding-css](https://user-images.githubusercontent.com/194400/82725401-af85c200-9cd4-11ea-8717-714477fc3157.png)
 
-That's obviously not what we want, so let's add the TodoMVC CSS!
+That's obviously not what we want, so let's add the TodoMVC `CSS`! <br />
+Let's get the TodoMVC `CSS` and save it in our project!
 
-### 3.2 Add Simplify Layout Template
+
+### 3.2 Save the TodoMVC CSS to `/assets/css`
+
+Visit
+http://todomvc.com/examples/vanillajs/node_modules/todomvc-app-css/index.css
+and save the file to `/assets/css/todomvc-app.css`.
+
+e.g:
+[`/assets/css/todomvc-app.css`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/65bec23b92307527a414f77b667b29ea10619e5a/assets/css/todomvc-app.css)
+
+### 3.3 Import the `todomvc-app.css` in
+
+Open the `assets/css/app.scss` file and replace it with the following:
+
+```css
+/* This file is for your main application css. */
+/* @import "./phoenix.css"; */
+@import "./todomvc-app.css";
+```
+
+e.g:
+[`/assets/css/app.scss#L3`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/5fd673089be616c9bb783277ae2d4f0e310b8413/assets/css/app.scss#L3)
+
+### 3.4 _Simplify_ The Layout Template
 
 Open your `lib/app_web/templates/layout/app.html.eex` file
 and replace the contents with the following code:
@@ -427,12 +496,12 @@ and replace the contents with the following code:
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Phoenix Todo List</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
-        <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
     <main role="main" class="container">
       <%= @inner_content %>
     </main>
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
 ```
@@ -441,29 +510,23 @@ and replace the contents with the following code:
 > Before:
 [`/lib/app_web/templates/layout/app.html.eex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bddacda93ecd892fe0907210bab335e6b6e5e489/lib/app_web/templates/layout/app.html.eex) <br />
 > After:
-[`/lib/app_web/templates/layout/app.html.eex#L8-L15`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/65bec23b92307527a414f77b667b29ea10619e5a/lib/app_web/templates/layout/app.html.eex#L8-L15)
+[`/lib/app_web/templates/layout/app.html.eex#L12`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/4d9e2031687d07494f98fad407dc5cc2be795b24/lib/app_web/templates/layout/app.html.eex#L12)
 
-### 3.3 Save the TodoMVC CSS to `/assets/css`
+`<%= @inner_content %>` is where the Todo App will be rendered.
 
-Visit
-http://todomvc.com/examples/vanillajs/node_modules/todomvc-app-css/index.css
-and save the file to `/assets/css/todomvc-app.css`.
+> **Note**: the `<script>` tag is included out of convention.
+However, we won't be writing _any_ `JavaScript` in this tutorial.
+We will achieve 100% feature parity with TodoMVC,
+without writing a line of `JS`.
+We don't "hate" `JS`,
+in fact we have a "sister" tutorial
+that builds the _same_ App in `JS`:
+[dwyl/javascript-todo-list-tutorial](https://github.com/dwyl/javascript-todo-list-tutorial)
+We just want _remind_ you
+that you don't _need_ any `JS`
+to build a fully functional web application
+with great UX!
 
-e.g:
-[`/assets/css/todomvc-app.css`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/65bec23b92307527a414f77b667b29ea10619e5a/assets/css/todomvc-app.css)
-
-### 3.4 Import the `todomvc-app.css` in
-
-Open the `assets/css/app.scss` file and replace it with the following:
-
-```css
-/* This file is for your main application css. */
-/* @import "./phoenix.css"; */
-@import "./todomvc-app.css";
-```
-
-e.g:
-[`/assets/css/app.scss#L3`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/5fd673089be616c9bb783277ae2d4f0e310b8413/assets/css/app.scss#L3)
 
 With the layout template saved,
 the TodoMVC CSS file saved to `/asssets/css/todomvc-app.css`
@@ -475,6 +538,7 @@ your `/items` page should now look like this:
 
 So our Todo List is starting to look like TodoMVC,
 but it's still just a dummy list.
+
 
 <br />
 
