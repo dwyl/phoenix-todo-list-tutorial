@@ -279,9 +279,9 @@ Remember to update your repository by running migrations:
     $ mix ecto.migrate
 ```
 
-That created a _bunch_ of files.
-Some of which we don't strictly _need_.
-We could create _only_ the files we _need_,
+That created a _bunch_ of files!
+Some of which we don't strictly _need_. <br />
+We could _manually_ create _only_ the files we _need_,
 but this is the "official" way of creating a CRUD App in Phoenix,
 so we are using it for speed.
 
@@ -303,6 +303,15 @@ _Embrace_ them,
 even if you end up having to `delete` a few
 unused files along the way!
 
+We are _not_ going to explain each of these files
+at this stage in the tutorial because
+it's _easier_ to understand the files
+as you are _building_ the App!
+The purpose of each file will become clear
+as you progress through editing them.
+
+
+
 <br />
 
 ### 2.1 Add the `/items` Resources to `router.ex`
@@ -311,7 +320,7 @@ Follow the instructions noted by the generator to
 add the `resources "/items", ItemController` to the `router.ex`.
 
 Open the `lib/app_web/router.ex` file
-and locate the `scope "/", AppWeb do` section. <br />
+and locate the line: `scope "/", AppWeb do` <br />
 Add the line to the end of the block.
 e.g:
 
@@ -320,7 +329,7 @@ scope "/", AppWeb do
   pipe_through :browser
 
   get "/", PageController, :index
-  resources "/items", ItemController
+  resources "/items", ItemController # this is the new line
 end
 ```
 
@@ -364,12 +373,13 @@ Let's improve the UX by using the TodoMVC `HTML` and `CSS`!
 ### 3. Create the TodoMVC UI/UX
 
 To recreate the TodoMVC UI/UX,
-let's borrow the code directly from the example.
+let's borrow the `HTML` code directly from the example.
 
 Visit: http://todomvc.com/examples/vanillajs
-add a couple of items to the list,
-and then inspect the source
-using your browser's dev tools.
+add a couple of items to the list, <br />
+then inspect the source
+using your browser's
+[Dev Tools](https://developers.google.com/web/tools/chrome-devtools/open).
 e.g:
 
 ![todomvc-view-source](https://user-images.githubusercontent.com/194400/82698634-0b176780-9c63-11ea-9e1d-7aa6e2328766.png)
@@ -439,16 +449,17 @@ Let's convert this `HTML` to an Embedded Elixir
 
 
 > **Note**: the _reason_ that we are copying this `HTML`
-from the browser inspector instead of _directly_ from the source
+from the browser's Elements inspector
+instead of _directly_ from the source
 on GitHub:
 [`examples/vanillajs/index.html`](https://github.com/tastejs/todomvc/blob/c50cc922495fd76cb44844e3b1cd77e35a5d6be1/examples/vanillajs/index.html#L18)
 is that this is a "single page app",
 so the `<ul class="todo-list"></ul>`
 only gets populated in the browser.
-So copying it from the browser Dev Tools
+Copying it from the browser Dev Tools
 is the easiest way to get the _complete_ `HTML`.
 
-
+<br />
 
 ### 3.1 Paste the HTML into `index.html.eex`
 
@@ -463,8 +474,8 @@ paste the `HTML` code we sourced from TodoMVC.
 
 If you attempt to run the app now
 and visit
-[http://localhost:4000/items/](http://localhost:4000/items/)
-You will see this (without the TodoMVC CSS):
+[http://localhost:4000/items/](http://localhost:4000/items/) <br />
+You will see this (_without the TodoMVC `CSS`_):
 
 ![before-adding-css](https://user-images.githubusercontent.com/194400/82725401-af85c200-9cd4-11ea-8717-714477fc3157.png)
 
@@ -545,7 +556,7 @@ We don't "hate" `JS`,
 in fact we have a "sister" tutorial
 that builds the _same_ App in `JS`:
 [dwyl/javascript-todo-list-tutorial](https://github.com/dwyl/javascript-todo-list-tutorial)
-We just want _remind_ you
+We just want to _remind_ you
 that you don't _need_ any `JS`
 to build a fully functional web application
 with great UX!
@@ -807,7 +818,7 @@ if you submit the `/items/new` form it will succeed.
 
 In order to in-line the new item form (`form.html.eex`)
 in the `index.html.eex` template,
-we need to update the `AppWeb.ItemController.inded/2`
+we need to update the `AppWeb.ItemController.index/2`
 to include a Changeset.
 
 Open the `lib/app_web/controllers/item_controller.ex` file
@@ -858,7 +869,7 @@ After:
 
 
 If you run the app now and visit:
-[http://localhost:4000/items](http://localhost:4000/items)
+[http://localhost:4000/items](http://localhost:4000/items) <br />
 You can create an item by typing your text
 and submit it with the <kbd>Enter</kbd> (Return) key.
 
@@ -1002,17 +1013,13 @@ test "remaining_items/1 returns count of items where item.status==0" do
 end
 
 test "remaining_items/1 returns 0 (zero) when no items are status==0" do
-  items = [
-    %{text: "one", status: 1},
-    %{text: "two", status: 1},
-    %{text: "done", status: 1}
-  ]
+  items = []
   assert ItemView.remaining_items(items) == 0
 end
 ```
 
 e.g:
-[`/test/app_web/views/item_view_test.exs#L22-L38`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f55292e2074ee4f1d4ad0e363ab9b991373a4bc6/test/app_web/views/item_view_test.exs#L22-L38)
+[`/test/app_web/views/item_view_test.exs#L21-L34`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/500775a87f61ce63f7845c054996a27bb1689098/test/app_web/views/item_view_test.exs#L21-L34)
 
 These tests will fail because the `ItemView.remaining_items/1`
 function does not exist.
@@ -1053,26 +1060,23 @@ E.g:
 
 
 At this point the (remaining) items counter
-in the bottom left of the TodoMVC UI is working.
-Add an (unfinished) item to your list and watch the count increase to 2:
+in the bottom left of the TodoMVC UI is _working_! <br />
+Add a `new` item to your list and watch the count increase:
 
 ![item-count-increases-to-2](https://user-images.githubusercontent.com/194400/82764853-fd501680-9e09-11ea-980e-d3bac18c8a33.gif)
 
-
-
+That was easy enough let's try something a bit more advanced! <br />
+Take a break and grab yourself a fresh glass of water,
+the next section is going be _intense_!
 
 <br />
 
 ### 7. Toggle a Todo Item's `status` to `1`
 
 One of the core functions of a Todo List is
-toggling the `status` of an `item` from `0` to `1` ("complete").
-Our `toggle` function also needs to
+toggling the `status` of an `item` from `0` to `1` ("complete"). <br />
 In our schema a completed `item`
 has the `status` of `1`.
-
-> Grab yourself a fresh glass of water,
-this section is the most advanced one.
 
 
 ### 7.1 Create the Controller Tests
@@ -1139,7 +1143,7 @@ e.g:
 
 The tests will still _fail_ at this point because
 the route we are invoking in our test does not yet exist.
-Let's fix that.
+Let's fix that!
 
 <br />
 
@@ -1193,9 +1197,9 @@ Replace it with the following:
   class="toggle <%= checked(item) %>"></a>
 ```
 
-When this link is clicked/tapped
-the `get /items/toggle/:id` endpoint is invoked,
-which in turn triggers the `toggle/2` handler
+When this link is clicked
+the `get /items/toggle/:id` endpoint is invoked, <br />
+that in turn triggers the `toggle/2` handler
 we defined above.
 
 
@@ -1213,6 +1217,7 @@ Unfortunately, `<a>` tags cannot have a `:checked` pseudo selector,
 so the default TodoMVC styles that worked on the `<input>` tag
 will not work for the link.
 So we need to add a couple of lines of CSS to our `app.scss`.
+
 Open the `assets/css/app.scss` file and add the following lines to it:
 
 ```css
@@ -1235,7 +1240,7 @@ the Toggle functionality is working as expected:
 _not_ using an `JavaScript` in this tutorial
 because we are demonstrating how to do a 100% server-side rendered App.
 This _always_ works even when `JS` is disabled in the browser
-or the device is super old and does not have a modern we browser.
+or the device is super old and does not have a modern web browser.
 We could easily have added an `onclick` attribute to the `<input>` tag,
 e.g:
 
@@ -1245,7 +1250,7 @@ onclick="location.href='
   <%= Routes.item_path(@conn, :toggle, item.id) %>';">
 ```
 
-But `onclick` is `JavaScript` and we don't _need_ to resort to `JS`.
+But `onclick` is `JavaScript` and we don't _need_ to resort to `JS`. <br />
 The `<a>` (link) is a perfectly semantic non-js approach to toggling
 `item.status`.
 
@@ -1475,7 +1480,7 @@ Your `item_controller.ex` file should now look like this:
 ### 8.4 Update the Tests in `ItemControllerTest`
 
 In our quest to build a _Single_ Page App,
-we updated where
+we broke another test! That's OK. It's easy to fix.
 
 Open the
 `test/app_web/controllers/item_controller_test.exs`
@@ -1508,8 +1513,6 @@ Next, locate the test with the following description:
 test "redirects when data is valid"
 ```
 
-Update the assertion:
-
 Update the assertion from:
 
 ```elixir
@@ -1541,7 +1544,7 @@ Randomized with seed 956565
 
 <br />
 
-### 8.5 Remove Old Template from `index.html`
+### 8.5 Remove Old Template from `index.html`
 
 Now that we have the `toggle` and `edit` features working,
 we can finally remove the default Phoenix (table) layout
@@ -1637,12 +1640,16 @@ render(conn, "index.html",
 e.g:
 [`lib/app_web/controllers/item_controller.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f744e316392398c6ba47ca02303d9a4e5674c0d/lib/app_web/controllers/item_controller.ex#L22)
 
+`Map.get(params, "filter", "all")`
+sets the default value of our `filter` to "all"
+so when `index.html` is rendered, show "all" items.
+
 <br />
 
 ### 9.3 Create `filter/2` and `selected/2` View Functions
 
 In order to filter the items by their status,
-we need to create a new function.
+we need to create a new function. <br />
 Open the `lib/app_web/views/item_view.ex` file
 and create the `filter/2` function as follows:
 
@@ -1753,7 +1760,7 @@ Open your `lib/app_web/router.ex` file
 and add the following route:
 
 ```elixir
-get "/:filter", ItemController, :index
+get "/clear", ItemController, :clear_completed
 ```
 
 e.g:
@@ -1779,7 +1786,7 @@ e.g:
 [`lib/app_web/controllers/item_controller.ex#L88-L97`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/697059b518e41c312f995882ffb444a75925082e/lib/app_web/controllers/item_controller.ex#L88-L97)
 
 This uses the handy
-[update_all/3`](https://hexdocs.pm/ecto/2.0.0-rc.5/Ecto.Repo.html#c:update_all/3)
+[`update_all/3`](https://hexdocs.pm/ecto/2.0.0-rc.5/Ecto.Repo.html#c:update_all/3)
 function to update all items that match the `query`.
 In our case we searching for all `items`
 that belong to `person_id==0`
