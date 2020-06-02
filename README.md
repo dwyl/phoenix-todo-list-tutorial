@@ -64,7 +64,7 @@ the response time is _fast_.
 Pay attention to how Chrome|Firefox|Safari
 waits for the response from the server before re-rendering the page.
 The old full page refresh of yesteryear is _gone_.
-Modern browsers intelligently render the just the changes!
+Modern browsers intelligently render just the changes!
 So the UX approximates "native"!
 Seriously, try the Heroku app on your Phone and see!
 
@@ -243,7 +243,7 @@ In creating a basic Todo List we only need one schema: `items`.
 Later we can add separate lists and tags to organise/categorise
 our `items` but for now this is all we need.
 
-Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) command to create the  
+Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) command to create the items table:
 
 ```sh
 mix phx.gen.html Todo Item items text:string person_id:integer status:integer
@@ -347,7 +347,7 @@ Your `router.ex` file should look like this:
 At this point we _already_ have a functional Todo List
 (_if we were willing to use the default Phoenix UI_). <br />
 Try running the app on your `localhost`:
-
+Run the generated migrations with `mix ecto.migrate` then the server with:
 ```
 mix phx.server
 ```
@@ -500,7 +500,7 @@ e.g:
 
 <br />
 
-### 3.3 Import the `todomvc-app.css` in
+### 3.3 Import the `todomvc-app.css` in `app.scss`
 
 Open the `assets/css/app.scss` file and replace it with the following:
 
@@ -1354,7 +1354,7 @@ Replace the `<a>` tag with the following code:
 e.g:
 [`lib/app_web/templates/item/index.html.eex#L56-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/68f2a337a18e78f2bdfb98fe480b5e262c668844/lib/app_web/templates/item/index.html.eex#L56-L64)
 
-The `else` block is renders a link (`<a>`),
+The `else` block renders a link (`<a>`),
 which when clicked will render the App in "edit" mode.
 We will make the adjustments to the controller
 to enable editing in the `index.html` template shortly.
@@ -1673,7 +1673,7 @@ e.g:
 This will allow us to filter the items in the next step.
 
 The other view function we need,
-well help our view know which filter is selected
+will help our view know which filter is selected
 so that the UI can reflect it correctly.
 Add the following definition for `selected/2`:
 
