@@ -61,7 +61,7 @@ the response time is _fast_.
 Pay attention to how Chrome|Firefox|Safari
 waits for the response from the server before re-rendering the page.
 The old full page refresh of yesteryear is _gone_.
-Modern browsers intelligently render the just the changes!
+Modern browsers intelligently render just the changes!
 So the UX approximates "native"!
 Seriously, try the Heroku app on your Phone and see!
 
