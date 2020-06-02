@@ -75,7 +75,8 @@ defmodule AppWeb.ItemControllerTest do
     test "deletes chosen item", %{conn: conn, item: item} do
       conn = delete(conn, Routes.item_path(conn, :delete, item))
       conn = get(conn, Routes.item_path(conn, :show, item))
-      assert html_response(conn, 200) =~ "2" # Status: 2
+      # Status: 2
+      assert html_response(conn, 200) =~ "2"
     end
   end
 
@@ -96,6 +97,17 @@ defmodule AppWeb.ItemControllerTest do
       get(conn, Routes.item_path(conn, :toggle, item.id))
       toggled_item = Todo.get_item!(item.id)
       assert toggled_item.status == 1
+    end
+  end
+
+  describe "clear_completed/2" do
+    setup [:create_item]
+
+    test "clear_completed/2", %{conn: conn, item: item} do
+      get(conn, Routes.item_path(conn, :toggle, item.id))
+      conn = get(conn, Routes.item_path(conn, :clear_completed))
+      updated_item = App.Todo.get_item!(item.id)
+      assert updated_item.status == 2
     end
   end
 

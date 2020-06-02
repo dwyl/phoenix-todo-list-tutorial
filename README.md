@@ -51,6 +51,9 @@ from scratch.
 
 ### Try it on Heroku: [phxtodo.herokuapp.com](https://phxtodo.herokuapp.com)
 
+<!-- wake heroku app before visit. see: https://github.com/dwyl/ping -->
+![wake-sleeping-heroku-app](https://phxtodo.herokuapp.com/ping)
+
 Try the Heroku version.
 Add a few items to the list and test the functionality.
 

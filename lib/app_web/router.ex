@@ -9,24 +9,19 @@ defmodule AppWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   scope "/", AppWeb do
     pipe_through :browser
+
+    # see: https://github.com/dwyl/ping
+    get "/ping", PingController, :ping
 
     get "/", ItemController, :index
     resources "/items", ItemController
     get "/items/toggle/:id", ItemController, :toggle
     get "/clear", ItemController, :clear_completed
+    # this route will "catch all" so has to be last:
     get "/:filter", ItemController, :index
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", AppWeb do
-  #   pipe_through :api
-  # end
 
   # Enables LiveDashboard only for development
   #
