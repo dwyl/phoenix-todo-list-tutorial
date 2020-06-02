@@ -240,7 +240,7 @@ In creating a basic Todo List we only need one schema: `items`.
 Later we can add separate lists and tags to organise/categorise
 our `items` but for now this is all we need.
 
-Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) command to create the  
+Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) command to create the items table:
 
 ```sh
 mix phx.gen.html Todo Item items text:string person_id:integer status:integer
