@@ -344,7 +344,7 @@ Your `router.ex` file should look like this:
 At this point we _already_ have a functional Todo List
 (_if we were willing to use the default Phoenix UI_). <br />
 Try running the app on your `localhost`:
-
+Run the generated migrations with `mix ecto.migrate` then the server with:
 ```
 mix phx.server
 ```
