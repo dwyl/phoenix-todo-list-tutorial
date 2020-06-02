@@ -1670,7 +1670,7 @@ e.g:
 This will allow us to filter the items in the next step.
 
 The other view function we need,
-well help our view know which filter is selected
+will help our view know which filter is selected
 so that the UI can reflect it correctly.
 Add the following definition for `selected/2`:
 
