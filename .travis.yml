@@ -1,7 +1,22 @@
-language: node_js
-node_js:
-  - 0.12
+language: elixir
+elixir:
+  - 1.10.3
+otp_release:
+  - 22.1.8
 services:
-  - elasticsearch
+  - postgresql
+cache:
+  directories:
+  - _build
+  - deps
+script:
+  - mix do setup, compile --warnings-as-errors, coveralls.json
+after_success:
+- bash <(curl -s https://codecov.io/bash)
 env:
-  - ES_HOST="127.0.0.1" ES_PORT=9200 ES_INDEX=travis JWT_SECRET="EverythingIsAwesome!"
+  global:
+  - MIX_ENV=test
+cache:
+  directories:
+  - _build
+  - deps

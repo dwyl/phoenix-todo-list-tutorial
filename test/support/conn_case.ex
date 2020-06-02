@@ -1,16 +1,18 @@
-defmodule Api.ConnCase do
+defmodule AppWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
 
   Such tests rely on `Phoenix.ConnTest` and also
   import other functionality to make it easier
-  to build and query models.
+  to build common data structures and query the data layer.
 
   Finally, if the test case interacts with the database,
-  it cannot be async. For this reason, every test runs
-  inside a transaction which is reset at the beginning
-  of the test unless the test case is marked as async.
+  we enable the SQL sandbox, so changes done to the database
+  are reverted at the end of every test. If you are using
+  PostgreSQL, you can even run database tests asynchronously
+  by setting `use AppWeb.ConnCase, async: true`, although
+  this option is not recommended for other databases.
   """
 
   use ExUnit.CaseTemplate
@@ -18,25 +20,22 @@ defmodule Api.ConnCase do
   using do
     quote do
       # Import conveniences for testing with connections
-      use Phoenix.ConnTest
+      import Plug.Conn
+      import Phoenix.ConnTest
+      import AppWeb.ConnCase
 
-      alias Api.Repo
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
-
-      import Api.Router.Helpers
+      alias AppWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint Api.Endpoint
+      @endpoint AppWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Api.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(App.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Api.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(App.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

@@ -1,0 +1,75 @@
+<section class="todoapp">
+  <header class="header">
+  	<h1>todos</h1>
+    <%= if @editing.id do %>
+      <a href="<%= Routes.item_path(@conn, :index) %>" class="new-todo">
+        Click here to create a new item!
+      </a>
+    <% else %>
+      <%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+    <% end %>
+  </header>
+  <section class="main" style="display: block;">
+  	<input id="toggle-all" class="toggle-all" type="checkbox">
+  	<label for="toggle-all">Mark all as complete</label>
+    <ul class="todo-list">
+
+      <%= for item <- filter(@items, @filter) do %>
+        <li data-id="<%= item.id %>" class="<%= complete(item) %>">
+
+            <a href="<%= Routes.item_path(@conn, :toggle, item.id) %>"
+              class="toggle <%= checked(item) %>">
+            </a>
+
+            <div class="view">
+              <%= if item.id == @editing.id do %>
+                <%= render "form.html", Map.put(assigns, :action,
+                  Routes.item_path(@conn, :update, item)) %>
+              <% else %>
+                <a href="<%= Routes.item_path(@conn, :edit, item) %>" class="dblclick">
+                  <label><%= item.text %></label>
+                </a>
+                <span></span> <!-- used for CSS Double Click -->
+              <% end %>
+
+            <%= link "", class: "destroy", method: :delete,
+              to: Routes.item_path(@conn, :delete, item),
+              data: [confirm: "Are you sure you want to delete it?"] %>
+          </div>
+        </li>
+      <% end %>
+
+    </ul>
+  </section>
+
+<%= if got_items?(@items) do %>
+  <footer class="footer" style="display: block;">
+    <span class="todo-count">
+      <%= remaining_items(@items) %> <%= pluralise(@items) %> left
+    </span>
+    <ul class="filters">
+      <li>
+        <a href="/items" class='<%= selected(@filter, "all") %>'>
+          All
+        </a>
+      </li>
+      <li>
+        <a href="/active" class='<%= selected(@filter, "active") %>'>
+          Active
+          [<%= Enum.count(filter(@items, "active")) %>]
+        </a>
+      </li>
+      <li>
+        <a href="/completed" class='<%= selected(@filter, "completed") %>'>
+          Completed
+          [<%= Enum.count(filter(@items, "completed")) %>]
+        </a>
+      </li>
+    </ul>
+  <a class="clear-completed" href="/clear">
+    Clear completed
+    [<%= Enum.count(filter(@items, "completed")) %>]
+  </a>
+  </footer>
+<% end %>
+</section>

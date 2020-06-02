@@ -1,0 +1,6 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= text_input f, :text, placeholder: "what needs to be done?",
+    class: "new-todo", autofocus: "" %>
+  <div style="display: none;"> <%= submit "Save" %> </div>
+  <!-- submit the form using the Return/Enter key -->
+<% end %>
