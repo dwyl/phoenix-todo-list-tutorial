@@ -497,7 +497,7 @@ e.g:
 
 <br />
 
-### 3.3 Import the `todomvc-app.css` in
+### 3.3 Import the `todomvc-app.css` in `app.scss`
 
 Open the `assets/css/app.scss` file and replace it with the following:
 
