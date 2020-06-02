@@ -1351,7 +1351,7 @@ Replace the `<a>` tag with the following code:
 e.g:
 [`lib/app_web/templates/item/index.html.eex#L56-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/68f2a337a18e78f2bdfb98fe480b5e262c668844/lib/app_web/templates/item/index.html.eex#L56-L64)
 
-The `else` block is renders a link (`<a>`),
+The `else` block renders a link (`<a>`),
 which when clicked will render the App in "edit" mode.
 We will make the adjustments to the controller
 to enable editing in the `index.html` template shortly.
