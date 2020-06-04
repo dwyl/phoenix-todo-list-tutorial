@@ -2061,14 +2061,19 @@ Add [turbolinks package](https://www.npmjs.com/package/turbolinks) to `/assets/p
 cd assets && npm install turbolinks --save
 ```
 
-In `assets/app.js` import turbolinks and start it with:
+In `assets/app.js` import turbolinks:
 
 ```js
 import Turbolinks from "turbolinks"
+```
+
+and start it by calling the `start` function at the end of the `app.js` file:
+
+```js
 Turbolinks.start();
 ```
 
-Finally move the `app.js` script call from the html body to the header in `lib/app_web/tempaltes/layoute/app.html.eex`:
+Finally move the `app.js` script call from the html body to the header in `lib/app_web/tempaltes/layout/app.html.eex`:
 
 ```elixir
 <!DOCTYPE html>
@@ -2088,6 +2093,9 @@ Finally move the `app.js` script call from the html body to the header in `lib/a
   </body>
 </html>
 ```
+
+This will avoid the following warning:
+![turbolink-warning](https://user-images.githubusercontent.com/6057298/83739727-e43b3700-a64d-11ea-8977-dbc347fd2fcd.png)
 
 <br />
 
