@@ -2053,6 +2053,42 @@ Finished in 0.5 seconds
 27 tests, 0 failures
 ```
 
+### 11.4 Add Turbolinks
+
+Add [turbolinks package](https://www.npmjs.com/package/turbolinks) to `/assets/package.json`:
+
+```sh
+cd assets && npm install turbolinks --save
+```
+
+In `assets/app.js` import turbolinks and start it with:
+
+```js
+import Turbolinks from "turbolinks"
+Turbolinks.start();
+```
+
+Finally move the `app.js` script call from the html body to the header in `lib/app_web/tempaltes/layoute/app.html.eex`:
+
+```elixir
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Phoenix Todo List</title>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </head>
+  <body>
+    <main role="main" class="container">
+      <%= @inner_content %>
+    </main>
+  </body>
+</html>
+```
+
 <br />
 
 ### Deploy!
