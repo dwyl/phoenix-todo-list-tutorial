@@ -534,12 +534,12 @@ and replace the contents with the following code:
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Phoenix Todo List</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
     <main role="main" class="container">
       <%= @inner_content %>
     </main>
-    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
 ```
@@ -548,7 +548,7 @@ and replace the contents with the following code:
 > Before:
 [`/lib/app_web/templates/layout/app.html.eex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bddacda93ecd892fe0907210bab335e6b6e5e489/lib/app_web/templates/layout/app.html.eex) <br />
 > After:
-[`/lib/app_web/templates/layout/app.html.eex#L12`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/4d9e2031687d07494f98fad407dc5cc2be795b24/lib/app_web/templates/layout/app.html.eex#L12)
+[`/lib/app_web/templates/layout/app.html.eex#L12`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/lib/app_web/templates/layout/app.html.eex#L12)
 
 `<%= @inner_content %>` is where the Todo App will be rendered.
 
@@ -2052,6 +2052,58 @@ You should see them pass now:
 Finished in 0.5 seconds
 27 tests, 0 failures
 ```
+
+<br />
+
+### 11.4 Add Turbolinks to Eliminate Page Refresh
+
+Given that our Phoenix Todo List App is 100% server rendered,
+older browsers will perform a full page refresh
+when an action (create/edit/toggle/delete) is performed.
+This will feel like a "blink" in the page
+and on **_really_ slow connections**
+it will result in a temporary **_blank_ page**!
+Obviously, that's _horrible_ UX and is a big part of why
+Single Page Apps (SPAs) became popular;
+to avoid page refresh, use
+**[Turbolinks](https://github.com/turbolinks/turbolinks)®**!
+
+Get the performance benefits of an SPA
+without the added complexity
+of a client-side JavaScript framework.
+When a link is clicked/tapped,
+Turbolinks automatically fetches the page,
+swaps in its `<body>`, and merges its `<head>`,
+all without incurring the cost of a full page load.
+
+
+Add [turbolinks package](https://www.npmjs.com/package/turbolinks)
+to `/assets/package.json`:
+
+```sh
+cd assets && npm install turbolinks --save
+```
+
+e.g:
+[`/assets/package.json#L18`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/assets/package.json#L18)
+
+In `assets/app.js` import Turbolinks and start it:
+
+```js
+import Turbolinks from "turbolinks"
+Turbolinks.start();
+```
+
+e.g:
+[`assets/js/app.js#L16-L17`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/assets/js/app.js#L16-L17)
+
+That's it!
+Now when you deploy your server rendered Phoenix App,
+it will _feel_ like an SPA!
+Seriously, try the Heroku demo again:
+[phxtodo.herokuapp.com](https://phxtodo.herokuapp.com/)
+Feel that buttery-smooth page transition.
+
 
 <br />
 
