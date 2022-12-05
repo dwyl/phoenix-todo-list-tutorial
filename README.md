@@ -483,7 +483,7 @@ is the easiest way to get the _complete_ `HTML`.
 
 ### 3.1 Paste the HTML into `index.html.eex`
 
-Open the `lib/app_web/templates/item/index.html.eex` file
+Open the `lib/app_web/controllers/item_html/index.html.eex` file
 and scroll to the bottom.
 
 Then (_without removing the code that is already there_)
@@ -497,7 +497,7 @@ and visit
 [http://localhost:4000/items/](http://localhost:4000/items/) <br />
 You will see this (_without the TodoMVC `CSS`_):
 
-![before-adding-css](https://user-images.githubusercontent.com/194400/82725401-af85c200-9cd4-11ea-8717-714477fc3157.png)
+![before-adding-css](https://user-images.githubusercontent.com/17494745/205656501-b3170bc4-c8a7-403f-9db9-2823c839f61e.png)
 
 That's obviously not what we want,
 so let's get the TodoMVC `CSS`
@@ -529,16 +529,11 @@ Open the `assets/css/app.scss` file and replace it with the following:
 e.g:
 [`/assets/css/app.scss#L3`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/5fd673089be616c9bb783277ae2d4f0e310b8413/assets/css/app.scss#L3)
 
-We commented out the
-`@import "./phoenix.css";`
-because we don't want the Phoenix (Milligram) styles
-_conflicting_ with the TodoMVC ones.
-
 <br />
 
 ### 3.4 _Simplify_ The Layout Template
 
-Open your `lib/app_web/templates/layout/app.html.eex` file
+Open your `lib/app_web/components/layout/app.html.eex` file
 and replace the contents with the following code:
 
 ```html
@@ -587,7 +582,7 @@ the TodoMVC CSS file saved to `/asssets/css/todomvc-app.css`
 and the `todomvc-app.css` imported in `app.scss`,
 your `/items` page should now look like this:
 
-![items-with-todomvc-css](https://user-images.githubusercontent.com/194400/82726927-3049bb80-9cdf-11ea-9522-084327c05ed5.png)
+![items-with-todomvc-css](https://user-images.githubusercontent.com/17494745/205660411-7b199ec5-289e-4863-8a67-9c22e9dc78dd.png)
 
 
 So our Todo List is starting to look like TodoMVC,
