@@ -20,7 +20,8 @@ Fast and maintainable.
 
 Todo lists are familiar to most people;
 we make lists all the time.
-_Building_ a Todo list from scratch is a great way to learn Elixir/Phoenix
+_Building_ a Todo list from scratch
+is a great way to learn Elixir/Phoenix
 because the UI/UX is simple,
 so we can focus on implementation.
 
@@ -43,7 +44,7 @@ so it _feels_ like a client-side rendered App.
 
 ## What? 💭
 
-A Todo list tutorial  
+A Todo list tutorial
 that shows a complete beginner
 how to build an app in Elixir/Phoenix
 from scratch.
@@ -260,19 +261,20 @@ You will see the following output:
 
 ```
 * creating lib/app_web/controllers/item_controller.ex
-* creating lib/app_web/templates/item/edit.html.eex
-* creating lib/app_web/templates/item/form.html.eex
-* creating lib/app_web/templates/item/index.html.eex
-* creating lib/app_web/templates/item/new.html.eex
-* creating lib/app_web/templates/item/show.html.eex
-* creating lib/app_web/views/item_view.ex
+* creating lib/app_web/controllers/item_html/edit.html.heex
+* creating lib/app_web/controllers/item_html/index.html.heex
+* creating lib/app_web/controllers/item_html/new.html.heex
+* creating lib/app_web/controllers/item_html/show.html.heex
+* creating lib/app_web/controllers/item_html.ex
 * creating test/app_web/controllers/item_controller_test.exs
 * creating lib/app/todo/item.ex
-* creating priv/repo/migrations/20200521145424_create_items.exs
+* creating priv/repo/migrations/20221205102303_create_items.exs
 * creating lib/app/todo.ex
 * injecting lib/app/todo.ex
 * creating test/app/todo_test.exs
 * injecting test/app/todo_test.exs
+* creating test/support/fixtures/todo_fixtures.ex
+* injecting test/support/fixtures/todo_fixtures.ex
 
 Add the resource to your browser scope in lib/app_web/router.ex:
 
@@ -341,6 +343,13 @@ end
 Your `router.ex` file should look like this:
 [`router.ex#L20`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f66184b58b7dd1ef593680e7a1a446247909cae7/lib/app_web/router.ex#L20)
 
+Now, as the terminal suggested,
+run `mix ecto.migrate`.
+This will finish setting up the
+database tables and run the 
+necessary migrations so 
+everything works properly!
+
 <br />
 
 ### 2.2 _Run_ The App!
@@ -356,19 +365,23 @@ mix phx.server
 Visit: http://localhost:4000/items/new
 and input some data.
 
-![todo-list-phoenix-default-ui](https://user-images.githubusercontent.com/194400/82673112-3edd9780-9c39-11ea-84d3-f62c3e456a6b.png)
+![todo-list-phoenix-default-ui](https://user-images.githubusercontent.com/17494745/205615474-1eef8b42-86aa-4a0e-90c3-376221570255.png)
 
-Click the "Save" button
+Click the "Save Item" button
 and you will be redirected to the "show" page:
 [/items/1](http://localhost:4000/items/1)
 
-![todo-list-phoenix-default-ui-show-item](https://user-images.githubusercontent.com/194400/82674191-d7c0e280-9c3a-11ea-9c52-9a37525d0626.png)
+![todo-list-phoenix-default-ui-show-item](https://user-images.githubusercontent.com/17494745/205615709-922db20e-245d-4af0-a5e3-2bbaa29771b4.png)
 
 This is not an attractive User Experience (UX),
 but it _works_!
-Here is a _list_ of items; a "Todo List":
+Here is a _list_ of items; a "Todo List".
+You can visit this by clicking
+the `back to items` button or by 
+accessing the following URL
+http://localhost:4000/items.
 
-![todo-list-phoenix-default-ui-show-items-list](https://user-images.githubusercontent.com/194400/82674676-967d0280-9c3b-11ea-999f-bf5fbe1ab2d4.png)
+![todo-list-phoenix-default-ui-show-items-list](https://user-images.githubusercontent.com/17494745/205616098-a514d2bb-af28-477a-b80a-6641c5b391a9.png)
 
 
 Let's improve the UX by using the TodoMVC `HTML` and `CSS`!
