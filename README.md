@@ -593,39 +593,47 @@ but it's still just a dummy list.
 
 ### 4. Render _Real_ Data in the TodoMVC Layout
 
-We are going to need a handful of
-[View functions](https://hexdocs.pm/phoenix/views.html)
-in order to render our `item` data in the TodoMVC template. <br />
-Let's create the first two which are fairly basic.
+In order to render out `item` data
+in the TodOMVC template, 
+we are going to need to add
+a few functions. 
+When we created the project
+and generated the `item` concept,
+a controller was created 
+(located in `lib/app_web/controllers/item_controller.ex`)
+and a component as well
+(located in `lib/app_web/controllers/item_html.ex`).
+This [**Component**](https://hexdocs.pm/phoenix/1.7.0-rc.0/components.html)
+is what effectively 
+renders the contents inside the
+`lib/app_web/controllers/item_html`
+directory that we tinkered with prior.
+
+We know what to make changes to the UI,
+so we are going to add a few functions in this component
+(which is akin to the *View* part of the MVC paradigm).
 
 This is our first chance to do a bit of Test Driven Development (TDD). <br />
-Create a new file with the path `test/app_web/views/item_view_test.exs`.
+Create a new file with the path `test/app_web/controllers/item_html_test.exs`.
 
 Type (_or paste_) the following code into the file:
 
 ```elixir
-defmodule AppWeb.ItemViewTest do
+defmodule AppWeb.ItemHTMLTest do
   use AppWeb.ConnCase, async: true
-  alias AppWeb.ItemView
+  alias AppWeb.ItemHTML
 
   test "complete/1 returns completed if item.status == 1" do
-    assert ItemView.complete(%{status: 1}) == "completed"
+    assert ItemHTML.complete(%{status: 1}) == "completed"
   end
 
   test "complete/1 returns empty string if item.status == 0" do
-    assert ItemView.complete(%{status: 0}) == ""
-  end
-
-  test "checked/1 returns checked if item.status == 1" do
-    assert ItemView.checked(%{status: 1}) == "checked"
-  end
-
-  test "checked/1 returns empty string if item.status == 0" do
-    assert ItemView.checked(%{status: 0}) == ""
+    assert ItemHTML.complete(%{status: 0}) == ""
   end
 end
 ```
 
+//CHANGEHERE
 e.g:
 [`/test/app_web/views/item_view_test.exs`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/test/app_web/views/item_view_test.exs)
 
@@ -633,49 +641,45 @@ e.g:
 If you attempt to run this test file:
 
 ```sh
-mix test test/app_web/views/item_view_test.exs
+mix test test/app_web/controllers/item_html_test.exs
 ```
 
 You will see the following error (because the function does not yet exist!):
 
 ```
-== Compilation error in file lib/app_web/views/item_view.ex ==
-** (CompileError) lib/app_web/templates/item/index.html.eex:44: undefined function complete/1
+** (UndefinedFunctionError) function AppWeb.ItemHTML.checked/1 is undefined or private
 ```
 
 Open the
-`lib/app_web/views/item_view.ex` file
+`lib/app_web/controllers/item_html.ex` file
 and write the functions to make the tests _pass_.
 
 <br />
 
 This is how we implemented the functions.
+Your `item_html.ex` file 
+now should look like the following.
 
 ```elixir
-# add class "completed" to a list item if item.status=1
-def complete(item) do
-  case item.status do
-    1 -> "completed"
-    _ -> "" # empty string means empty class so no style applied
-  end
-end
+defmodule AppWeb.ItemHTML do
+  use AppWeb, :html
+  
+  embed_templates "item_html/*"
 
-# add "checked" to input if item.status=1
-def checked(item) do
-  case item.status do
-    1 -> "checked"
-    _ -> "" # empty string means empty class so no style applied
+  # add class "completed" to a list item if item.status=1
+  def complete(item) do
+    case item.status do
+      1 -> "completed"
+      _ -> "" # empty string means empty class so no style applied
+    end
   end
 end
 ```
 
-e.g:
-[`/lib/app_web/views/item_view.ex#L4-L18`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0d55a4ea0d5f58a364a23070da52ddfe0f9d55ea/lib/app_web/views/item_view.ex#L4-L18)
-
 Re-run the tests and they should now pass:
 
 ```sh
-mix test test/app_web/views/item_view_test.exs
+mix test test/app_web/controllers/item_html_test.exs
 ```
 
 You should see:
@@ -703,13 +707,17 @@ Replace the _contents_ of the `<ul>` with the following:
 
 ```html
 <%= for item <- @items do %>
-  <li data-id="<%= item.id %>" class="<%= complete(item) %>">
+  <li data-id={item.id} class={complete(item)}>
     <div class="view">
-      <input <%= checked(item) %> class="toggle" type="checkbox">
+      <input class="toggle" type="checkbox" checked={item.status}/>
       <label><%= item.text %></label>
-      <%= link "", class: "destroy",
-        to: Routes.item_path(@conn, :delete, item), method: :delete,
-        data: [confirm: "Are you sure?"] %>
+      <.link
+        class="destroy"
+        navigate={~p"/items/#{item.id}"}
+        method="delete"
+        data-confirm="Are you sure?"
+      >
+      </.link>
     </div>
   </li>
 <% end %>
@@ -724,7 +732,7 @@ if you run the app now: `mix phx.server`
 and visit [`/items`](http://localhost:4000/items) <br />
 You will see the _real_ `items` you created in step 2.2 (above):
 
-![todo-list-real-items](https://user-images.githubusercontent.com/194400/82729253-f46a2280-9ced-11ea-940f-75d6ff4c4ece.png)
+![todo-list-real-items](https://user-images.githubusercontent.com/17494745/205710983-e079f021-c91d-4be8-9a5e-0a6b0bc85fb8.png)
 
 
 Now that we have our items rendering in the TodoMVC layout,

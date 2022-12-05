@@ -33,20 +33,23 @@
     <input id="toggle-all" class="toggle-all" type="checkbox" />
     <label for="toggle-all">Mark all as complete</label>
     <ul class="todo-list">
-      <li data-id="1590167947253" class="">
+    <%= for item <- @items do %>
+
+      <li data-id={item.id} class={complete(item)}>
         <div class="view">
-          <input class="toggle" type="checkbox" />
-          <label>Learn how to build a Todo list in Phoenix</label>
-          <button class="destroy"></button>
+          <input class="toggle" type="checkbox" checked={item.status}/>
+          <label><%= item.text %></label>
+          <.link
+            class="destroy"
+            navigate={~p"/items/#{item.id}"}
+            method="delete"
+            data-confirm="Are you sure?"
+          >
+          </.link>
         </div>
       </li>
-      <li data-id="1590167956628" class="completed">
-        <div class="view">
-          <input class="toggle" type="checkbox" />
-          <label>Completed item</label>
-          <button class="destroy"></button>
-        </div>
-      </li>
+
+      <% end %>
     </ul>
   </section>
   <footer class="footer" style="display: block;">
