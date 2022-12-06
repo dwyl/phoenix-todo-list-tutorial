@@ -1385,6 +1385,33 @@ But `onclick` is `JavaScript` and we don't _need_ to resort to `JS`. <br />
 The `<a>` (link) is a perfectly semantic non-js approach to toggling
 `item.status`.
 
+### 7.6 Maintaining correct order of `todo` items
+
+If you "complete" or revert the operation,
+the order of the todos might differ between
+these operations.
+To keep this consistent, 
+let's fetch all the `todo` items in the same order.
+
+Inside `lib/app/todo.ex`, 
+change `list_items/0` to the following.
+
+```elixir
+  def list_items do
+    query =
+      from(
+        i in Item,
+        select: i,
+        order_by: [asc: i.id]
+      )
+
+    Repo.all(query)
+  end
+```
+
+By fetching the `todo` items and ordering them,
+we guarantee the UX stays consistent! 
+
 
 <br />
 
