@@ -1,8 +1,11 @@
-# App artifacts
-/_build
-/db
-/deps
-/*.ez
+# The directory Mix will write compiled artifacts to.
+/_build/
+
+# If you run "mix test --cover", coverage assets end up here.
+/cover/
+
+# The directory Mix downloads your dependencies sources to.
+/deps/
 
 # Where 3rd-party dependencies like ExDoc output generated docs.
 /doc/
@@ -10,46 +13,22 @@
 # Ignore .fetch files in case you like to edit your project deps locally.
 /.fetch
 
+# If the VM crashes, it generates a dump, let's ignore it too.
+erl_crash.dump
+
+# Also ignore archive artifacts (built via "mix archive.build").
+*.ez
+
 # Ignore package tarball (built via "mix hex.build").
 app-*.tar
 
-# Generated on crash by the VM
-erl_crash.dump
+# Ignore assets that are produced by build tools.
+/priv/static/assets/
 
-# Static artifacts
-node_modules
-node_modules/*
+# Ignore digested assets cache.
+/priv/static/cache_manifest.json
+
+# In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
-assets/package-lock.json
+/assets/node_modules/
 
-# Since we are building assets from web/static,
-# we ignore priv/static. You may want to comment
-# this depending on your deployment strategy.
-/priv/static/
-
-# The config/prod.secret.exs file by default contains sensitive
-# data and you should not commit it into version control.
-#
-# Alternatively, you may comment the line below and commit the
-# secrets file as long as you replace its contents by environment
-# variables.
-# /config/prod.secret.exs
-
-lib-cov
-*.seed
-*.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
-
-pids
-logs
-results
-
-.DS_Store
-.vagrant
-test/coverage.html
-coverage/
-cover/

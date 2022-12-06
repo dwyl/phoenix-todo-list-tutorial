@@ -18,7 +18,7 @@ defmodule App.Todo do
 
   """
   def list_items do
-    Item |> order_by(asc: :id) |> Repo.all()
+    Repo.all(Item)
   end
 
   @doc """
