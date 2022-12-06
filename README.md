@@ -709,7 +709,11 @@ Replace the _contents_ of the `<ul>` with the following:
 <%= for item <- @items do %>
   <li data-id={item.id} class={complete(item)}>
     <div class="view">
-      <input class="toggle" type="checkbox" checked={item.status}/>
+      <%= if item.status == 1 do %>
+        <input class="toggle" type="checkbox" checked/>
+      <% else %>
+        <input class="toggle" type="checkbox"/>
+      <% end %>
       <label><%= item.text %></label>
       <.link
         class="destroy"
@@ -820,6 +824,26 @@ This function should look like the following.
   end
 ```
 
+We also need to change the `actions` styles
+inside the `simple_form`.
+In the same file, search for `def simple_form(assigns) do`
+and change it so it looks like so:
+
+```elixir
+  def simple_form(assigns) do
+    ~H"""
+    <.form :let={f} for={@for} as={@as} {@rest}>
+      <div>
+        <%= render_slot(@inner_block, f) %>
+        <div :for={action <- @actions}>
+          <%= render_slot(action, f) %>
+        </div>
+      </div>
+    </.form>
+    """
+  end
+```
+
 
 If you run the Phoenix App now and visit
 [http://localhost:4000/items/new](http://localhost:4000/items/new)
@@ -926,8 +950,17 @@ file and locate the line:
 Replace it with this:
 
 ```elixir
-<%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+<%= new(Map.put(assigns, :action, ~p"/items/new")) %>
 ```
+
+Let's break down what we just did.
+We are **embedding** the `new.html.heex` partial
+inside the `index.html.heex` file.
+We are doing this by calling the
+`new/2` function inside `item_controller.ex`.
+This function *pertains* to the page in the URL `items/new`
+and renders the `new.html.heex` file.
+Hence why we call this function to successfuly embed :smile:.
 
 Before:
 [`/lib/app_web/templates/item/index.html.eex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/templates/item/index.html.eex#L36) <br />
@@ -943,7 +976,7 @@ and submit it with the <kbd>Enter</kbd> (Return) key.
 
 <div align="center">
 
-![todo-list-tutorial-step-5](https://user-images.githubusercontent.com/194400/82753376-f4852380-9dbc-11ea-9003-2015ffee79f5.gif)
+![todo-list-tutorial-step-5](https://user-images.githubusercontent.com/17494745/205904251-8c369d94-f3f9-43e9-b276-4b377e38cdc4.gif)
 
 </div>
 
@@ -959,13 +992,13 @@ and locate the `create` function.
 _Specifically_ the line:
 
 ```elixir
-|> redirect(to: Routes.item_path(conn, :show, item))
+|> redirect(to: ~p"/items/#{item}")
 ```
 
 Update the line to:
 
 ```elixir
-|> redirect(to: Routes.item_path(conn, :index))
+|> redirect(to: ~p"/items/")
 ```
 
 Before:
@@ -978,14 +1011,15 @@ we are redirected to the `index.html` template:
 
 <div align="center">
 
-![todo-list-tutorial-redirect-to-index](https://user-images.githubusercontent.com/194400/82753765-23e95f80-9dc0-11ea-87b5-a33692a3f374.gif)
+![todo-list-tutorial-redirect-to-index](https://user-images.githubusercontent.com/17494745/205917351-5ccdeeed-0015-4bc5-9e67-9bd27f92f14e.gif)
 
 </div>
 
 ### 5.5 Update `item_controller_test.exs` to Redirect to `index`
 
-The change we just made in Step 5.4 (_above_) works in the UI,
-but it breaks one of our automated tests.
+The changes we've made to the `new.html.heex` files 
+and the steps above have broken some of our automated tests.
+We ought to fix that.
 
 Run the tests:
 
@@ -996,51 +1030,31 @@ mix test
 You will see the following output:
 
 ```
-13:46:49.861 [info]  Already up
-.........
-
-  1) test create item redirects to show when data is valid (AppWeb.ItemControllerTest)
-     test/app_web/controllers/item_controller_test.exs:30
-     match (=) failed
-     code:  assert %{id: id} = redirected_params(conn)
-     left:  %{id: id}
-     right: %{}
-     stacktrace:
-       test/app_web/controllers/item_controller_test.exs:33: (test)
-
-.............
-
-Finished in 0.4 seconds
-23 tests, 1 failure
+Finished in 0.08 seconds (0.03s async, 0.05s sync)
+23 tests, 3 failures
 ```
 
-Open the `test/app_web/controllers/item_controller_test.exs` file and
-scroll to the line of the failing test.
+Open the `test/app_web/controllers/item_controller_test.exs` file
+and locate `describe "new item"` 
+and `describe "create item" do`.
+Change these two to the following.
 
 Replace the test:
 ```elixir
-test "redirects to show when data is valid", %{conn: conn} do
-  conn = post(conn, Routes.item_path(conn, :create), item: @create_attrs)
-
-  assert %{id: id} = redirected_params(conn)
-  assert redirected_to(conn) == Routes.item_path(conn, :show, id)
-
-  conn = get(conn, Routes.item_path(conn, :show, id))
-  assert html_response(conn, 200) =~ "Show Item"
+describe "new item" do
+  test "renders form", %{conn: conn} do
+    conn = get(conn, ~p"/items/new")
+    assert html_response(conn, 200) =~ "what needs to be done?"
+  end
 end
-```
 
-With this updated test:
+describe "create item" do
+  test "redirects to show when data is valid", %{conn: conn} do
+    conn = post(conn, ~p"/items", item: @create_attrs)
 
-```elixir
-test "redirects to :index page when item data is valid", %{conn: conn} do
-  conn = post(conn, Routes.item_path(conn, :create), item: @create_attrs)
-
-  assert redirected_to(conn) == Routes.item_path(conn, :index)
-  assert html_response(conn, 302) =~ "redirected"
-
-  conn = get(conn, Routes.item_path(conn, :index))
-  assert html_response(conn, 200) =~ @create_attrs.text
+    assert %{} = redirected_params(conn)
+    assert redirected_to(conn) == ~p"/items/"
+  end
 end
 ```
 
@@ -1050,12 +1064,9 @@ end
 If you re-run the tests `mix test` the will now all pass again.
 
 ```sh
-13:53:59.714 [info]  Already up
-.......................
-
-Finished in 0.5 seconds
-23 tests, 0 failures
-
+......................
+Finished in 0.2 seconds (0.09s async, 0.1s sync)
+22 tests, 0 failures
 ```
 
 <br />

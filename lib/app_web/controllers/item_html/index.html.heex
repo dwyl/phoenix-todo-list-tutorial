@@ -27,8 +27,7 @@
 <section class="todoapp">
   <header class="header">
     <h1>todos</h1>
-    <!-- I want to embed it here  -->
-    <input class="new-todo" placeholder="What needs to be done?" autofocus="" />
+    <%= new(Map.put(assigns, :action, ~p"/items/new")) %>
   </header>
   <section class="main" style="display: block;">
     <input id="toggle-all" class="toggle-all" type="checkbox" />
@@ -38,7 +37,11 @@
 
       <li data-id={item.id} class={complete(item)}>
         <div class="view">
-          <input class="toggle" type="checkbox" checked={item.status}/>
+          <%= if item.status == 1 do %>
+            <input class="toggle" type="checkbox" checked/>
+          <% else %>
+            <input class="toggle" type="checkbox"/>
+          <% end %>
           <label><%= item.text %></label>
           <.link
             class="destroy"

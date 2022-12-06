@@ -17,10 +17,10 @@ defmodule AppWeb.ItemController do
 
   def create(conn, %{"item" => item_params}) do
     case Todo.create_item(item_params) do
-      {:ok, item} ->
+      {:ok, _item} ->
         conn
         |> put_flash(:info, "Item created successfully.")
-        |> redirect(to: ~p"/items/#{item}")
+        |> redirect(to: ~p"/items/")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new, changeset: changeset)
