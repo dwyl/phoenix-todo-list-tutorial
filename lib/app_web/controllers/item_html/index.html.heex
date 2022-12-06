@@ -38,9 +38,15 @@
       <li data-id={item.id} class={complete(item)}>
         <div class="view">
           <%= if item.status == 1 do %>
-            <input class="toggle" type="checkbox" checked/>
+            <.link href={~p"/items/toggle/#{item.id}"}
+                class="toggle checked">
+                type="checkbox"
+            </.link>
           <% else %>
-            <input class="toggle" type="checkbox"/>
+            <.link href={~p"/items/toggle/#{item.id}"}
+                type="checkbox"
+                class="toggle">
+            </.link>
           <% end %>
           <label><%= item.text %></label>
           <.link

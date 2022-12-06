@@ -1,10 +1,11 @@
 defmodule AppWeb.ItemControllerTest do
   use AppWeb.ConnCase
+  alias App.Todo
 
   import App.TodoFixtures
 
-  @create_attrs %{person_id: 42, status: 42, text: "some text"}
-  @update_attrs %{person_id: 43, status: 43, text: "some updated text"}
+  @create_attrs %{person_id: 42, status: 0, text: "some text"}
+  @update_attrs %{person_id: 43, status: 1, text: "some updated text"}
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
 
   describe "index" do
@@ -69,8 +70,28 @@ defmodule AppWeb.ItemControllerTest do
     end
   end
 
+  describe "toggle updates the status of an item 0 > 1 | 1 > 0" do
+    setup [:create_item]
+
+    test "toggle_status/1 item.status 1 > 0", %{item: item} do
+      assert item.status == 0
+      # first toggle
+      toggled_item = %{item | status: AppWeb.ItemController.toggle_status(item)}
+      assert toggled_item.status == 1
+      # second toggle sets status back to 0
+      assert AppWeb.ItemController.toggle_status(toggled_item) == 0
+    end
+
+    test "toggle/2 updates an item.status 0 > 1", %{conn: conn, item: item} do
+      assert item.status == 0
+      get(conn, ~p'/items/toggle/#{item.id}')
+      toggled_item = Todo.get_item!(item.id)
+      assert toggled_item.status == 1
+    end
+  end
+
   defp create_item(_) do
-    item = item_fixture()
+    item = item_fixture(@create_attrs)
     %{item: item}
   end
 end

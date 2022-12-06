@@ -18,7 +18,14 @@ defmodule App.Todo do
 
   """
   def list_items do
-    Repo.all(Item)
+    query =
+      from(
+        i in Item,
+        select: i,
+        order_by: [asc: i.id]
+      )
+
+    Repo.all(query)
   end
 
   @doc """

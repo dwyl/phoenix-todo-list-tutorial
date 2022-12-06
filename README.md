@@ -1166,8 +1166,45 @@ e.g: 0 to 1 and 1 to 0.
 2. `toggle/2` the handler function for HTTP requests
 to toggle the status of an item.
 
-Open the `test/app_web/controllers/item_controller_test.exs` file
-and append the following code to the end:
+Open the `test/app_web/controllers/item_controller_test.exs` file.
+We are going to make some changes here
+so we can add tests to the functions we
+mentioned prior.
+We are going to import `App.Todo` 
+inside `item_controller_test.exs` 
+and fix create and attribute constants 
+to create mock items.
+Make sure the beginning of the 
+file looks like so.
+
+```elixir
+defmodule AppWeb.ItemControllerTest do
+  use AppWeb.ConnCase
+  alias App.Todo
+
+  import App.TodoFixtures
+
+  @create_attrs %{person_id: 42, status: 0, text: "some text"}
+  @update_attrs %{person_id: 43, status: 1, text: "some updated text"}
+  @invalid_attrs %{person_id: nil, status: nil, text: nil}
+```
+
+After this, locate `defp create_item()/1`
+function inside the same file. 
+Change it so it looks like so.
+
+```elixir
+  defp create_item(_) do
+    item = item_fixture(@create_attrs)
+    %{item: item}
+  end
+```
+
+We are going to be using this function
+to create `Item` objects 
+to use in the tests we are going to add.
+Speaking of which, let's do that!
+Add the following snippet to the file.
 
 ```elixir
 describe "toggle updates the status of an item 0 > 1 | 1 > 0" do
@@ -1184,7 +1221,7 @@ describe "toggle updates the status of an item 0 > 1 | 1 > 0" do
 
   test "toggle/2 updates an item.status 0 > 1", %{conn: conn, item: item} do
     assert item.status == 0
-    get(conn, Routes.item_path(conn, :toggle, item.id))
+    get(conn, ~p'/items/toggle/#{item.id}')
     toggled_item = Todo.get_item!(item.id)
     assert toggled_item.status == 1
   end
@@ -1203,18 +1240,19 @@ Open the
 file and add the following functions to it:
 
 ```elixir
-def toggle_status(item) do
-  case item.status do
-    1 -> 0
-    0 -> 1
+  def toggle_status(item) do
+    case item.status do
+      1 -> 0
+      0 -> 1
+    end
   end
-end
 
-def toggle(conn, %{"id" => id}) do
-  item = Todo.get_item!(id)
-  Todo.update_item(item, %{status: toggle_status(item)})
-  redirect(conn, to: Routes.item_path(conn, :index))
-end
+  def toggle(conn, %{"id" => id}) do
+    item = Todo.get_item!(id)
+    Todo.update_item(item, %{status: toggle_status(item)})
+    conn
+    |> redirect(to: ~p"/items")
+  end
 ```
 
 e.g:
@@ -1262,18 +1300,31 @@ Finished in 0.5 seconds
 Now that our tests are passing,
 it's time actually _use_ all this functionality we have been building
 in the UI.
-Open the `/lib/app_web/templates/item/index.html.eex` file
+Open the `/lib/app_web/controllers/item_html/index.html.eex` file
 and locate the line:
 
 ```html
-<input <%= checked(item) %> class="toggle" type="checkbox">
+<%= if item.status == 1 do %>
+...
+<% else %>
+...
+<% end %>
 ```
 
 Replace it with the following:
 
 ```html
-<a href="<%= Routes.item_path(@conn, :toggle, item.id) %>"
-  class="toggle <%= checked(item) %>"></a>
+  <%= if item.status == 1 do %>
+    <.link href={~p"/items/toggle/#{item.id}"}
+        class="toggle checked">
+        type="checkbox"
+    </.link>
+  <% else %>
+    <.link href={~p"/items/toggle/#{item.id}"}
+        type="checkbox"
+        class="toggle">
+    </.link>
+  <% end %>
 ```
 
 When this link is clicked
@@ -1292,7 +1343,8 @@ we defined above.
 ### 7.5 Add a `.checked` CSS to `app.scss`
 
 
-Unfortunately, `<a>` tags cannot have a `:checked` pseudo selector,
+Unfortunately, `<a>` tags (that are generated with `<.link>`)
+cannot have a `:checked` pseudo selector,
 so the default TodoMVC styles that worked on the `<input>` tag
 will not work for the link.
 So we need to add a couple of lines of CSS to our `app.scss`.
@@ -1312,7 +1364,7 @@ After saving the file you should have:
 And when you view the app,
 the Toggle functionality is working as expected:
 
-![todo-app-toggle](https://user-images.githubusercontent.com/194400/82806639-1c888b80-9e7e-11ea-8053-8dd6a770a923.gif)
+![todo-app-toggle](https://user-images.githubusercontent.com/17494745/205961019-141d4488-3856-4c1e-b846-6ef52252c7d1.gif)
 
 
 **Implementation Note**: we are very deliberately
