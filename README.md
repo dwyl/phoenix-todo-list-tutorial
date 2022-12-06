@@ -749,25 +749,30 @@ http://localhost:4000/items/new
 We want the person to be able to create a new item
 without having to navigate to a different page.
 In order to achieve that goal,
-we will include the `form.html` template (_partial_)
-inside the `index.html` template. e.g:
+we will include the 
+`lib/app_web/controllers/item_html/new.html.heex`
+template (_partial_)
+inside the 
+`lib/app_web/controllers/item_html/index.html.heex`
+template. e.g:
 
-```elixir
-<%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
-```
-
-Before we can do that, we need to tidy up the `form.html`
+Before we can do that, we need to tidy up the `new.html.heex`
 template to remove the fields we don't _need_.
 
-Let's open `lib/app_web/templates/item/form.html.eex`
+Let's open `lib/app_web/controllers/item_html/new.html.heex`
 and simplify it to just the essential field `:text`:
 
 ```elixir
-<%= form_for @changeset, @action, fn f -> %>
-  <%= text_input f, :text, placeholder: "what needs to be done?",
-    class: "new-todo", autofocus: "" %>
-  <div style="display: none;"> <%= submit "Save" %> </div>
-<% end %>
+<.simple_form :let={f} for={@changeset} action={~p"/items"}>
+  <.input
+    field={{f, :text}}
+    type="text"
+    placeholder="what needs to be done?"
+  />
+  <:actions>
+    <.button style="display:none">Save Item</.button>
+  </:actions>
+</.simple_form>
 ```
 
 > Before:
@@ -775,12 +780,52 @@ and simplify it to just the essential field `:text`:
 > After:
 [`/lib/app_web/templates/item/form.html.eex#L2-L3`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/50a6f9ab9e2cb7d9ed3023fc64590992a2ee73af/lib/app_web/templates/item/form.html.eex#L2-L3)
 
+We need to additionally
+change the style of the `<.input>` tag.
+With Phoenix, inside the
+`lib/app_web/components/core_components.ex` file,
+the styles are defined for pre-built components
+(which is the case with `<.input>`).
+
+To change this so it uses the same style as TodoMVC,
+locate the following line.
+
+```elixir
+def input(assigns) do
+```
+
+Change the class attribute
+with the `new-todo` class.
+This function should look like the following.
+
+```elixir
+  def input(assigns) do
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <.label for={@id}><%= @label %></.label>
+      <input
+        type={@type}
+        name={@name}
+        id={@id || @name}
+        value={@value}
+        class={[
+          input_border(@errors),
+          "new-todo"
+        ]}
+        {@rest}
+      />
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+```
+
 
 If you run the Phoenix App now and visit
 [http://localhost:4000/items/new](http://localhost:4000/items/new)
 you will see the _single_ `:text` input field and no "Save" button:
 
-![new-item-single-text-field-no-save-button](https://user-images.githubusercontent.com/194400/82753057-a7a04d80-9dba-11ea-9a08-3d904702e1e8.png)
+![new-item-single-text-field-no-save-button](https://user-images.githubusercontent.com/17494745/205731473-4a9ce3b2-c902-4b66-9bdc-e64165f22841.png)
 
 Don't worry, you can still submit the form with <kbd>Enter</kbd> (Return) key.
 However if you attempt to submit the form now,
@@ -791,7 +836,7 @@ Let's fix that.
 ### 5.1 Update the `items` Schema to Set `default` Values
 
 Given that we have removed two of the fields (`:person_id` and `:status`)
-from the `form.html.eex`,
+from the `new.html.eex`,
 we need to ensure there are default values for these in
 the schema.
 Open the `lib/app/todo/item.ex` file
@@ -839,7 +884,7 @@ if you submit the `/items/new` form it will succeed.
 
 ### 5.2 Update `index/2` in `ItemController`
 
-In order to in-line the new item form (`form.html.eex`)
+In order to in-line the new item form (`new.html.eex`)
 in the `index.html.eex` template,
 we need to update the `AppWeb.ItemController.index/2`
 to include a Changeset.
@@ -865,14 +910,14 @@ You will not _see_ any change in the UI or tests after this step.
 Just move on to 5.3 where the "aha" moment happens.
 
 
-### 5.3 Render The `form.html.eex` inside `index.html.eex`
+### 5.3 Render The `new.html.eex` inside `index.html.eex`
 
 Now that we have done all the preparation work,
-the next step is to render the `form.html.eex` (_partial_)
+the next step is to render the `new.html.eex` (_partial_)
 inside `index.html.eex` template.
 
-Open the `lib/app_web/templates/item/index.html.eex` file
-and locate the line:
+Open the `lib/app_web/controllers/item_html/index.html.heex`
+file and locate the line:
 
 ```html
 <input class="new-todo" placeholder="What needs to be done?" autofocus="">

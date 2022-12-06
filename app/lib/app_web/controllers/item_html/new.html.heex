@@ -1,18 +1,10 @@
-<.header>
-  New Item
-  <:subtitle>Use this form to manage item records in your database.</:subtitle>
-</.header>
-
 <.simple_form :let={f} for={@changeset} action={~p"/items"}>
-  <.error :if={@changeset.action}>
-    Oops, something went wrong! Please check the errors below.
-  </.error>
-  <.input field={{f, :text}} type="text" label="text" />
-  <.input field={{f, :person_id}} type="number" label="person_id" />
-  <.input field={{f, :status}} type="number" label="status" />
+  <.input
+    field={{f, :text}}
+    type="text"
+    placeholder="what needs to be done?"
+  />
   <:actions>
-    <.button>Save Item</.button>
+    <.button style="display:none">Save Item</.button>
   </:actions>
 </.simple_form>
-
-<.back navigate={~p"/items"}>Back to items</.back>
