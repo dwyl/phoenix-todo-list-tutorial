@@ -1078,7 +1078,7 @@ we can create new items and they appear in our list.
 In this step we are going to enhance the UI to include
 the count of remaining items in the bottom left corner.
 
-Open the `test/app_web/views/item_view_test.exs` file
+Open the `test/app_web/controllers/item_html_test.exs` file
 and create the following two tests:
 
 ```elixir
@@ -1088,23 +1088,23 @@ test "remaining_items/1 returns count of items where item.status==0" do
     %{text: "two", status: 0},
     %{text: "done", status: 1}
   ]
-  assert ItemView.remaining_items(items) == 2
+  assert ItemHTML.remaining_items(items) == 2
 end
 
 test "remaining_items/1 returns 0 (zero) when no items are status==0" do
   items = []
-  assert ItemView.remaining_items(items) == 0
+  assert ItemHTML.remaining_items(items) == 0
 end
 ```
 
 e.g:
 [`/test/app_web/views/item_view_test.exs#L21-L34`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/500775a87f61ce63f7845c054996a27bb1689098/test/app_web/views/item_view_test.exs#L21-L34)
 
-These tests will fail because the `ItemView.remaining_items/1`
+These tests will fail because the `ItemHTML.remaining_items/1`
 function does not exist.
 
 Make the tests _pass_ by adding the following code to
-the `lib/app_web/views/item_view.ex` file:
+the `lib/app_web/controllers/item_html.ex` file:
 
 ```elixir
 # returns integer value of items where item.status == 0 (not "done")
@@ -1118,7 +1118,7 @@ e.g:
 
 Now that the tests are passing,
 _use_ the `remaining_items/1` in the `index.html` template.
-Open the `lib/app_web/templates/item/index.html.eex` file
+Open the `lib/app_web/controllers/item_html/index.html.eex` file
 and locate the line of code:
 
 ```html
@@ -1130,7 +1130,7 @@ Replace it with this line:
 <span class="todo-count"><%= remaining_items(@items) %> items left</span>
 ```
 
-This just invokes the `ItemView.remaining_items/1` function
+This just invokes the `ItemHTML.remaining_items/1` function
 with the List of `@items` which will return the integer count
 of remaining items that have not yet been "done".
 
@@ -1142,7 +1142,7 @@ At this point the (remaining) items counter
 in the bottom left of the TodoMVC UI is _working_! <br />
 Add a `new` item to your list and watch the count increase:
 
-![item-count-increases-to-2](https://user-images.githubusercontent.com/194400/82764853-fd501680-9e09-11ea-980e-d3bac18c8a33.gif)
+![item-count-increases-to-2](https://user-images.githubusercontent.com/17494745/205924061-36d9bd5a-7884-4ca7-8237-669a97a73e75.gif)
 
 That was easy enough let's try something a bit more advanced! <br />
 Take a break and grab yourself a fresh glass of water,
