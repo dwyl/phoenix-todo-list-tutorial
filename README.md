@@ -1719,7 +1719,8 @@ Your `item_controller.ex` file should now look like this:
 ### 8.4 Update the Tests in `ItemControllerTest`
 
 In our quest to build a _Single_ Page App,
-we broke another test! That's OK. It's easy to fix.
+we broke a few tests! That's OK. 
+They're easy to fix.
 
 Open the
 `test/app_web/controllers/item_controller_test.exs`
@@ -1749,20 +1750,50 @@ e.g:
 Next, locate the test with the following description:
 
 ```elixir
-test "redirects when data is valid"
+describe "update item"
 ```
 
-Update the assertion from:
+Update the block to the following
+piece of code.
 
 ```elixir
-assert redirected_to(conn) == Routes.item_path(conn, :show, item)
+describe "update item" do
+  setup [:create_item]
+
+  test "redirects when data is valid", %{conn: conn, item: item} do
+    conn = put(conn, ~p"/items/#{item}", item: @update_attrs)
+    assert redirected_to(conn) == ~p"/items/"
+
+    conn = get(conn, ~p"/items/")
+    assert html_response(conn, 200) =~ "some updated text"
+  end
+end
 ```
 
-To:
+We've updated the paths the application redirects to
+after updating an item. 
+Since we are building a single-page application,
+that path pertains to the `/items/` URL path.
+
+There is one test that is failing.
+Locate the test with the following text.
+
+`test "renders form for editing chosen item"`
+
+and change it so it looks like the following.
 
 ```elixir
-assert redirected_to(conn) == Routes.item_path(conn, :index)
+  test "renders form for editing chosen item", %{conn: conn, item: item} do
+    conn = get(conn, ~p"/items/#{item}/edit")
+    assert html_response(conn, 200) =~ "Click here to create a new item"
+  end
 ```
+
+When we enter the "edit timer mode",
+we create `<a>` a link to return to `/items`,
+as we have previously implemented.
+This tag has the "Click here to create a new item" text,
+which is what we are asserting.
 
 e.g:
 [`test/app_web/controllers/item_controller_test.exs#L60`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32ba6ea2a78f0317519a18c133e3c7e8c4eaf9c7/test/app_web/controllers/item_controller_test.exs#L60)
@@ -1791,7 +1822,7 @@ from the `index.html.eex` template.
 
 <img width="872" alt="phoenix-todo-list-table-layout" src="https://user-images.githubusercontent.com/194400/83200932-54245b80-a13c-11ea-92a3-6b55fc2b2652.png">
 
-Open the `lib/app_web/templates/item/index.html.eex` file
+Open the `lib/app_web/controllers/item_html/index.html.eex` file
 and remove all code before the line:
 ```html
 <section class="todoapp">

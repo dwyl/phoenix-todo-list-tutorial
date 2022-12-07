@@ -11,7 +11,7 @@ defmodule AppWeb.ItemControllerTest do
   describe "index" do
     test "lists all items", %{conn: conn} do
       conn = get(conn, ~p"/items")
-      assert html_response(conn, 200) =~ "Listing Items"
+      assert html_response(conn, 200) =~ "todos"
     end
   end
 
@@ -36,7 +36,7 @@ defmodule AppWeb.ItemControllerTest do
 
     test "renders form for editing chosen item", %{conn: conn, item: item} do
       conn = get(conn, ~p"/items/#{item}/edit")
-      assert html_response(conn, 200) =~ "Edit Item"
+      assert html_response(conn, 200) =~ "Click here to create a new item"
     end
   end
 
@@ -45,15 +45,10 @@ defmodule AppWeb.ItemControllerTest do
 
     test "redirects when data is valid", %{conn: conn, item: item} do
       conn = put(conn, ~p"/items/#{item}", item: @update_attrs)
-      assert redirected_to(conn) == ~p"/items/#{item}"
+      assert redirected_to(conn) == ~p"/items/"
 
-      conn = get(conn, ~p"/items/#{item}")
+      conn = get(conn, ~p"/items/")
       assert html_response(conn, 200) =~ "some updated text"
-    end
-
-    test "renders errors when data is invalid", %{conn: conn, item: item} do
-      conn = put(conn, ~p"/items/#{item}", item: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Edit Item"
     end
   end
 
