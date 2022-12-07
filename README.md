@@ -2150,17 +2150,17 @@ the "***1 items left***" in the bottom left corner:
 
 ![phoenix-todo-pluralisation-BEFORE](https://user-images.githubusercontent.com/194400/83249677-dc3b4d00-a19e-11ea-8176-2f38725c3b50.png)
 
-Open your `test/app_web/views/item_view_test.exs` file
+Open your `test/app_web/controllers/item_html_test.exs` file
 and add the following test:
 
 ```elixir
 test "pluralise/1 returns item for 1 item and items for < 1 <" do
-  assert ItemView.pluralise([%{text: "one", status: 0}]) == "item"
-  assert ItemView.pluralise([
+  assert ItemHTML.pluralise([%{text: "one", status: 0}]) == "item"
+  assert ItemHTML.pluralise([
     %{text: "one", status: 0},
     %{text: "two", status: 0}
   ]) == "items"
-  assert ItemView.pluralise([%{text: "one", status: 1}]) == "items"
+  assert ItemHTML.pluralise([%{text: "one", status: 1}]) == "items"
 end
 ```
 
@@ -2168,11 +2168,11 @@ e.g:
 [`test/app_web/views/item_view_test.exs#L41-L47`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/45ac34efe681fe2b6b54a0b352d76b4b24785ed0/test/app_web/views/item_view_test.exs#L41-L47)
 
 
-This test will obviously _fail_ because the
-`AppWeb.ItemView.pluralise/1` is undefined.
+This test will obviously fail because the
+`AppWeb.ItemHTML.pluralise/1` is undefined.
 Let's make it pass!
 
-Open your `lib/app_web/views/item_view.ex` file
+Open your `lib/app_web/controllers/item_html.ex` file
 and add the following function definition for `pluralise/1`:
 
 ```elixir

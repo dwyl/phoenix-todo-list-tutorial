@@ -56,7 +56,9 @@
     </ul>
   </section>
   <footer class="footer" style="display: block;">
-    <span class="todo-count"><%= remaining_items(@items) %> items left</span>
+    <span class="todo-count">
+      <%= remaining_items(@items) %> <%= pluralise(@items) %> left
+    </span>
     <ul class="filters">
 
       <li>
