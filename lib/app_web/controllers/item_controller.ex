@@ -12,7 +12,12 @@ defmodule AppWeb.ItemController do
     end
     items = Todo.list_items()
     changeset = Todo.change_item(item)
-    render(conn, "index.html", items: items, changeset: changeset, editing: item)
+    render(conn, "index.html",
+    items: items,
+    changeset: changeset,
+    editing: item,
+    filter: Map.get(params, "filter", "all")
+    )
   end
 
   def new(conn, _params) do

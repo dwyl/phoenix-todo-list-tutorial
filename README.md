@@ -1883,7 +1883,7 @@ Open the `lib/app_web/router.ex` and
 add the following route:
 
 ```elixir
-get "/:filter", ItemController, :index
+get "/items/:filter", ItemController, :index
 ```
 
 e.g:
@@ -1916,19 +1916,20 @@ so when `index.html` is rendered, show "all" items.
 
 <br />
 
-### 9.3 Create `filter/2` and `selected/2` View Functions
+### 9.3 Create `filter/2` View Function
 
 In order to filter the items by their status,
 we need to create a new function. <br />
-Open the `lib/app_web/views/item_view.ex` file
+Open the `lib/app_web/controllers/item_html.ex` file
 and create the `filter/2` function as follows:
 
 ```elixir
 def filter(items, str) do
   case str do
-    "all" -> items
+    "items" -> items
     "active" -> Enum.filter(items, fn i -> i.status == 0 end)
     "completed" -> Enum.filter(items, fn i -> i.status == 1 end)
+    _ -> items
   end
 end
 ```
@@ -1938,34 +1939,12 @@ e.g:
 
 This will allow us to filter the items in the next step.
 
-The other view function we need,
-will help our view know which filter is selected
-so that the UI can reflect it correctly.
-Add the following definition for `selected/2`:
-
-```elixir
-def selected(filter, str) do
-  case filter == str do
-    true -> "selected"
-    false -> ""
-  end
-end
-```
-
-e.g:
-[`lib/app_web/views/item_view.ex#L36-L41`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b27b0c9eb63afccf114c3b9af3d9236ded2ea638/lib/app_web/views/item_view.ex#L36-L41)
-
-This will set the "selected" class
-which will select the appropriate tab
-in the footer navigation.
-
-
 <br />
 
 ### 9.4 Update the Footer in the `index.html` Template
 
 Use the `filter/2` function to filter the items that are displayed.
-Open the `lib/app_web/templates/item/index.html.eex` file
+Open the `lib/app_web/controllers/item_html/index.html.eex` file
 and locate the `for` loop line:
 
 ```elixir
@@ -1991,24 +1970,47 @@ of the
 with the following code:
 
 ```elixir
-<li>
-  <a href="/items" class='<%= selected(@filter, "all") %>'>
-    All
-  </a>
-</li>
-<li>
-  <a href="/active" class='<%= selected(@filter, "active") %>'>
-    Active
-    [<%= Enum.count(filter(@items, "active")) %>]
-  </a>
-</li>
-<li>
-  <a href="/completed" class='<%= selected(@filter, "completed") %>'>
-    Completed
-    [<%= Enum.count(filter(@items, "completed")) %>]
-  </a>
-</li>
+  <li>
+    <%= if @filter == "items" do %>
+      <a href="/items" class='selected'>
+        All
+      </a>
+    <% else %>
+      <a href="/items">
+        All
+      </a>
+    <% end %>
+  </li>
+  <li>
+    <%= if @filter == "active" do %>
+      <a href="/items/active" class='selected'>
+        Active
+        [<%= Enum.count(filter(@items, "active")) %>]
+      </a>
+    <% else %>
+      <a href="/items/active">
+        Active
+        [<%= Enum.count(filter(@items, "active")) %>]
+      </a>
+    <% end %>
+  </li>
+  <li>
+    <%= if @filter == "completed" do %>
+      <a href="/items/completed" class='selected'>
+        Completed
+        [<%= Enum.count(filter(@items, "completed")) %>]
+      </a>
+    <% else %>
+      <a href="/items/completed">
+        Completed
+        [<%= Enum.count(filter(@items, "completed")) %>]
+      </a>
+    <% end %>
+  </li>
 ```
+
+We are conditionally adding the `selected` class
+according to the `@filter` assign value. 
 
 e.g:
 [`/lib/app_web/templates/item/index.html.eex#L46-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/c613567b6eb85e62c1be4a1ffe0e02b7fdd8754a/lib/app_web/templates/item/index.html.eex#L46-L64)
