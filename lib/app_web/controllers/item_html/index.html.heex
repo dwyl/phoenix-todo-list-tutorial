@@ -58,7 +58,7 @@
   <footer class="footer" style="display: block;">
     <span class="todo-count"><%= remaining_items(@items) %> items left</span>
     <ul class="filters">
-    
+
       <li>
         <%= if @filter == "items" do %>
           <a href="/items" class='selected'>
@@ -98,8 +98,9 @@
       </li>
 
     </ul>
-    <button class="clear-completed" style="display: block;">
+    <a class="clear-completed" href="/items/clear">
       Clear completed
-    </button>
+      [<%= Enum.count(filter(@items, "completed")) %>]
+    </a>
   </footer>
 </section>

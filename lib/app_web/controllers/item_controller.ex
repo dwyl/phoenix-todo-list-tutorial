@@ -3,6 +3,8 @@ defmodule AppWeb.ItemController do
 
   alias App.Todo
   alias App.Todo.Item
+  import Ecto.Query
+  alias App.Repo
 
   def index(conn, params) do
     item = if not is_nil(params) and Map.has_key?(params, "id") do
@@ -80,5 +82,13 @@ defmodule AppWeb.ItemController do
     Todo.update_item(item, %{status: toggle_status(item)})
     conn
     |> redirect(to: ~p"/items")
+  end
+
+  def clear_completed(conn, _param) do
+    person_id = 0
+    query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
+    Repo.update_all(query, set: [status: 2])
+    # render the main template:
+    index(conn, %{filter: "items"})
   end
 end

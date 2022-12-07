@@ -2032,7 +2032,21 @@ Open your `lib/app_web/router.ex` file
 and add the following route:
 
 ```elixir
-get "/clear", ItemController, :clear_completed
+get "/items/clear", ItemController, :clear_completed
+```
+
+Your `scope "/"` should now look like the following:
+
+```elixir
+  scope "/", AppWeb do
+    pipe_through :browser
+
+    get "/", PageController, :home
+    get "/items/toggle/:id", ItemController, :toggle
+    get "/items/clear", ItemController, :clear_completed
+    get "/items/:filter", ItemController, :index
+    resources "/items", ItemController
+  end
 ```
 
 e.g:
@@ -2072,17 +2086,19 @@ which for the purposes of our example means they are "archived".
 https://adamdelong.com/bulk-update-ecto
 
 
-Finally, in the `lib/app_web/templates/item/index.html.eex`
+Finally, in the `lib/app_web/controllers/item_html/index.html.eex`
 scroll to the bottom of the file and replace the line:
 
 ```elixir
-<button class="clear-completed" style="display: block;">Clear completed</button>
+<button class="clear-completed" style="display: block;">
+  Clear completed
+</button>
 ```
 
 With:
 
 ```elixir
-<a class="clear-completed" href="/clear">
+<a class="clear-completed" href="/items/clear">
   Clear completed
   [<%= Enum.count(filter(@items, "completed")) %>]
 </a>
@@ -2091,6 +2107,24 @@ With:
 e.g:
 [`lib/app_web/templates/item/index.html.eex#L65-L68`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/69b4d2c5f6e8bc9ab9eea0db131bec34e6f8bc9a/lib/app_web/templates/item/index.html.eex#L65-L68)
 
+The last thing we need to do is to 
+update the `filter/2` function 
+inside `lib/app_web/controllers/item_html.ex`.
+Since `status = 2` now pertains to an **archived** state,
+we want to return anything that is not archived.
+
+Change the `filter/2` function so it looks like so.
+
+```elixir
+def filter(items, str) do
+  case str do
+    "items" -> Enum.filter(items, fn i -> i.status !== 2 end)
+    "active" -> Enum.filter(items, fn i -> i.status == 0 end)
+    "completed" -> Enum.filter(items, fn i -> i.status == 1 end)
+    _ -> Enum.filter(items, fn i -> i.status !== 2 end)
+  end
+end
+```
 
 At the end of this section your Todo List
 should have the "Clear completed" function working:
