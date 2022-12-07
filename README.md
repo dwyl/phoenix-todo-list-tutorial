@@ -717,9 +717,8 @@ Replace the _contents_ of the `<ul>` with the following:
       <label><%= item.text %></label>
       <.link
         class="destroy"
-        navigate={~p"/items/#{item.id}"}
+        href={~p"/items/#{item}"}
         method="delete"
-        data-confirm="Are you sure?"
       >
       </.link>
     </div>

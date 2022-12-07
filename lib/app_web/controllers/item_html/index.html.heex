@@ -51,9 +51,8 @@
           <label><%= item.text %></label>
           <.link
             class="destroy"
-            navigate={~p"/items/#{item.id}"}
+            href={~p"/items/#{item}"}
             method="delete"
-            data-confirm="Are you sure?"
           >
           </.link>
         </div>
