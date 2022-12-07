@@ -4,10 +4,15 @@ defmodule AppWeb.ItemController do
   alias App.Todo
   alias App.Todo.Item
 
-  def index(conn, _params) do
+  def index(conn, params) do
+    item = if not is_nil(params) and Map.has_key?(params, "id") do
+      Todo.get_item!(params["id"])
+    else
+      %Item{}
+    end
     items = Todo.list_items()
-    changeset = Todo.change_item(%Item{})
-    render(conn, "index.html", items: items, changeset: changeset)
+    changeset = Todo.change_item(item)
+    render(conn, "index.html", items: items, changeset: changeset, editing: item)
   end
 
   def new(conn, _params) do
@@ -32,20 +37,17 @@ defmodule AppWeb.ItemController do
     render(conn, :show, item: item)
   end
 
-  def edit(conn, %{"id" => id}) do
-    item = Todo.get_item!(id)
-    changeset = Todo.change_item(item)
-    render(conn, :edit, item: item, changeset: changeset)
+  def edit(conn, params) do
+    index(conn, params)
   end
 
   def update(conn, %{"id" => id, "item" => item_params}) do
     item = Todo.get_item!(id)
 
     case Todo.update_item(item, item_params) do
-      {:ok, item} ->
+      {:ok, _item} ->
         conn
-        |> put_flash(:info, "Item updated successfully.")
-        |> redirect(to: ~p"/items/#{item}")
+        |> redirect(to: ~p"/items/")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :edit, item: item, changeset: changeset)

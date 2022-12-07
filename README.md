@@ -1454,71 +1454,131 @@ see:
 
 Let's get on with it!
 Open the
-`lib/app_web/templates/item/index.html.eex`
+`lib/app_web/controllers/item_html/index.html.eex`
 file and locate the line:
 
 ```elixir
-<%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+<%= new(Map.put(assigns, :action, ~p"/items/new")) %>
 ```
 
 Replace it with:
 
 ```elixir
 <%= if @editing.id do %>
-  <a href="<%= Routes.item_path(@conn, :index) %>" class="new-todo">
-    Click here to create a new item!
-  </a>
+  <.link href={~p"/items"}
+      method="get"
+      class="new-todo">
+      Click here to create a new item!
+  </.link>
 <% else %>
-  <%= render "form.html", Map.put(assigns, :action, Routes.item_path(@conn, :create)) %>
+  <%= new(Map.put(assigns, :action, ~p"/items/new")) %>
 <% end %>
 ```
 
-This code is the first `if/else` block in our project.
-It checks if we are editing an item,
-and renders a link instead of the form,
-we do this to avoid having multiple forms on the page.
+In here, we are checking if we are editing an item,
+and rendering a link instead of the form.
+We do this to avoid having multiple forms on the page.
 If we are _not_ editing an item,
-render the `form.html` as before.
+render the `new.html.heex` as before.
+With this, if the user is editing an item,
+he is able to "get out of editing mode"
+by clicking on the link that is rendered.
 
 e.g:
 [`lib/app_web/templates/item/index.html.eex#L35-L41`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/68f2a337a18e78f2bdfb98fe480b5e262c668844/lib/app_web/templates/item/index.html.eex#L35-L39)
 
-_Next_, still in the `index.html.eex` file,
+Next, still in the `index.html.eex` file,
 locate the line:
 
 ```html
-<div class="view">
+<%= for item <- @items do %>
 ```
 
-Replace the `<a>` tag with the following code:
+Replace the entire <li> tag
+with the following code.
 
 ```elixir
-<%= if item.id == @editing.id do %>
-  <%= render "form.html", Map.put(assigns, :action,
-    Routes.item_path(@conn, :update, item)) %>
-<% else %>
-  <a href="<%= Routes.item_path(@conn, :edit, item) %>" class="dblclick">
-    <label><%= item.text %></label>
-  </a>
-  <span></span> <!-- used for CSS Double Click -->
-<% end %>
+<li data-id={item.id} class={complete(item)}>
+    <%= if item.status == 1 do %>
+      <.link href={~p"/items/toggle/#{item.id}"}
+          class="toggle checked">
+          type="checkbox"
+      </.link>
+    <% else %>
+      <.link href={~p"/items/toggle/#{item.id}"}
+          type="checkbox"
+          class="toggle">
+      </.link>
+    <% end %>
+
+  <div class="view">
+    <%= if item.id == @editing.id do %>
+      <%= edit(
+        Map.put(assigns, :action, ~p"/items/#{item.id}/edit")
+        |> Map.put(:item, item)
+      ) %>
+    <% else %>
+      <.link href={~p"/items/#{item}/edit"} class="dblclick">
+        <label><%= item.text %></label>
+      </.link>
+      <span></span> <!-- used for CSS Double Click -->
+    <% end %>
+
+    <.link
+      class="destroy"
+      href={~p"/items/#{item}"}
+      method="delete"
+    >
+    </.link>
+  </div>
+</li>
 ```
 
 e.g:
 [`lib/app_web/templates/item/index.html.eex#L56-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/68f2a337a18e78f2bdfb98fe480b5e262c668844/lib/app_web/templates/item/index.html.eex#L56-L64)
 
-The `else` block renders a link (`<a>`),
-which when clicked will render the App in "edit" mode.
-We will make the adjustments to the controller
-to enable editing in the `index.html` template shortly.
-The `<span></span>` as the comment suggests,
-is only there for the CSS double-click effect.
+We have done a few things here.
+We changed the toggle button outside the 
+`<div class="view>` tag.
+Additionally, we have changed the text
+with a `if else` block statements.
+
+If the user is not editing,
+a link (`<a>`) is rendered which, 
+when clicked, allows the user to enter "edit" mode.
+On the other hand, if the user *is editing*,
+it renders the `edit.html.heex` file.
+
+Speaking of which, let's edit `edit.html.heex`
+so it renders what we want:
+a text field that, once `Enter` is pressed,
+edits the referring todo item.
+
+```html
+<.simple_form :let={f} for={@changeset} method="put" action={~p"/items/#{@item}"}>
+  <.input
+    field={{f, :text}}
+    type="text"
+    placeholder="what needs to be done?"
+    class="new-todo"
+  />
+  <:actions>
+    <.button
+    style="display: none;"
+    type="submit">
+      Save
+    </.button>
+  </:actions>
+  <!-- submit the form using the Return/Enter key -->
+</.simple_form>
+```
 
 <br />
 
 ### 8.2 Update `CSS` For Editing
 
-To enable the CSS double-click effect,
+To enable the CSS double-click effect
+to enter `edit` mode,
 we need to add the following CSS
 to our `assets/css/app.scss` file:
 
@@ -1626,6 +1686,28 @@ def index(conn, params) do
   items = Todo.list_items()
   changeset = Todo.change_item(item)
   render(conn, "index.html", items: items, changeset: changeset, editing: item)
+end
+```
+
+Finally, we need to handle the form submission
+to update an item (that is rendered in `edit.html.heex`).
+When we press `Enter`, the `update/2` handler is called
+inside `lib/app_web/controllers/item_controller.ex`.
+We want to stay on the same page after updating the item.
+So change it so it looks like this.
+
+```elixir
+def update(conn, %{"id" => id, "item" => item_params}) do
+  item = Todo.get_item!(id)
+
+  case Todo.update_item(item, item_params) do
+    {:ok, _item} ->
+      conn
+      |> redirect(to: ~p"/items/")
+
+    {:error, %Ecto.Changeset{} = changeset} ->
+      render(conn, :edit, item: item, changeset: changeset)
+  end
 end
 ```
 
