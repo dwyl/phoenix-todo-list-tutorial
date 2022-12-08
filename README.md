@@ -2239,7 +2239,7 @@ that creates
 in the user's mind.
 Let's fix it!
 
-Open your `lib/app_web/views/item_view.ex` file
+Open your `lib/app_web/controllers/item_html.ex` file
 and add the following function definition `unarchived_items/1`:
 
 ```elixir
