@@ -2284,9 +2284,9 @@ to change the Controller that gets invoked for the "homepage" (`/`)
 of our app.
 Currently when the person viewing the Todo App  
 visits [`http://localhost:4000/`](http://localhost:4000)
-they see the `lib/app_web/templates/page/index.html.eex` template:
+they see the `lib/app_web/controllers/page_html/home.html.eex` template:
 
-![page_template](https://user-images.githubusercontent.com/194400/83269042-6941ce80-a1be-11ea-80fa-73674576e928.png)
+![page_template](https://user-images.githubusercontent.com/17494745/206484573-3596814d-92ce-42a0-9817-30fc16ce74cc.png)
 
 This is the default Phoenix home page
 (_minus the CSS Styles and images that we removed in step 3.4 above_).
@@ -2299,7 +2299,7 @@ Open the `lib/app_web/router.ex` file and locate the line:
 get "/", PageController, :index
 ```
 
-Update the controller to: `ItemController` e.g:
+Update the controller to `ItemController`.
 
 ```elixir
 get "/", ItemController, :index
@@ -2331,8 +2331,8 @@ we might as well **`delete`** them from our project!
 
 ```sh
 git rm lib/app_web/controllers/page_controller.ex
-git rm lib/app_web/templates/page/index.html.eex
-git rm lib/app_web/views/page_view.ex
+git rm lib/app_web/controllers/page_html.ex
+git rm lib/app_web/page_html/home.html.heex
 git rm test/app_web/controllers/page_controller_test.exs
 ```
 

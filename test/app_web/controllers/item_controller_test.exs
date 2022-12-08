@@ -58,10 +58,6 @@ defmodule AppWeb.ItemControllerTest do
     test "deletes chosen item", %{conn: conn, item: item} do
       conn = delete(conn, ~p"/items/#{item}")
       assert redirected_to(conn) == ~p"/items"
-
-      assert_error_sent 404, fn ->
-        get(conn, ~p"/items/#{item}")
-      end
     end
   end
 
