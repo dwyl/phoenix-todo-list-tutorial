@@ -2454,11 +2454,6 @@ Thank you for learning with us! ☀️
 -->
 
 
-
-
-
-<br />
-
 ## Learning
 
 + Learn Elixir: https://github.com/dwyl/learn-elixir
