@@ -211,7 +211,8 @@ Now you can visit
 in your web browser.
 You should see something similar to:
 
-![welcome-to-phoenix](https://user-images.githubusercontent.com/194400/82494801-11caa100-9ae2-11ea-821d-8181580201cb.png)
+![welcome-to-phoenix](https://user-images.githubusercontent.com/17494745/206515843-2b4da196-f039-4caf-a4d2-fc316eabb2c5.png)
+
 
 Shut down the Phoenix server <kbd>ctrl</kbd>+<kbd>C</kbd>.
 
@@ -327,7 +328,7 @@ Follow the instructions noted by the generator to
 add the `resources "/items", ItemController` to the `router.ex`.
 
 Open the `lib/app_web/router.ex` file
-and locate the line: `scope "/", AppWeb do` <br />
+and locate the line: `scope "/", AppWeb do`.
 Add the line to the end of the block.
 e.g:
 
@@ -341,7 +342,7 @@ end
 ```
 
 Your `router.ex` file should look like this:
-[`router.ex#L20`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f66184b58b7dd1ef593680e7a1a446247909cae7/lib/app_web/router.ex#L20)
+[`router.ex#L20`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b158abd7f0c3fbc462a4230f07b5e5e79723a258/app/lib/app_web/router.ex#L17-L22)
 
 Now, as the terminal suggested,
 run `mix ecto.migrate`.
@@ -349,8 +350,6 @@ This will finish setting up the
 database tables and run the 
 necessary migrations so 
 everything works properly!
-
-<br />
 
 ### 2.2 _Run_ The App!
 
@@ -369,15 +368,15 @@ and input some data.
 
 Click the "Save Item" button
 and you will be redirected to the "show" page:
-[/items/1](http://localhost:4000/items/1)
+http://localhost:4000/items/1
 
 ![todo-list-phoenix-default-ui-show-item](https://user-images.githubusercontent.com/17494745/205615709-922db20e-245d-4af0-a5e3-2bbaa29771b4.png)
 
 This is not an attractive User Experience (UX),
 but it _works_!
-Here is a _list_ of items; a "Todo List".
+Here is a _list_ of items - a "Todo List".
 You can visit this by clicking
-the `back to items` button or by 
+the `Back to items` button or by 
 accessing the following URL
 http://localhost:4000/items.
 
@@ -386,16 +385,14 @@ http://localhost:4000/items.
 
 Let's improve the UX by using the TodoMVC `HTML` and `CSS`!
 
-<br />
-
 ### 3. Create the TodoMVC UI/UX
 
 To recreate the TodoMVC UI/UX,
 let's borrow the `HTML` code directly from the example.
 
 Visit: http://todomvc.com/examples/vanillajs
-add a couple of items to the list, <br />
-then inspect the source
+add a couple of items to the list.
+Then, inspect the source
 using your browser's
 [Dev Tools](https://developers.google.com/web/tools/chrome-devtools/open).
 e.g:
@@ -490,7 +487,7 @@ Then (_without removing the code that is already there_)
 paste the `HTML` code we sourced from TodoMVC.
 
 > e.g:
-[`/lib/app_web/templates/item/index.html.eex#L33-L73`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bddacda93ecd892fe0907210bab335e6b6e5e489/lib/app_web/templates/item/index.html.eex#L33-L73)
+[`/lib/app_web/controllers/item_html/index.html.eex#L27-L73`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8bcc3239d975f5b706514d1a88ea47ca57e5239a/lib/app_web/controllers/item_html/index.html.heex#L27-L73)
 
 If you attempt to run the app now
 and visit
@@ -512,7 +509,7 @@ http://todomvc.com/examples/vanillajs/node_modules/todomvc-app-css/index.css <br
 and save the file to `/assets/css/todomvc-app.css`.
 
 e.g:
-[`/assets/css/todomvc-app.css`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/65bec23b92307527a414f77b667b29ea10619e5a/assets/css/todomvc-app.css)
+[`/assets/css/todomvc-app.css`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/assets/css/todomvc-app.css)
 
 <br />
 
@@ -527,13 +524,13 @@ Open the `assets/css/app.scss` file and replace it with the following:
 ```
 
 e.g:
-[`/assets/css/app.scss#L3`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/5fd673089be616c9bb783277ae2d4f0e310b8413/assets/css/app.scss#L3)
+[`/assets/css/app.scss#L4`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8bcc3239d975f5b706514d1a88ea47ca57e5239a/assets/css/app.css#L4)
 
 <br />
 
 ### 3.4 _Simplify_ The Layout Template
 
-Open your `lib/app_web/components/layout/app.html.eex` file
+Open your `lib/app_web/components/layouts/app.html.eex` file
 and replace the contents with the following code:
 
 ```html
@@ -557,9 +554,9 @@ and replace the contents with the following code:
 
 
 > Before:
-[`/lib/app_web/templates/layout/app.html.eex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bddacda93ecd892fe0907210bab335e6b6e5e489/lib/app_web/templates/layout/app.html.eex) <br />
+[`lib/app_web/components/layouts/app.html.eex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bddacda93ecd892fe0907210bab335e6b6e5e489/lib/app_web/templates/layout/app.html.eex) <br />
 > After:
-[`/lib/app_web/templates/layout/app.html.eex#L12`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/lib/app_web/templates/layout/app.html.eex#L12)
+[`lib/app_web/components/layouts/app.html.eex#L12`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8bcc3239d975f5b706514d1a88ea47ca57e5239a/lib/app_web/components/layouts/app.html.heex#L12)
 
 `<%= @inner_content %>` is where the Todo App will be rendered.
 
@@ -578,7 +575,7 @@ with great UX!
 
 
 With the layout template saved,
-the TodoMVC CSS file saved to `/asssets/css/todomvc-app.css`
+the TodoMVC CSS file saved to `/assets/css/todomvc-app.css`
 and the `todomvc-app.css` imported in `app.scss`,
 your `/items` page should now look like this:
 
@@ -589,34 +586,33 @@ So our Todo List is starting to look like TodoMVC,
 but it's still just a dummy list.
 
 
-<br />
-
 ### 4. Render _Real_ Data in the TodoMVC Layout
 
 In order to render out `item` data
-in the TodOMVC template, 
+in the TodoMVC template, 
 we are going to need to add
 a few functions. 
 When we created the project
-and generated the `item` concept,
+and generated the `item` model,
 a controller was created 
 (located in `lib/app_web/controllers/item_controller.ex`)
-and a component as well
+and a component/view as well
 (located in `lib/app_web/controllers/item_html.ex`).
-This [**Component**](https://hexdocs.pm/phoenix/1.7.0-rc.0/components.html)
+This [**Component/View**](https://hexdocs.pm/phoenix/1.7.0-rc.0/components.html)
 is what effectively 
-renders the contents inside the
+controls the rendering of the 
+contents inside the
 `lib/app_web/controllers/item_html`
 directory that we tinkered with prior.
 
-We know what to make changes to the UI,
+We know that we need make changes to the UI,
 so we are going to add a few functions in this component
 (which is akin to the *View* part of the MVC paradigm).
 
 This is our first chance to do a bit of Test Driven Development (TDD). <br />
 Create a new file with the path `test/app_web/controllers/item_html_test.exs`.
 
-Type (_or paste_) the following code into the file:
+Type the following code into the file:
 
 ```elixir
 defmodule AppWeb.ItemHTMLTest do
@@ -633,9 +629,8 @@ defmodule AppWeb.ItemHTMLTest do
 end
 ```
 
-//CHANGEHERE
 e.g:
-[`/test/app_web/views/item_view_test.exs`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/test/app_web/views/item_view_test.exs)
+[`/test/app_web/controllers/item_html_test.exs`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8bcc3239d975f5b706514d1a88ea47ca57e5239a/test/app_web/controllers/item_html_test.exs)
 
 
 If you attempt to run this test file:
@@ -696,7 +691,7 @@ Now that we have created these two view functions,
 and our tests are passing,
 let's _use_ them in our template!
 
-Open the `lib/app_web/templates/item/index.html.eex` file
+Open the `lib/app_web/controllers/item_html/index.html.eex` file
 and locate the line:
 
 ```html
@@ -727,13 +722,13 @@ Replace the _contents_ of the `<ul>` with the following:
 ```
 
 e.g:
-[`/lib/app_web/templates/item/index.html.eex#L43-L53`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1fbea19f0b2b74baa4c88ad1518bf2291507b499/lib/app_web/templates/item/index.html.eex#L41-L55)
+[`lib/app_web/controllers/item_html/index.html.heex#L43-L53`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3c04ee39df621cac200b4d3b45ad4045e67e388b/lib/app_web/controllers/item_html/index.html.heex#L36-L56)
 
 
 With those two files saved,
 if you run the app now: `mix phx.server`
-and visit [`/items`](http://localhost:4000/items) <br />
-You will see the _real_ `items` you created in step 2.2 (above):
+and visit http://localhost:4000/items. <br />
+You will see the _real_ `items` you created in step 2.2 above:
 
 ![todo-list-real-items](https://user-images.githubusercontent.com/17494745/205710983-e079f021-c91d-4be8-9a5e-0a6b0bc85fb8.png)
 
@@ -741,7 +736,6 @@ You will see the _real_ `items` you created in step 2.2 (above):
 Now that we have our items rendering in the TodoMVC layout,
 let's work on creating new items in the "single page app" style.
 
-<br />
 
 ### 5. In-line the New Item Creation Form
 
@@ -779,9 +773,9 @@ and simplify it to just the essential field `:text`:
 ```
 
 > Before:
-[`/lib/app_web/templates/item/form.html.eex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/cc287975eef5ca8b738f49723fe8a03d9da52a19/lib/app_web/templates/item/form.html.eex) <br />
+[`/lib/app_web/controllers/item_html/new.html.heex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b158abd7f0c3fbc462a4230f07b5e5e79723a258/app/lib/app_web/controllers/item_html/new.html.heex) <br />
 > After:
-[`/lib/app_web/templates/item/form.html.eex#L2-L3`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/50a6f9ab9e2cb7d9ed3023fc64590992a2ee73af/lib/app_web/templates/item/form.html.eex#L2-L3)
+[`/lib/app_web/controllers/item_html/new.html.heex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8bcc3239d975f5b706514d1a88ea47ca57e5239a/lib/app_web/controllers/item_html/new.html.heex)
 
 We need to additionally
 change the style of the `<.input>` tag.
@@ -962,9 +956,9 @@ and renders the `new.html.heex` file.
 Hence why we call this function to successfuly embed :smile:.
 
 Before:
-[`/lib/app_web/templates/item/index.html.eex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/templates/item/index.html.eex#L36) <br />
+[`/lib/app_web/controllers/item_html/index.html.heex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/templates/item/index.html.eex#L36) <br />
 After:
-[`/lib/app_web/templates/item/index.html.eex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/41ad6d445e6d9b8cc85cccbee5ed64adcdad0eef/lib/app_web/templates/item/index.html.eex#L36)
+[`/lib/app_web/controllers/item_html/index.html.heex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3c04ee39df621cac200b4d3b45ad4045e67e388b/lib/app_web/controllers/item_html/index.html.heex#L30)
 
 
 
@@ -1001,9 +995,9 @@ Update the line to:
 ```
 
 Before:
-[`/lib/app_web/controllers/item_controller.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/controllers/item_controller.ex#L22) <br />
+[`/lib/app_web/controllers/item_controller.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8bcc3239d975f5b706514d1a88ea47ca57e5239a/lib/app_web/controllers/item_controller.ex#L23) <br />
 After:
-[`/lib/app_web/controllers/item_controller.ex#L23`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/69226e331ca7909d6e74b245a1ae066f22ebab38/lib/app_web/controllers/item_controller.ex#L23)
+[`/lib/app_web/controllers/item_controller.ex#L23`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3c04ee39df621cac200b4d3b45ad4045e67e388b/lib/app_web/controllers/item_controller.ex#L23)
 
 Now when we create a new `item`
 we are redirected to the `index.html` template:
@@ -1035,7 +1029,7 @@ Finished in 0.08 seconds (0.03s async, 0.05s sync)
 
 Open the `test/app_web/controllers/item_controller_test.exs` file
 and locate `describe "new item"` 
-and `describe "create item" do`.
+and `describe "create item"`.
 Change these two to the following.
 
 Replace the test:
@@ -1058,7 +1052,7 @@ end
 ```
 
 > Updated code:
-[`/test/app_web/controllers/item_controller_test.exs#L30-L38`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/7a54bcff9b635c533dfea19f28cf364e944aeece/test/app_web/controllers/item_controller_test.exs#L30-L38)
+[`/test/app_web/controllers/item_controller_test.exs#L17-L31`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3c04ee39df621cac200b4d3b45ad4045e67e388b/test/app_web/controllers/item_controller_test.exs#L17-L31)
 
 If you re-run the tests `mix test` the will now all pass again.
 
@@ -1097,7 +1091,7 @@ end
 ```
 
 e.g:
-[`/test/app_web/views/item_view_test.exs#L21-L34`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/500775a87f61ce63f7845c054996a27bb1689098/test/app_web/views/item_view_test.exs#L21-L34)
+[`test/app_web/controllers/item_html_test.exs#L14-L26`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32acb54881b8296fcd9cf39666f35b4761c54cb0/test/app_web/controllers/item_html_test.exs#L14-L26)
 
 These tests will fail because the `ItemHTML.remaining_items/1`
 function does not exist.
@@ -1113,7 +1107,7 @@ end
 ```
 
 e.g:
-[`/lib/app_web/views/item_view.ex#L20-L23`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f55292e2074ee4f1d4ad0e363ab9b991373a4bc6/lib/app_web/views/item_view.ex#L20-L23)
+[`/lib/app_web/controllers/item_html#L15-L17`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/lib/app_web/controllers/item_html.ex#L15-L17)
 
 Now that the tests are passing,
 _use_ the `remaining_items/1` in the `index.html` template.
@@ -1134,7 +1128,7 @@ with the List of `@items` which will return the integer count
 of remaining items that have not yet been "done".
 
 E.g:
-[`/lib/app_web/templates/item/index.html.eex#L58`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8b9ce7c99b06d58f8d11e59f77c32bb687edd812/lib/app_web/templates/item/index.html.eex#L58)
+[`/lib/app_web/controllers/item_html/index.html.eex#L60`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32acb54881b8296fcd9cf39666f35b4761c54cb0/lib/app_web/controllers/item_html/index.html.heex#L60)
 
 
 At this point the (remaining) items counter
@@ -1228,7 +1222,7 @@ end
 ```
 
 e.g:
-[`/test/app_web/controllers/item_controller_test.exs#L84-L102`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f5fbc8a642178f3a7633313481753f5f50cee93f/test/app_web/controllers/item_controller_test.exs#L84-L102)
+[`/test/app_web/controllers/item_controller_test.exs#L64-L82`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/test/app_web/controllers/item_controller_test.exs#L64-L82)
 
 <br />
 
@@ -1255,7 +1249,7 @@ file and add the following functions to it:
 ```
 
 e.g:
-[`/lib/app_web/controllers/item_controller.ex#L64-L75`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/dff006256b43b92a335472726fe43d464e23621d/lib/app_web/controllers/item_controller.ex#L64-L75)
+[`/lib/app_web/controllers/item_controller.ex#L64-L76`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bbaa6cad585bff76602e7f3cea6a43b8a1f08cbb/lib/app_web/controllers/item_controller.ex#L64-L76)
 
 The tests will still _fail_ at this point because
 the route we are invoking in our test does not yet exist.
@@ -1274,7 +1268,7 @@ get "/items/toggle/:id", ItemController, :toggle
 ```
 
 e.g:
-[`/lib/app_web/router.ex#L21`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/ada48cbf9718b155fe40ed76b0fb98cae203e783/lib/app_web/router.ex#L21)
+[`/lib/app_web/router.ex#L21`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bbaa6cad585bff76602e7f3cea6a43b8a1f08cbb/lib/app_web/router.ex#L21)
 
 Now our tests will _finally_ pass:
 
@@ -1299,7 +1293,7 @@ Finished in 0.5 seconds
 Now that our tests are passing,
 it's time actually _use_ all this functionality we have been building
 in the UI.
-Open the `/lib/app_web/controllers/item_html/index.html.eex` file
+Open the `/lib/app_web/controllers/item_html/index.html.heex` file
 and locate the line:
 
 ```html
@@ -1333,9 +1327,9 @@ we defined above.
 
 
 > Before:
-[`/lib/app_web/templates/item/index.html.eex#L46`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a31bbe30ce593a4aa3e4fd96ac233a36d4b494b4/lib/app_web/templates/item/index.html.eex#L46) <br />
+[`/lib/app_web/controllers/item_html/index.html.heex#L40`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32acb54881b8296fcd9cf39666f35b4761c54cb0/lib/app_web/controllers/item_html/index.html.heex#L40) <br />
 > After:
-[`/lib/app_web/templates/item/index.html.eex#L46-L48`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/e76ab862ff2363c0dd293414f4ee0a3cb37c8d76/lib/app_web/templates/item/index.html.eex#L46-L48)
+[`/lib/app_web/controllers/item_html/index.html.heex#L47-L57`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3329d8f2272d01641ed74c6b10adc957821bc81f/lib/app_web/controllers/item_html/index.html.heex#L47-L57)
 
 
 
@@ -1358,7 +1352,7 @@ Open the `assets/css/app.scss` file and add the following lines to it:
 ```
 
 After saving the file you should have:
-[`/assets/css/app.scss#L5-L8`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/f1d76ef42ba80e209d8af4675216aaa7c73aa319/assets/css/app.scss#L5-L8)
+[`/assets/css/app.scss#L8`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/assets/css/app.css#L8)
 
 And when you view the app,
 the Toggle functionality is working as expected:
@@ -1454,7 +1448,7 @@ see:
 
 Let's get on with it!
 Open the
-`lib/app_web/controllers/item_html/index.html.eex`
+`lib/app_web/controllers/item_html/index.html.heex`
 file and locate the line:
 
 ```elixir
@@ -1485,7 +1479,7 @@ he is able to "get out of editing mode"
 by clicking on the link that is rendered.
 
 e.g:
-[`lib/app_web/templates/item/index.html.eex#L35-L41`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/68f2a337a18e78f2bdfb98fe480b5e262c668844/lib/app_web/templates/item/index.html.eex#L35-L39)
+[`lib/app_web/controllers/item_html/index.html.heex#L30-L38`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3329d8f2272d01641ed74c6b10adc957821bc81f/lib/app_web/controllers/item_html/index.html.heex#L30-L38)
 
 Next, still in the `index.html.eex` file,
 locate the line:
@@ -1494,7 +1488,7 @@ locate the line:
 <%= for item <- @items do %>
 ```
 
-Replace the entire <li> tag
+Replace the entire `<li>` tag
 with the following code.
 
 ```elixir
@@ -1535,7 +1529,7 @@ with the following code.
 ```
 
 e.g:
-[`lib/app_web/templates/item/index.html.eex#L56-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/68f2a337a18e78f2bdfb98fe480b5e262c668844/lib/app_web/templates/item/index.html.eex#L56-L64)
+[`lib/app_web/controllers/item_html/index.html.heex#L46-L79`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3329d8f2272d01641ed74c6b10adc957821bc81f/lib/app_web/controllers/item_html/index.html.heex#L46-L79)
 
 We have done a few things here.
 We changed the toggle button outside the 
@@ -1606,7 +1600,7 @@ to our `assets/css/app.scss` file:
 ```
 
 e.g:
-[`assets/css/app.scss#L48-L67`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3894013996d4d19f825c57216438653458d0bd80/assets/css/app.scss#L48-L67)
+[`assets/css/app.css#L13-L32`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/assets/css/app.css#L13-L32)
 
 
 Additionally, since our markup is _slightly_ different
@@ -1656,7 +1650,7 @@ a.new-todo {
 
 This is what your `app.scss` file should look like
 at the end of this step:
-[`assets/css/app.scss#L7-L44`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3894013996d4d19f825c57216438653458d0bd80/assets/css/app.scss#L7-L44)
+[`assets/css/app.css#L34-L71`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/assets/css/app.css#L34-L71)
 
 <br />
 
@@ -1694,7 +1688,8 @@ to update an item (that is rendered in `edit.html.heex`).
 When we press `Enter`, the `update/2` handler is called
 inside `lib/app_web/controllers/item_controller.ex`.
 We want to stay on the same page after updating the item.
-So change it so it looks like this.
+
+So,change it so it looks like this.
 
 ```elixir
 def update(conn, %{"id" => id, "item" => item_params}) do
@@ -1712,7 +1707,7 @@ end
 ```
 
 Your `item_controller.ex` file should now look like this:
-[`lib/app_web/controllers/item_controller.ex#L7-L16`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/404ad984a1c5f7650c948997f29521dbdda5ae4c/lib/app_web/controllers/item_controller.ex#L7-L16)
+[`lib/app_web/controllers/item_controller.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3329d8f2272d01641ed74c6b10adc957821bc81f/lib/app_web/controllers/item_controller.ex)
 
 <br />
 
@@ -1722,29 +1717,28 @@ In our quest to build a _Single_ Page App,
 we broke a few tests! That's OK. 
 They're easy to fix.
 
-Open the
-`test/app_web/controllers/item_controller_test.exs`
-file and locate the test
-that has the following description:
+Open the `test/app_web/controllers/item_controller_test.exs`
+file and cocate the test with the following text.
+
+`test "renders form for editing chosen item"`
+
+and change it so it looks like the following.
 
 ```elixir
-test "renders form for editing chosen item"
+  test "renders form for editing chosen item", %{conn: conn, item: item} do
+    conn = get(conn, ~p"/items/#{item}/edit")
+    assert html_response(conn, 200) =~ "Click here to create a new item"
+  end
 ```
 
-Update the assertion from:
-
-```elixir
-assert html_response(conn, 200) =~ "Edit Item"
-```
-
-To:
-
-```elixir
-assert html_response(conn, 200) =~ item.text
-```
+When we enter the "edit timer mode",
+we create `<a>` a link to return to `/items`,
+as we have previously implemented.
+This tag has the "Click here to create a new item" text,
+which is what we are asserting.
 
 e.g:
-[`test/app_web/controllers/item_controller_test.exs#L51`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32ba6ea2a78f0317519a18c133e3c7e8c4eaf9c7/test/app_web/controllers/item_controller_test.exs#L51)
+[`test/app_web/controllers/item_controller_test.exs#L37-L39`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3d5d839d6053c3f6ac5140459a4c3c010d45b195/test/app_web/controllers/item_controller_test.exs#L37-L39)
 
 
 Next, locate the test with the following description:
@@ -1770,33 +1764,13 @@ describe "update item" do
 end
 ```
 
+e.g:
+[`test/app_web/controllers/item_controller_test.exs#L43-L53`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3d5d839d6053c3f6ac5140459a4c3c010d45b195/test/app_web/controllers/item_controller_test.exs#L43-L53)
+
 We've updated the paths the application redirects to
 after updating an item. 
 Since we are building a single-page application,
 that path pertains to the `/items/` URL path.
-
-There is one test that is failing.
-Locate the test with the following text.
-
-`test "renders form for editing chosen item"`
-
-and change it so it looks like the following.
-
-```elixir
-  test "renders form for editing chosen item", %{conn: conn, item: item} do
-    conn = get(conn, ~p"/items/#{item}/edit")
-    assert html_response(conn, 200) =~ "Click here to create a new item"
-  end
-```
-
-When we enter the "edit timer mode",
-we create `<a>` a link to return to `/items`,
-as we have previously implemented.
-This tag has the "Click here to create a new item" text,
-which is what we are asserting.
-
-e.g:
-[`test/app_web/controllers/item_controller_test.exs#L60`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/32ba6ea2a78f0317519a18c133e3c7e8c4eaf9c7/test/app_web/controllers/item_controller_test.exs#L60)
 
 If you run the tests now, they should pass again:
 
@@ -1818,7 +1792,7 @@ Randomized with seed 956565
 
 Now that we have the `toggle` and `edit` features working,
 we can finally remove the default Phoenix (table) layout
-from the `index.html.eex` template.
+from the `lib/app_web/controllers/item_html/index.html.heex` template.
 
 <img width="872" alt="phoenix-todo-list-table-layout" src="https://user-images.githubusercontent.com/194400/83200932-54245b80-a13c-11ea-92a3-6b55fc2b2652.png">
 
@@ -1829,7 +1803,7 @@ and remove all code before the line:
 ```
 
 e.g:
-[commits/3f5e3e](https://github.com/dwyl/phoenix-todo-list-tutorial/pull/35/commits/3f5e3e3c0e9e745c0c76fdc7f078d05e632a13eb)
+[`lib/app_web/controllers/item_html/index.html.heex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3d5d839d6053c3f6ac5140459a4c3c010d45b195/lib/app_web/controllers/item_html/index.html.heex)
 
 Your app should now look like this:
 ![phoenix-todo-app-without-default-table-layout](https://user-images.githubusercontent.com/194400/83201568-afa31900-a13d-11ea-9511-aadb5988cc23.png)
@@ -1859,7 +1833,7 @@ assert html_response(conn, 200) =~ "todos"
 ```
 
 e.g:
-[`test/app_web/controllers/item_controller_test.exs#L18`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/60e6d0240ac4c1f42ee7c7ee94db6175242bd2f0/test/app_web/controllers/item_controller_test.exs#L18)
+[`test/app_web/controllers/item_controller_test.exs#L14`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3d5d839d6053c3f6ac5140459a4c3c010d45b195/test/app_web/controllers/item_controller_test.exs#L14)
 
 <br />
 
@@ -1887,7 +1861,7 @@ get "/items/:filter", ItemController, :index
 ```
 
 e.g:
-[`/lib/app_web/router.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/fcdc3a64a31e6608876d4c290a0424e31f2603f4/lib/app_web/router.ex#L22)
+[`/lib/app_web/router.ex#L23`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/lib/app_web/router.ex#L23)
 
 <br />
 
@@ -1908,7 +1882,7 @@ render(conn, "index.html",
 ```
 
 e.g:
-[`lib/app_web/controllers/item_controller.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f744e316392398c6ba47ca02303d9a4e5674c0d/lib/app_web/controllers/item_controller.ex#L22)
+[`lib/app_web/controllers/item_controller.ex#L17-L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/lib/app_web/controllers/item_controller.ex#L17-L22)
 
 `Map.get(params, "filter", "all")`
 sets the default value of our `filter` to "all"
@@ -1935,7 +1909,7 @@ end
 ```
 
 e.g:
-[`lib/app_web/views/item_view.ex#L28-L34`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b27b0c9eb63afccf114c3b9af3d9236ded2ea638/lib/app_web/views/item_view.ex#L28-L34)
+[`lib/app_web/controllers/item_html.ex#L19-L26`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/50cce48a72d27b52cfeae158e3191e3cd1a8fe87/lib/app_web/controllers/item_html.ex#L19-L26)
 
 This will allow us to filter the items in the next step.
 
@@ -1944,7 +1918,7 @@ This will allow us to filter the items in the next step.
 ### 9.4 Update the Footer in the `index.html` Template
 
 Use the `filter/2` function to filter the items that are displayed.
-Open the `lib/app_web/controllers/item_html/index.html.eex` file
+Open the `lib/app_web/controllers/item_html/index.html.heex` file
 and locate the `for` loop line:
 
 ```elixir
@@ -1957,7 +1931,7 @@ Replace it with:
 <%= for item <- filter(@items, @filter) do %>
 ```
 e.g:
-[`lib/app_web/templates/item/index.html.eex#L17`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/cce1f0bbb13d14ce7f9ae1e7865976a235829271/lib/app_web/templates/item/index.html.eex#L17)
+[`lib/app_web/controllers/item_html/index.html.heex#L18`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/50cce48a72d27b52cfeae158e3191e3cd1a8fe87/lib/app_web/controllers/item_html/index.html.heex#L18)
 
 This invokes the `filter/2` function we defined in the previous step
 passing in the list of `@items` and the selected `@filter`.
@@ -2013,7 +1987,7 @@ We are conditionally adding the `selected` class
 according to the `@filter` assign value. 
 
 e.g:
-[`/lib/app_web/templates/item/index.html.eex#L46-L64`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/c613567b6eb85e62c1be4a1ffe0e02b7fdd8754a/lib/app_web/templates/item/index.html.eex#L46-L64)
+[`/lib/app_web/controllers/item_html/index.html.heex#L62-L98`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/50cce48a72d27b52cfeae158e3191e3cd1a8fe87/lib/app_web/controllers/item_html/index.html.heex#L62-L98)
 
 At the end of this step you will have a
 fully functioning footer filter:
@@ -2049,9 +2023,6 @@ Your `scope "/"` should now look like the following:
   end
 ```
 
-e.g:
-[`lib/app_web/router.ex#L22`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/cf4aa02c1b98e9900c0366a4f82993d91aaa27e2/lib/app_web/router.ex#L22)
-
 In the `lib/app_web/controllers/item_controller.ex`
 file add the following code:
 
@@ -2069,7 +2040,7 @@ end
 ```
 
 e.g:
-[`lib/app_web/controllers/item_controller.ex#L88-L97`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/697059b518e41c312f995882ffb444a75925082e/lib/app_web/controllers/item_controller.ex#L88-L97)
+[`lib/app_web/controllers/item_controller.ex#L87-L93`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/lib/app_web/controllers/item_controller.ex#L87-L93)
 
 This uses the handy
 [`update_all/3`](https://hexdocs.pm/ecto/2.0.0-rc.5/Ecto.Repo.html#c:update_all/3)
@@ -2105,7 +2076,7 @@ With:
 ```
 
 e.g:
-[`lib/app_web/templates/item/index.html.eex#L65-L68`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/69b4d2c5f6e8bc9ab9eea0db131bec34e6f8bc9a/lib/app_web/templates/item/index.html.eex#L65-L68)
+[`lib/app_web/controllers/item_html/index.html.heex#L104-L107`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/lib/app_web/controllers/item_html/index.html.heex#L104-L107)
 
 The last thing we need to do is to 
 update the `filter/2` function 
@@ -2165,7 +2136,7 @@ end
 ```
 
 e.g:
-[`test/app_web/views/item_view_test.exs#L41-L47`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/45ac34efe681fe2b6b54a0b352d76b4b24785ed0/test/app_web/views/item_view_test.exs#L41-L47)
+[`test/app_web/controllers/item_html_test.exs#L28-L35`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/test/app_web/controllers/item_html_test.exs#L28-L35)
 
 
 This test will obviously fail because the
@@ -2187,7 +2158,7 @@ end
 ```
 
 e.g:
-[`lib/app_web/views/item_view.ex#L43-L50`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1020bff5748e8a9b16d6e21650dc9204a3da663e/lib/app_web/views/item_view.ex#L43-L50)
+[`lib/app_web/controllers/item_html.ex#L28-L35`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/lib/app_web/controllers/item_html.ex#L28-L35)
 
 > **Note**: we are only pluralising one word in our basic Todo App
 so we are only handling this one case in our `pluralise/1` function.
@@ -2249,7 +2220,7 @@ end
 ```
 
 e.g:
-[`lib/app_web/views/item_view.ex#L52-L55`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/b36765774d4beed0812b3070ecb942e9b97d3800/lib/app_web/views/item_view.ex#L52-L55)
+[`lib/app_web/controllers/item_html.ex#L37-L39`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/lib/app_web/controllers/item_html.ex#L37-L39)
 
 
 Now _use_ `got_items?/1` in the template.
@@ -2263,7 +2234,7 @@ Wrap the `<footer>` element in the following `if` statement:
 ```
 
 e.g:
-[`lib/app_web/templates/item/index.html.eex#L45`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/fbf22d58eb83a164961cf9c52bff645989c2f424/lib/app_web/templates/item/index.html.eex#L45-L74)
+[`lib/app_web/controllers/item_html/index.html.heex#L58`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/lib/app_web/controllers/item_html/index.html.heex#L58)
 
 
 The convention in Phoenix/Elixir (_which came from Ruby/Rails_)
@@ -2306,7 +2277,7 @@ get "/", ItemController, :index
 ```
 
 e.g:
-[`lib/app_web/router.ex#L19`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/82f90706a6a89c040ea552701565fc3a06888961/lib/app_web/router.ex#L19)
+[`lib/app_web/router.ex#L20`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/a341c2cbb5f1ad91897293f058a5d7bee6c1e1cc/lib/app_web/router.ex#L20)
 
 Now when you run your App you will see the todo list on the home page:
 
