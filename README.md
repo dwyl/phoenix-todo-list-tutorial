@@ -2167,7 +2167,7 @@ to do this kind of pluralising.
 See: https://hexdocs.pm/gettext/Gettext.Plural.html
 
 Finally, _use_ the `pluralise/1` in our template.
-Open `lib/app_web/templates/item/index.html.eex`
+Open `lib/app_web/controllers/item_html/index.html.heex`
 
 Locate the line:
 
@@ -2184,7 +2184,7 @@ And replace it with the following code:
 ```
 
 e.g:
-[`lib/app_web/views/item_view.ex#L47-L49`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1020bff5748e8a9b16d6e21650dc9204a3da663e/lib/app_web/templates/item/index.html.eex#L47-L49)
+[`lib/app_web/controllers/item_html/index.html.heex#L61`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/6649a67639ccf7ad1b3189aefe678e3621a08341/lib/app_web/controllers/item_html/index.html.heex#L61)
 
 At the end of this step
 you will have a working pluralisation
