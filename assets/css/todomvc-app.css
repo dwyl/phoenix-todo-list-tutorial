@@ -69,7 +69,7 @@ body {
 
 .todoapp h1 {
 	position: absolute;
-	top: -155px;
+	top: -80px;
 	width: 100%;
 	font-size: 100px;
 	font-weight: 100;
@@ -259,7 +259,7 @@ body {
 .footer {
 	color: #777;
 	padding: 10px 15px;
-	height: 20px;
+	height: 45px;
 	text-align: center;
 	border-top: 1px solid #e6e6e6;
 }

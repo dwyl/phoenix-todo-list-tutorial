@@ -1,0 +1,71 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "./todomvc-app.css";
+
+/* This file is for your main application CSS */
+
+.todo-list li .checked + label {
+	background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23bddad5%22%20stroke-width%3D%223%22/%3E%3Cpath%20fill%3D%22%235dc2af%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22/%3E%3C/svg%3E');
+	background-repeat: no-repeat;
+}
+
+.dblclick {
+	position: relative; /* So z-index works later, but no surprises now */
+  }
+  
+  .dblclick + span {
+	position: absolute;
+	top: -1px; /* these negative numbers are to ensure */
+	left: -1px; /* that the <span> covers the <a> */
+	width: 103%; /* Gotta do this instead of right: 0; */
+	bottom: -1px;
+	z-index: 1;
+  }
+  
+  .dblclick + span:active {
+	left: -9999px;
+  }
+  
+  .dblclick:hover {
+	z-index: 2;
+  }
+
+  .todo-list li .toggle + div > a > label {
+	background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23ededed%22%20stroke-width%3D%223%22/%3E%3C/svg%3E');
+	background-repeat: no-repeat;
+	background-position: center left;
+  }
+  
+  .todo-list li .checked + div > a > label
+  {
+	background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23bddad5%22%20stroke-width%3D%223%22/%3E%3Cpath%20fill%3D%22%235dc2af%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22/%3E%3C/svg%3E');
+	background-repeat: no-repeat;
+	background-position: center left;
+  }
+  
+  .toggle {
+	width: 10%;
+	z-index: 3; /* keep the toggle checkmark above the rest */
+  }
+  
+  a.new-todo {
+	display: block;
+	text-decoration: none;
+  }
+  
+  .todo-list .new-todo {
+	border: 1px #1abc9c solid;
+  }
+  
+  .view a, .view a:visited {
+	display: block;
+	text-decoration: none;
+	color: #2b2d2f;
+  }
+  
+  .todo-list li .destroy {
+	text-decoration: none;
+	text-align: center;
+	z-index: 3; /* keep the delete link above the text */
+  }
