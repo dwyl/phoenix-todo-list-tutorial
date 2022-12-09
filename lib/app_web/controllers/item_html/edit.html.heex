@@ -1,14 +1,7 @@
 <.simple_form :let={f} for={@changeset} method="put" action={~p"/items/#{@item}"}>
-  <.input
-    field={{f, :text}}
-    type="text"
-    placeholder="what needs to be done?"
-    class="new-todo"
-  />
+  <.input field={{f, :text}} type="text" placeholder="what needs to be done?" class="new-todo" />
   <:actions>
-    <.button
-    style="display: none;"
-    type="submit">
+    <.button style="display: none;" type="submit">
       Save
     </.button>
   </:actions>

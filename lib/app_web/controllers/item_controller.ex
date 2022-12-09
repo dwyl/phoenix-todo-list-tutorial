@@ -7,18 +7,21 @@ defmodule AppWeb.ItemController do
   alias App.Repo
 
   def index(conn, params) do
-    item = if not is_nil(params) and Map.has_key?(params, "id") do
-      Todo.get_item!(params["id"])
-    else
-      %Item{}
-    end
+    item =
+      if not is_nil(params) and Map.has_key?(params, "id") do
+        Todo.get_item!(params["id"])
+      else
+        %Item{}
+      end
+
     items = Todo.list_items()
     changeset = Todo.change_item(item)
+
     render(conn, "index.html",
-    items: items,
-    changeset: changeset,
-    editing: item,
-    filter: Map.get(params, "filter", "all")
+      items: items,
+      changeset: changeset,
+      editing: item,
+      filter: Map.get(params, "filter", "all")
     )
   end
 
@@ -80,6 +83,7 @@ defmodule AppWeb.ItemController do
   def toggle(conn, %{"id" => id}) do
     item = Todo.get_item!(id)
     Todo.update_item(item, %{status: toggle_status(item)})
+
     conn
     |> redirect(to: ~p"/items")
   end
