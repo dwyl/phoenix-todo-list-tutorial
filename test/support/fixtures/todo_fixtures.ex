@@ -11,7 +11,7 @@ defmodule App.TodoFixtures do
     {:ok, item} =
       attrs
       |> Enum.into(%{
-        person_email: "test@email.com",
+        person_id: 0,
         status: 0,
         text: "some text"
       })

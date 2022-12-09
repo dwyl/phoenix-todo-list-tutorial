@@ -17,12 +17,12 @@ defmodule App.Todo do
       [%Item{}, ...]
 
   """
-  def list_items(person_email) do
+  def list_items(person_id \\ 0) do
     query =
       from(
         i in Item,
         select: i,
-        where: i.person_email == ^person_email,
+        where: i.person_id == ^person_id,
         order_by: [asc: i.id]
       )
 

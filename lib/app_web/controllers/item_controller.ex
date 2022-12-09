@@ -15,7 +15,7 @@ defmodule AppWeb.ItemController do
 
     case Map.has_key?(conn.assigns, :person) do
       false ->
-        items = []
+        items = Todo.list_items()
         changeset = Todo.change_item(item)
 
         render(conn, "index.html",
@@ -27,9 +27,9 @@ defmodule AppWeb.ItemController do
         )
 
       true ->
-        person_email = Map.get(conn.assigns.person, :email)
+        person_id = Map.get(conn.assigns.person, :id)
 
-        items = Todo.list_items(person_email)
+        items = Todo.list_items(person_id)
         changeset = Todo.change_item(item)
 
         render(conn, "index.html",
@@ -37,7 +37,7 @@ defmodule AppWeb.ItemController do
           changeset: changeset,
           editing: item,
           loggedin: Map.get(conn.assigns, :loggedin),
-          erson: Map.get(conn.assigns, :person),
+          person: Map.get(conn.assigns, :person),
           filter: Map.get(params, "filter", "all")
         )
       end
@@ -49,7 +49,11 @@ defmodule AppWeb.ItemController do
   end
 
   def create(conn, %{"item" => item_params}) do
-    item_params = Map.put(item_params, "person_email", conn.assigns.person.email)
+    item_params = case Map.has_key?(conn.assigns, :person) do
+      false -> item_params
+      true -> Map.put(item_params, "person_id", conn.assigns.person.id)
+    end
+
     case Todo.create_item(item_params) do
       {:ok, _item} ->
         conn
@@ -107,8 +111,12 @@ defmodule AppWeb.ItemController do
   end
 
   def clear_completed(conn, _param) do
-    person_email = Map.get(conn.assigns.person, :email)
-    query = from(i in Item, where: i.person_email == ^person_email, where: i.status == 1)
+    person_id = case Map.has_key?(conn.assigns, :person) do
+      false -> 0
+      true -> Map.get(conn.assigns.person, :id)
+    end
+
+    query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
     Repo.update_all(query, set: [status: 2])
     # render the main template:
     index(conn, %{filter: "items"})
