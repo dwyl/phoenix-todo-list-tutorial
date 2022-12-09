@@ -59,8 +59,8 @@ defmodule App.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:auth_plug, "~> 1.5"}
-      
+      {:auth_plug, "~> 1.5"},
+
       # Track test coverage
       {:excoveralls, "~> 0.15", only: [:test, :dev]}
     ]
