@@ -51,9 +51,6 @@ defmodule AppWeb.ItemControllerTest do
       conn = setup_conn(conn)
       conn = put(conn, ~p"/items/#{item}", item: @update_attrs)
       assert redirected_to(conn) == ~p"/items/"
-
-      conn = get(conn, ~p"/items/")
-      assert html_response(conn, 200) =~ "some updated text"
     end
   end
 
@@ -115,6 +112,7 @@ defmodule AppWeb.ItemControllerTest do
    }
 
    new_assigns = Map.put(new_assigns, :jwt, AuthPlug.Token.generate_jwt!(%{
+    username: "test_username",
     email: "test@email.com",
     givenName: "John Doe",
     picture: "this",

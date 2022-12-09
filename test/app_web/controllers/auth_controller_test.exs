@@ -2,7 +2,15 @@ defmodule AppWeb.AuthControllerTest do
   use AppWeb.ConnCase, async: true
 
   test "Logout link displayed when loggedin", %{conn: conn} do
-    data = %{email: "test@dwyl.com", givenName: "Simon", picture: "this", auth_provider: "GitHub"}
+    data = %{
+      username: "test_username",
+      email: "test@email.com",
+      givenName: "John Doe",
+      picture: "this",
+      auth_provider: "GitHub",
+      sid: 1,
+      id: 1
+    }
     jwt = AuthPlug.Token.generate_jwt!(data)
 
     conn = get(conn, "/?jwt=#{jwt}")
