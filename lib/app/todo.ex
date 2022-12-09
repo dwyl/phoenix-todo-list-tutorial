@@ -13,7 +13,7 @@ defmodule App.Todo do
 
   ## Examples
 
-      iex> list_items("test@email.com")
+      iex> list_items()
       [%Item{}, ...]
 
   """

@@ -9,52 +9,22 @@ Don't worry, we got you covered ;)
 ## Making schema changes
 
 Before anything else,
-we need to make a small change to the `Item` table.
-Instead of saving the `person_id`,
-ware going to be saving the `person_email` in each `todo` item.
-The auth library that we will be using will give us
-this information for us.
-
-Change `lib/app/todo/item.ex`
-so it looks like the following.
-
-```elixir
-defmodule App.Todo.Item do
-  use Ecto.Schema
-  import Ecto.Changeset
-
-  schema "items" do
-    field :person_email, :string, default: ""
-    field :status, :integer, default: 0
-    field :text, :string
-
-    timestamps()
-  end
-
-  @doc false
-  def changeset(item, attrs) do
-    item
-    |> cast(attrs, [:person_email, :status, :text])
-    |> validate_required([:person_email, :text])
-  end
-end
-```
-
-We now need to change the `list_items/0` function
+we now need to change the `list_items/0` function
 in `lib/app/todo.ex`.
 This function is called to fetch the list of items.
 However, we now need to know 
-**whose user's items we need to fetch**.
+**whose user's items we need to fetch**,
+in case he's logged in.
 
 Change the function so it looks like the following.
 
 ```elixir
-  def list_items(person_email) do
+  def list_items(person_id \\ 0) do
     query =
       from(
         i in Item,
         select: i,
-        where: i.person_email == ^person_email,
+        where: i.person_id == ^person_id,
         order_by: [asc: i.id]
       )
 
@@ -174,7 +144,7 @@ and change `index/2` to the following.
 
     case Map.has_key?(conn.assigns, :person) do
       false ->
-        items = []
+        items = Todo.list_items()
         changeset = Todo.change_item(item)
 
         render(conn, "index.html",
@@ -186,9 +156,9 @@ and change `index/2` to the following.
         )
 
       true ->
-        person_email = Map.get(conn.assigns.person, :email)
+        person_id = Map.get(conn.assigns.person, :id)
 
-        items = Todo.list_items(person_email)
+        items = Todo.list_items(person_id)
         changeset = Todo.change_item(item)
 
         render(conn, "index.html",
@@ -196,7 +166,7 @@ and change `index/2` to the following.
           changeset: changeset,
           editing: item,
           loggedin: Map.get(conn.assigns, :loggedin),
-          erson: Map.get(conn.assigns, :person),
+          person: Map.get(conn.assigns, :person),
           filter: Map.get(params, "filter", "all")
         )
       end
@@ -215,20 +185,23 @@ change it so it looks like so.
 
 ```elixir
   def create(conn, %{"item" => item_params}) do
-    item_params = Map.put(item_params, "person_email", conn.assigns.person.email)
+    item_params = case Map.has_key?(conn.assigns, :person) do
+      false -> item_params
+      true -> Map.put(item_params, "person_id", conn.assigns.person.id)
+    end
+
     case Todo.create_item(item_params) do
       {:ok, _item} ->
         conn
         |> put_flash(:info, "Item created successfully.")
         |> redirect(to: ~p"/items/")
-
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new, changeset: changeset)
     end
   end
 ```
 
-We are adding `person_email` to the `Item` model
+We are adding `person_id` to the `Item` model
 when creating a todo item.
 
 Finally, let's fix `clear_completed/2`.
@@ -242,8 +215,11 @@ Instead of having:
 Change it to the following.
 
 ```elixir
-    person_email = Map.get(conn.assigns.person, :email)
-    query = from(i in Item, where: i.person_email == ^person_email, where: i.status == 1)
+    person_id = case Map.has_key?(conn.assigns, :person) do
+      false -> 0
+      true -> Map.get(conn.assigns.person, :id)
+    end
+    query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
 ```
 
 We are only missing the last piece of the puzzle:
@@ -284,10 +260,9 @@ we created earlier.
 Change the file 
 so it looks like this.
 
-[`lib/app_web/controllers/item_html/index.html.heex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1b11c5f91d9327969bfa25883b3df6a7107e28f1/lib/app_web/controllers/item_html/index.html.heex)
+[`lib/app_web/controllers/item_html/index.html.heex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/ade66afa30ac7eddb55edf3b45ba6f030d4252aa/lib/app_web/controllers/item_html/index.html.heex)
 
 And that should be it! 🎉
-
 However, we are not done!
 We broke some tests while we implemented this feature.
 Let's fix those.
@@ -297,26 +272,20 @@ Let's fix those.
 ### `test/app/todo_test.exs`
 
 Open `test/app/todo_test.exs`.
-We are going to change a few things.
-We are going to focus on changing
-`person_id` to `person_email`.
-
-Change the `@invalid_attrs` const
-so it looks like this.
-
-```elixir
-@invalid_attrs %{person_email: nil, status: nil, text: nil}
-```
+We are going to focus 
+on changing the `person_id`
+in the tests so it is valid
+and makes sense when running the tests.
 
 Find `"create_item/1 with valid data creates a item"`
 and change it to the following.
 
 ```elixir
     test "create_item/1 with valid data creates a item" do
-      valid_attrs = %{person_email: "test@mail.com", status: 0, text: "some text"}
+      valid_attrs = %{person_id: 0, status: 0, text: "some text"}
 
       assert {:ok, %Item{} = item} = Todo.create_item(valid_attrs)
-      assert item.person_email == "test@mail.com"
+      assert item.person_id == 0
       assert item.status == 0
       assert item.text == "some text"
     end
@@ -328,13 +297,23 @@ and change it to the following.
 ```elixir
     test "update_item/2 with valid data updates the item" do
       item = item_fixture()
-      update_attrs = %{person_email: "test2@mail.com", status: 1, text: "some updated text"}
+      update_attrs = %{person_id: 1, status: 1, text: "some updated text"}
 
       assert {:ok, %Item{} = item} = Todo.update_item(item, update_attrs)
-      assert item.person_email == "test2@mail.com"
+      assert item.person_id == 1
       assert item.status == 1
       assert item.text == "some updated text"
     end
+```
+
+Find `"list_items/0 returns all items"`
+and change it to the following.
+
+```elixir
+  test "list_items/0 returns all items" do
+    item = item_fixture()
+    assert Todo.list_items(0) == [item]
+  end
 ```
 
 ### `test/support/fixtures/todo_fixtures.ex`
@@ -352,7 +331,7 @@ and change the function so it looks like so.
     {:ok, item} =
       attrs
       |> Enum.into(%{
-        person_email: "test@email.com",
+        person_id: 0,
         status: 0,
         text: "some text"
       })
@@ -374,7 +353,15 @@ defmodule AppWeb.AuthControllerTest do
   use AppWeb.ConnCase, async: true
 
   test "Logout link displayed when loggedin", %{conn: conn} do
-    data = %{email: "test@dwyl.com", givenName: "Simon", picture: "this", auth_provider: "GitHub"}
+    data = %{
+      username: "test_username",
+      email: "test@email.com",
+      givenName: "John Doe",
+      picture: "this",
+      auth_provider: "GitHub",
+      sid: 1,
+      id: 1
+    }
     jwt = AuthPlug.Token.generate_jwt!(data)
 
     conn = get(conn, "/?jwt=#{jwt}")
@@ -472,7 +459,7 @@ Add the following line
 ```elixir
 conn = setup_conn(conn)
 ```
-🎉
+
 to the following tests: 
 - "lists all items"
 - "renders form"
@@ -480,6 +467,18 @@ to the following tests:
 - "renders form for editing chosen item"
 - "redirects when data is valid"
 - "deletes chosen item"
+
+Additionally, change`"redirects when data is valid"` test
+to the following. 
+We are just testing for the redirection.
+
+```elixir
+    test "redirects when data is valid", %{conn: conn, item: item} do
+      conn = setup_conn(conn)
+      conn = put(conn, ~p"/items/#{item}", item: @update_attrs)
+      assert redirected_to(conn) == ~p"/items/"
+    end
+```
 
 The file should look like this
 after you've made these changes.
@@ -500,6 +499,6 @@ Congratulations, you just added authentication
 to your application!
 It should look like this, now.
 
-![final_with_auth](https://user-images.githubusercontent.com/17494745/206738571-afbae9e3-50f7-42e2-a953-d676fe4042a3.gif)
+![final_with_auth](https://user-images.githubusercontent.com/17494745/206777761-aeb76854-3578-4deb-850d-ecc3d96a1cb6.gif)
 
 Give yourself a pat on the back 😉 !
