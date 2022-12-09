@@ -145,9 +145,19 @@ Install dependencies and setup the database:
 mix setup
 ```
 
+After this, 
+navigate to the `assets` folder
+and run:
+
+```sh
+cd assets
+npm install
+```
+
 Start the Phoenix server:
 
 ```sh
+cd..
 mix phx.server
 ```
 
