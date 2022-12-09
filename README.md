@@ -2391,7 +2391,8 @@ to view/use your app in any Web/Mobile Browser.
 
 e.g: https://phxtodo.fly.dev <br />xs
 
-![todo-app-heroku-version](https://user-images.githubusercontent.com/194400/83279718-6e5a4a00-a1cd-11ea-90b3-f0b29a898b3d.gif)
+![phxtodo-fly-io](https://user-images.githubusercontent.com/194400/206772309-77056109-8e60-40ad-8e16-4e0f3140c0eb.png)
+
 
 <br />
 
