@@ -2386,7 +2386,8 @@ However, wouldn't it be awesome if
 we added *authentication* so each user
 could check their own list?
 
-We created a [small guide](./auth.md)
+We created a dedicated authentication guide: 
+[`/auth.md`](./auth.md)
 to help you set this up.
 You will soon find out this is extremely easy 😀.
 
