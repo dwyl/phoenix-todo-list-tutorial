@@ -14,8 +14,13 @@ defmodule AppWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :authOptional, do: plug(AuthPlugOptional)
+
   scope "/", AppWeb do
-    pipe_through :browser
+    pipe_through [:browser, :authOptional]
+
+    get "/login", AuthController, :login
+    get "/logout", AuthController, :logout
 
     get "/", ItemController, :index
     get "/items/toggle/:id", ItemController, :toggle
