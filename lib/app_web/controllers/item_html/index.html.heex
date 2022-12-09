@@ -105,23 +105,21 @@
       <% end %>
     </section>
     <div class="fixed right-0 mr-10">
-      <button
-      class="inline-block px-6 py-2.5 bg-[#fea5a5] text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-[#f76e6e] hover:shadow-lg focus:bg-[#f76e6e] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#a23434] active:shadow-lg transition duration-150 ease-in-out"
-    >
-        <a href="/logout">
-          Logout
-        </a>
-      </button>
+      <.link
+        class="inline-block px-6 py-2.5 bg-[#fea5a5] text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-[#f76e6e] hover:shadow-lg focus:bg-[#f76e6e] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#a23434] active:shadow-lg transition duration-150 ease-in-out"
+        href="/logout"
+      >
+        Logout
+      </.link>
     </div>
   <% else %>
     <div class="fixed h-screen ml-[25%] flex justify-center items-center">
-      <button
+      <.link
       class="max-h-[35px] inline-block px-6 py-2.5 bg-blue-300 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-    >
-        <a href="/login">
-          Login
-        </a>
-      </button>
+        href="/login"
+      >
+        Login
+      </.link>
     </div>
   <% end %>
 </div>

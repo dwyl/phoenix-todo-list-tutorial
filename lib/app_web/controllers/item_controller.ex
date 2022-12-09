@@ -13,11 +13,6 @@ defmodule AppWeb.ItemController do
       %Item{}
     end
 
-    person_email = ""
-    if Map.has_key?(conn.assigns, :person) do
-      person_email = Map.get(conn.assigns.person, :email)
-    end
-
     case Map.has_key?(conn.assigns, :person) do
       false ->
         items = []
