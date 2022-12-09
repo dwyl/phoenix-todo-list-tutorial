@@ -6,12 +6,13 @@ defmodule AppWeb.ItemController do
   import Ecto.Query
   alias App.Repo
 
-def index(conn, params) do
-    item = if not is_nil(params) and Map.has_key?(params, "id") do
-      Todo.get_item!(params["id"])
-    else
-      %Item{}
-    end
+  def index(conn, params) do
+    item =
+      if not is_nil(params) and Map.has_key?(params, "id") do
+        Todo.get_item!(params["id"])
+      else
+        %Item{}
+      end
 
     case Map.has_key?(conn.assigns, :person) do
       false ->
@@ -40,7 +41,7 @@ def index(conn, params) do
           person: Map.get(conn.assigns, :person),
           filter: Map.get(params, "filter", "all")
         )
-      end
+    end
   end
 
   def new(conn, _params) do
@@ -49,10 +50,11 @@ def index(conn, params) do
   end
 
   def create(conn, %{"item" => item_params}) do
-    item_params = case Map.has_key?(conn.assigns, :person) do
-      false -> item_params
-      true -> Map.put(item_params, "person_id", conn.assigns.person.id)
-    end
+    item_params =
+      case Map.has_key?(conn.assigns, :person) do
+        false -> item_params
+        true -> Map.put(item_params, "person_id", conn.assigns.person.id)
+      end
 
     case Todo.create_item(item_params) do
       {:ok, _item} ->
@@ -112,10 +114,11 @@ def index(conn, params) do
   end
 
   def clear_completed(conn, _param) do
-    person_id = case Map.has_key?(conn.assigns, :person) do
-      false -> 0
-      true -> Map.get(conn.assigns.person, :id)
-    end
+    person_id =
+      case Map.has_key?(conn.assigns, :person) do
+        false -> 0
+        true -> Map.get(conn.assigns.person, :id)
+      end
 
     query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
     Repo.update_all(query, set: [status: 2])

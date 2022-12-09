@@ -11,6 +11,7 @@ defmodule AppWeb.AuthControllerTest do
       sid: 1,
       id: 1
     }
+
     jwt = AuthPlug.Token.generate_jwt!(data)
 
     conn = get(conn, "/?jwt=#{jwt}")
