@@ -1,7 +1,6 @@
 defmodule AppWeb.ItemHTMLTest do
   use AppWeb.ConnCase, async: true
   alias AppWeb.ItemHTML
-  alias AppWeb.Router.Helpers, as: Routes
 
   test "complete/1 returns completed if item.status == 1" do
     assert ItemHTML.complete(%{status: 1}) == "completed"
@@ -17,6 +16,7 @@ defmodule AppWeb.ItemHTMLTest do
       %{text: "two", status: 0},
       %{text: "done", status: 1}
     ]
+
     assert ItemHTML.remaining_items(items) == 2
   end
 
@@ -27,10 +27,12 @@ defmodule AppWeb.ItemHTMLTest do
 
   test "pluralise/1 returns item for 1 item and items for < 1 <" do
     assert ItemHTML.pluralise([%{text: "one", status: 0}]) == "item"
+
     assert ItemHTML.pluralise([
-      %{text: "one", status: 0},
-      %{text: "two", status: 0}
-    ]) == "items"
+             %{text: "one", status: 0},
+             %{text: "two", status: 0}
+           ]) == "items"
+
     assert ItemHTML.pluralise([%{text: "one", status: 1}]) == "items"
   end
 end
