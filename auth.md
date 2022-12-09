@@ -486,6 +486,15 @@ after you've made these changes.
 
 [`test/app_web/controllers/item_controller_test.exs `](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1b11c5f91d9327969bfa25883b3df6a7107e28f1/test/app_web/controllers/item_controller_test.exs)
 
+If you now run the tests 
+(`mix test`), 
+all tests should pass.
+
+```sh
+Finished in 0.7 seconds (0.6s async, 0.09s sync)
+28 tests, 0 failures
+```
+
 ## And you're done! 🎉 
 Congratulations, you just added authentication
 to your application!
