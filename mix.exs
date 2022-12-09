@@ -74,7 +74,7 @@ defmodule App.MixProject do
   defp aliases do
     [
       seeds: ["run priv/repo/seeds.exs"],
-      setup: ["deps.get", "ecto.reset", "tailwind.install"],
+      setup: ["deps.get", "ecto.reset", "seeds", "tailwind.install"],
       "ecto.setup": [
         "ecto.create --quiet",
         "ecto.migrate --quiet",
