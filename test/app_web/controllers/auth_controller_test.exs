@@ -26,7 +26,7 @@ defmodule AppWeb.AuthControllerTest do
       |> put_req_header("authorization", jwt)
       |> get("/logout")
 
-    assert "/" = redirected_to(conn, 302)
+    assert "/items" = redirected_to(conn, 302)
   end
 
   test "test login link redirect to authdemo.fly.dev", %{conn: conn} do
