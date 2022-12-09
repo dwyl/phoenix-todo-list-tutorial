@@ -6,7 +6,7 @@ defmodule AppWeb.ItemController do
   import Ecto.Query
   alias App.Repo
 
-  def index(conn, params) do
+def index(conn, params) do
     item = if not is_nil(params) and Map.has_key?(params, "id") do
       Todo.get_item!(params["id"])
     else
@@ -106,6 +106,7 @@ defmodule AppWeb.ItemController do
   def toggle(conn, %{"id" => id}) do
     item = Todo.get_item!(id)
     Todo.update_item(item, %{status: toggle_status(item)})
+
     conn
     |> redirect(to: ~p"/items")
   end

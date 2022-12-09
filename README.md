@@ -7,7 +7,7 @@ for building a Todo List in Phoenix.<br/>
 100% functional. 0% JavaScript. Just `HTML`, `CSS` and `Elixir`.
 Fast and maintainable.
 
-[![Build Status](https://img.shields.io/travis/com/dwyl/phoenix-todo-list-tutorial/master.svg?style=flat-square)](https://travis-ci.com/github/dwyl/phoenix-todo-list-tutorial)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/phoenix-todo-list-tutorial/Elixir%20CI?label=build&style=flat-square)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/phoenix-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/phoenix-todo-list-tutorial?branch=master)
 [![HitCount](http://hits.dwyl.com/dwyl/phoenix-todo-list-tutorial.svg)](http://hits.dwyl.com/dwyl/phoenix-todo-list-tutorial)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/phoenix-todo-list-tutorial/issues)
@@ -50,10 +50,10 @@ how to build an app in Elixir/Phoenix
 from scratch.
 
 
-### Try it on Heroku: [phxtodo.herokuapp.com](https://phxtodo.herokuapp.com)
+### Try it on Heroku: [phxtodo.fly.dev](https://phxtodo.fly.dev)
 
 <!-- wake heroku app before visit. see: https://github.com/dwyl/ping -->
-![wake-sleeping-heroku-app](https://phxtodo.herokuapp.com/ping)
+![wake-sleeping-heroku-app](https://phxtodo.fly.dev/ping)
 
 
 Try the Heroku version.
@@ -2373,8 +2373,8 @@ e.g:
 That's it!
 Now when you deploy your server rendered Phoenix App,
 it will _feel_ like an SPA!
-Seriously, try the Heroku demo again:
-[phxtodo.herokuapp.com](https://phxtodo.herokuapp.com/)
+Try the Fly.io demo again:
+[phxtodo.fly.dev](https://phxtodo.fly.dev/)
 Feel that buttery-smooth page transition.
 
 
@@ -2394,18 +2394,18 @@ You will soon find out this is extremely easy 😀.
 
 ### Deploy!
 
-Deployment to Heroku takes a few minutes,
+Deployment to Fly.io takes a few minutes,
 but has a few "steps",
-therefore we have created a _separate_
-guide for it:
- [elixir-phoenix-app-deployment.md](https://github.com/dwyl/learn-heroku/blob/master/elixir-phoenix-app-deployment.md)
+we suggest you follow the speed run guide:
+https://fly.io/docs/elixir/getting-started/
 
 Once you have _deployed_ you will will be able
 to view/use your app in any Web/Mobile Browser.
 
-e.g: https://phxtodo.herokuapp.com <br />
+e.g: https://phxtodo.fly.dev <br />xs
 
-![todo-app-heroku-version](https://user-images.githubusercontent.com/194400/83279718-6e5a4a00-a1cd-11ea-90b3-f0b29a898b3d.gif)
+![phxtodo-fly-io](https://user-images.githubusercontent.com/194400/206772309-77056109-8e60-40ad-8e16-4e0f3140c0eb.png)
+
 
 <br />
 

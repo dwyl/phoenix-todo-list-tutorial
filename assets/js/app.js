@@ -22,8 +22,11 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
-import Turbolinks from "turbolinks"
-Turbolinks.start();
+// Turbolinks no longer maintained: 
+// https://github.com/dwyl/phoenix-todo-list-tutorial/issues/57
+// You can help update this to "turbo" please comment on the issue. 💬 🙏
+// import Turbolinks from "turbolinks"
+// Turbolinks.start();
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})

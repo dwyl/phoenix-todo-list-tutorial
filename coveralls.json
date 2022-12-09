@@ -1,0 +1,18 @@
+{
+  "skip_files": [
+    "test/",
+    "lib/app.ex",
+    "lib/app/application.ex",
+    "lib/app_web.ex",
+    "lib/app/repo.ex",
+    "lib/app/release.ex",
+    "lib/app_web/views/app_view.ex",
+    "lib/app_web/views/init_view.ex",
+    "lib/app_web/views/layout_view.ex",
+    "lib/app_web/views/error_helpers.ex",
+    "lib/app_web/endpoint.ex",
+    "lib/app_web/telemetry.ex",
+    "lib/app_web/components/core_components.ex",
+    "lib/app_web/components/layouts.ex"
+  ]
+}

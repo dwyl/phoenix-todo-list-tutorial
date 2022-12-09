@@ -1,9 +1,5 @@
 <.simple_form :let={f} for={@changeset} action={~p"/items"}>
-  <.input
-    field={{f, :text}}
-    type="text"
-    placeholder="what needs to be done?"
-  />
+  <.input field={{f, :text}} type="text" placeholder="what needs to be done?" />
   <:actions>
     <.button style="display:none">Save Item</.button>
   </:actions>
