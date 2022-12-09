@@ -2378,7 +2378,18 @@ Seriously, try the Heroku demo again:
 Feel that buttery-smooth page transition.
 
 
-<br />
+### 12 (Bonus!) Adding authentication
+
+Currently, the application allows *anyone* 
+to access it and manage todo items.
+However, wouldn't it be awesome if 
+we added *authentication* so each user
+could check their own list?
+
+We created a [small guide](./auth.md)
+to help you set this up.
+You will soon find out this is extremely easy 😀.
+
 
 ### Deploy!
 
