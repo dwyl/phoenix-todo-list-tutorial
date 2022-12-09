@@ -13,15 +13,16 @@ defmodule App.Todo do
 
   ## Examples
 
-      iex> list_items()
+      iex> list_items("test@email.com")
       [%Item{}, ...]
 
   """
-  def list_items do
+  def list_items(person_email) do
     query =
       from(
         i in Item,
         select: i,
+        where: i.person_email == ^person_email,
         order_by: [asc: i.id]
       )
 

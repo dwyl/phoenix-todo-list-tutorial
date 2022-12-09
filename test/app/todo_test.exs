@@ -11,7 +11,7 @@ defmodule App.TodoTest do
     @invalid_attrs %{person_id: nil, status: nil, text: nil}
 
     test "list_items/0 returns all items" do
-      item = item_fixture()
+      item = item_fixture("test@email.com")
       assert Todo.list_items() == [item]
     end
 

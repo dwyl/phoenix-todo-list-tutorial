@@ -3,7 +3,7 @@ defmodule App.Todo.Item do
   import Ecto.Changeset
 
   schema "items" do
-    field :person_id, :integer, default: 0
+    field :person_email, :string, default: ""
     field :status, :integer, default: 0
     field :text, :string
 
@@ -13,7 +13,7 @@ defmodule App.Todo.Item do
   @doc false
   def changeset(item, attrs) do
     item
-    |> cast(attrs, [:text, :person_id, :status])
-    |> validate_required([:text])
+    |> cast(attrs, [:person_email, :status, :text])
+    |> validate_required([:person_email, :text])
   end
 end

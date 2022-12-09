@@ -12,17 +12,40 @@ defmodule AppWeb.ItemController do
     else
       %Item{}
     end
-    items = Todo.list_items()
-    changeset = Todo.change_item(item)
 
-    render(conn, "index.html",
-      items: items,
-      changeset: changeset,
-      editing: item,
-      loggedin: Map.get(conn.assigns, :loggedin),
-      person: Map.get(conn.assigns, :person),
-      filter: Map.get(params, "filter", "all")
-    )
+    person_email = ""
+    if Map.has_key?(conn.assigns, :person) do
+      person_email = Map.get(conn.assigns.person, :email)
+    end
+
+    case Map.has_key?(conn.assigns, :person) do
+      false ->
+        items = []
+        changeset = Todo.change_item(item)
+
+        render(conn, "index.html",
+          items: items,
+          changeset: changeset,
+          editing: item,
+          loggedin: Map.get(conn.assigns, :loggedin),
+          filter: Map.get(params, "filter", "all")
+        )
+
+      true ->
+        person_email = Map.get(conn.assigns.person, :email)
+
+        items = Todo.list_items(person_email)
+        changeset = Todo.change_item(item)
+
+        render(conn, "index.html",
+          items: items,
+          changeset: changeset,
+          editing: item,
+          loggedin: Map.get(conn.assigns, :loggedin),
+          erson: Map.get(conn.assigns, :person),
+          filter: Map.get(params, "filter", "all")
+        )
+      end
   end
 
   def new(conn, _params) do
@@ -31,6 +54,7 @@ defmodule AppWeb.ItemController do
   end
 
   def create(conn, %{"item" => item_params}) do
+    item_params = Map.put(item_params, "person_email", conn.assigns.person.email)
     case Todo.create_item(item_params) do
       {:ok, _item} ->
         conn
@@ -88,8 +112,8 @@ defmodule AppWeb.ItemController do
   end
 
   def clear_completed(conn, _param) do
-    person_id = 0
-    query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
+    person_email = Map.get(conn.assigns.person, :email)
+    query = from(i in Item, where: i.person_email == ^person_email, where: i.status == 1)
     Repo.update_all(query, set: [status: 2])
     # render the main template:
     index(conn, %{filter: "items"})
