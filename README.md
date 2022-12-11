@@ -2339,7 +2339,7 @@ it will result in a temporary **_blank_ page**!
 Obviously, that's _horrible_ UX and is a big part of why
 Single Page Apps (SPAs) became popular;
 to avoid page refresh, use
-**[Turbolinks](https://github.com/turbolinks/turbolinks)®**!
+**[Turbo](https://github.com/hotwired/turbo)**!
 
 Get the performance benefits of an SPA
 without the added complexity
@@ -2350,27 +2350,24 @@ swaps in its `<body>`, and merges its `<head>`,
 all without incurring the cost of a full page load.
 
 
-Add [turbolinks package](https://www.npmjs.com/package/turbolinks)
-to `/assets/package.json`:
+Luckily, adding `Turbo` will require just a simple
+copy and paste!
+Check the [`unpkg files`](https://unpkg.com/browse/@hotwired/turbo@7.2.4/dist/) 
+to fetch the latest CDN package.
 
-```sh
-cd assets && npm install turbolinks --save
+We now need to add the following line
+to `lib/app_web/components/layouts/app.html.heex`
+and `lib/app_web/components/layouts/root.html.heex`.
+
+```html
+  <script src="https://unpkg.com/browse/@hotwired/turbo@7.2.4/dist/turbo.es2017-esm.js"></script>
 ```
 
-e.g:
-[`/assets/package.json#L18`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/assets/package.json#L18)
+This will install the UMD builds from Turbo
+without us needing to install a package using `npm`.
+Neat, huh?
 
-In `assets/app.js` import Turbolinks and start it:
-
-```js
-import Turbolinks from "turbolinks"
-Turbolinks.start();
-```
-
-e.g:
-[`assets/js/app.js#L16-L17`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/assets/js/app.js#L16-L17)
-
-That's it!
+And that's it!
 Now when you deploy your server rendered Phoenix App,
 it will _feel_ like an SPA!
 Try the Fly.io demo again:
