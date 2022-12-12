@@ -24,8 +24,9 @@ defmodule AppWeb.Router do
     resources "/items", ItemController
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", AppWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", AppWeb do
+    pipe_through :api
+
+    resources "items", ApiController, only: [:create, :edit]
+  end
 end
