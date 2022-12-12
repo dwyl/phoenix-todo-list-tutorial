@@ -1994,6 +1994,31 @@ fully functioning footer filter:
 
 ![phoenix-todo-footer-nav](https://user-images.githubusercontent.com/194400/83212591-ea19af80-a157-11ea-9e0b-502af5cb61b2.gif)
 
+We can quickly cover this function we added
+with a small unit test.
+Open `test/app_web/controllers/item_html_test.exs`
+and add the following.
+
+```elixir
+  test "test filter function" do
+    items = [
+      %{text: "one", status: 0},
+      %{text: "two", status: 0},
+      %{text: "three", status: 1},
+      %{text: "four", status: 2},
+      %{text: "five", status: 2},
+      %{text: "six", status: 1},
+    ]
+
+    assert length(ItemHTML.filter(items, "items")) == 4
+    assert length(ItemHTML.filter(items, "active")) == 2
+    assert length(ItemHTML.filter(items, "completed")) == 2
+    assert length(ItemHTML.filter(items, "any")) == 4
+  end
+```
+
+And you should be done with this feature 😀.
+Awesome job!
 
 <br />
 
@@ -2101,6 +2126,42 @@ At the end of this section your Todo List
 should have the "Clear completed" function working:
 
 ![phoenix-todo-clear-completed](https://user-images.githubusercontent.com/194400/83244744-a3e44080-a197-11ea-90b3-5420f98bbd55.gif)
+
+It's useful to have tests cover this feature.
+Open `test/app_web/controllers/item_controller_test.exs`.
+Alongside the constants, on top of the file,
+add the following line.
+
+`@completed_attrs %{person_id: 42, status: 1, text: "some text completed"}`
+
+We will use this to create
+an item that is already completed, 
+so we can test the "clear completed"
+functionality.
+
+Add the next lines to test the
+`clear_completed/2` function.
+
+```elixir
+  describe "clear completed" do
+    setup [:create_item]
+
+    test "clears the completed items", %{conn: conn, item: item} do
+      conn = setup_conn(conn)
+      # Creating completed item
+      conn = post(conn, ~p"/items", item: @completed_attrs)
+      # Clearing completed items
+      conn = get(conn, ~p"/items/clear")
+
+      items = conn.assigns.items
+      [completed_item | _tail] = conn.assigns.items
+
+      assert conn.assigns.filter == "all"
+      assert completed_item.status == 2
+    end
+  end
+```
+
 
 
 <br />
