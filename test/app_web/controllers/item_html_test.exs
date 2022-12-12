@@ -43,7 +43,7 @@ defmodule AppWeb.ItemHTMLTest do
       %{text: "three", status: 1},
       %{text: "four", status: 2},
       %{text: "five", status: 2},
-      %{text: "six", status: 1},
+      %{text: "six", status: 1}
     ]
 
     assert length(ItemHTML.filter(items, "items")) == 4
