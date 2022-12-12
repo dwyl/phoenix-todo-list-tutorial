@@ -5,6 +5,7 @@ defmodule AppWeb.ItemControllerTest do
   import App.TodoFixtures
 
   @create_attrs %{person_id: 42, status: 0, text: "some text"}
+  @completed_attrs %{person_id: 42, status: 1, text: "some text completed"}
   @update_attrs %{person_id: 43, status: 1, text: "some updated text"}
   # @invalid_attrs %{person_id: nil, status: nil, text: nil}
 
@@ -51,6 +52,24 @@ defmodule AppWeb.ItemControllerTest do
       conn = setup_conn(conn)
       conn = put(conn, ~p"/items/#{item}", item: @update_attrs)
       assert redirected_to(conn) == ~p"/items/"
+    end
+  end
+
+  describe "clear completed" do
+    setup [:create_item]
+
+    test "clears the completed items", %{conn: conn, item: item} do
+      conn = setup_conn(conn)
+      # Creating completed item
+      conn = post(conn, ~p"/items", item: @completed_attrs)
+      # Clearing completed items
+      conn = get(conn, ~p"/items/clear")
+
+      items = conn.assigns.items
+      [completed_item | _tail] = conn.assigns.items
+
+      assert conn.assigns.filter == "all"
+      assert completed_item.status == 2
     end
   end
 

@@ -35,4 +35,20 @@ defmodule AppWeb.ItemHTMLTest do
 
     assert ItemHTML.pluralise([%{text: "one", status: 1}]) == "items"
   end
+
+  test "test filter function" do
+    items = [
+      %{text: "one", status: 0},
+      %{text: "two", status: 0},
+      %{text: "three", status: 1},
+      %{text: "four", status: 2},
+      %{text: "five", status: 2},
+      %{text: "six", status: 1},
+    ]
+
+    assert length(ItemHTML.filter(items, "items")) == 4
+    assert length(ItemHTML.filter(items, "active")) == 2
+    assert length(ItemHTML.filter(items, "completed")) == 2
+    assert length(ItemHTML.filter(items, "any")) == 4
+  end
 end
