@@ -1857,7 +1857,7 @@ Open the `lib/app_web/router.ex` and
 add the following route:
 
 ```elixir
-get "/items/:filter", ItemController, :index
+get "/items/filter/:filter", ItemController, :index
 ```
 
 e.g:
@@ -1946,23 +1946,23 @@ with the following code:
 ```elixir
   <li>
     <%= if @filter == "items" do %>
-      <a href="/items" class='selected'>
+      <a href="/items/filter/items" class="selected">
         All
       </a>
     <% else %>
-      <a href="/items">
+      <a href="/items/filter/items">
         All
       </a>
     <% end %>
   </li>
   <li>
     <%= if @filter == "active" do %>
-      <a href="/items/active" class='selected'>
+      <a href="/items/filter/active" class='selected'>
         Active
         [<%= Enum.count(filter(@items, "active")) %>]
       </a>
     <% else %>
-      <a href="/items/active">
+      <a href="/items/filter/active">
         Active
         [<%= Enum.count(filter(@items, "active")) %>]
       </a>
@@ -1970,12 +1970,12 @@ with the following code:
   </li>
   <li>
     <%= if @filter == "completed" do %>
-      <a href="/items/completed" class='selected'>
+      <a href="/items/filter/completed" class='selected'>
         Completed
         [<%= Enum.count(filter(@items, "completed")) %>]
       </a>
     <% else %>
-      <a href="/items/completed">
+      <a href="/items/filter/completed">
         Completed
         [<%= Enum.count(filter(@items, "completed")) %>]
       </a>
@@ -2018,7 +2018,7 @@ Your `scope "/"` should now look like the following:
     get "/", PageController, :home
     get "/items/toggle/:id", ItemController, :toggle
     get "/items/clear", ItemController, :clear_completed
-    get "/items/:filter", ItemController, :index
+    get "/items/filter/:filter", ItemController, :index
     resources "/items", ItemController
   end
 ```

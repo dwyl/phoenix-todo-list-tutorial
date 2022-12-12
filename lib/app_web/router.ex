@@ -24,7 +24,7 @@ defmodule AppWeb.Router do
     get "/logout", AuthController, :logout
     get "/items/toggle/:id", ItemController, :toggle
     get "/items/clear", ItemController, :clear_completed
-    get "/items/:filter", ItemController, :index
+    get "/items/filter/:filter", ItemController, :index
     resources "/items", ItemController
   end
 
