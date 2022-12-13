@@ -15,8 +15,12 @@ defmodule AppWeb.ApiControllerTest do
 
       assert conn.status == 200
       assert Map.get(Jason.decode!(response(conn, 200)), :text) == Map.get(@create_attrs, "text")
-      assert Map.get(Jason.decode!(response(conn, 200)), :status) == Map.get(@create_attrs, "status")
-      assert Map.get(Jason.decode!(response(conn, 200)), :person_id) == Map.get(@create_attrs, "person_id")
+
+      assert Map.get(Jason.decode!(response(conn, 200)), :status) ==
+               Map.get(@create_attrs, "status")
+
+      assert Map.get(Jason.decode!(response(conn, 200)), :person_id) ==
+               Map.get(@create_attrs, "person_id")
     end
 
     test "an invalid item", %{conn: conn} do
@@ -55,7 +59,9 @@ defmodule AppWeb.ApiControllerTest do
 
       conn = put(conn, ~p"/api/items/#{item.id}/status", @update_status_attrs)
       assert conn.status == 200
-      assert Map.get(Jason.decode!(response(conn, 200)), :status) == Map.get(@update_status_attrs, "status")
+
+      assert Map.get(Jason.decode!(response(conn, 200)), :status) ==
+               Map.get(@update_status_attrs, "status")
     end
 
     test "with invalid attributes", %{conn: conn} do
