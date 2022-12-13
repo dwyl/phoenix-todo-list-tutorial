@@ -9,6 +9,7 @@ defmodule App.TodoTest do
     import App.TodoFixtures
 
     @invalid_attrs %{person_id: nil, status: nil, text: nil}
+    @valid_attrs %{person_id: 42, status: 0, text: "some text"}
 
     test "list_items/0 returns all items" do
       item = item_fixture()
@@ -21,11 +22,9 @@ defmodule App.TodoTest do
     end
 
     test "create_item/1 with valid data creates a item" do
-      valid_attrs = %{person_id: 42, status: 42, text: "some text"}
-
-      assert {:ok, %Item{} = item} = Todo.create_item(valid_attrs)
+      assert {:ok, %Item{} = item} = Todo.create_item(@valid_attrs)
       assert item.person_id == 42
-      assert item.status == 42
+      assert item.status == 0
       assert item.text == "some text"
     end
 
@@ -35,11 +34,11 @@ defmodule App.TodoTest do
 
     test "update_item/2 with valid data updates the item" do
       item = item_fixture()
-      update_attrs = %{person_id: 43, status: 43, text: "some updated text"}
+      update_attrs = %{person_id: 43, status: 2, text: "some updated text"}
 
       assert {:ok, %Item{} = item} = Todo.update_item(item, update_attrs)
       assert item.person_id == 43
-      assert item.status == 43
+      assert item.status == 2
       assert item.text == "some updated text"
     end
 

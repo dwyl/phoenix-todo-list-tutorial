@@ -5,7 +5,6 @@ defmodule AppWeb.ApiController do
 
   def create(conn, params) do
     case Todo.create_item(params) do
-
       # Successfully creates item
       {:ok, item} ->
         json(conn, item)
@@ -26,8 +25,8 @@ defmodule AppWeb.ApiController do
     text = Map.get(params, "text", "")
 
     item = Todo.get_item!(id)
-    case Todo.update_item(item, %{text: text}) do
 
+    case Todo.update_item(item, %{text: text}) do
       # Successfully updates item
       {:ok, item} ->
         json(conn, item)
@@ -48,8 +47,8 @@ defmodule AppWeb.ApiController do
     status = Map.get(params, "status", "")
 
     item = Todo.get_item!(id)
-    case Todo.update_item(item, %{status: status}) do
 
+    case Todo.update_item(item, %{status: status}) do
       # Successfully updates item
       {:ok, item} ->
         json(conn, item)
@@ -65,7 +64,6 @@ defmodule AppWeb.ApiController do
     end
   end
 
-
   defp make_errors_readable(changeset) do
     traverse_errors(changeset, fn {msg, opts} ->
       Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
@@ -73,5 +71,4 @@ defmodule AppWeb.ApiController do
       end)
     end)
   end
-
 end
