@@ -27,6 +27,6 @@ defmodule AppWeb.Router do
   scope "/api", AppWeb do
     pipe_through :api
 
-    resources "items", ApiController, only: [:create, :edit]
+    resources "items", ApiController, only: [:create, :update]
   end
 end
