@@ -1056,9 +1056,8 @@ describe "create item" do
 end
 ```
 
-//CHANGEHERE
 > Updated code:
-[`/test/app_web/controllers/item_controller_test.exs#L17-L31`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3c04ee39df621cac200b4d3b45ad4045e67e388b/test/app_web/controllers/item_controller_test.exs#L17-L31)
+[`/test/app_web/controllers/item_controller_test.exs#L34-L55`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0c12a6bec7aeed5562a239d0dc8eea4952250cdd/test/app_web/controllers/item_controller_test.exs#L34-L55)
 
 If you re-run the tests `mix test` the will now all pass again.
 
@@ -1784,9 +1783,8 @@ describe "update item" do
 end
 ```
 
-//CHANGEHERE
 e.g:
-[`test/app_web/controllers/item_controller_test.exs#L43-L53`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3d5d839d6053c3f6ac5140459a4c3c010d45b195/test/app_web/controllers/item_controller_test.exs#L43-L53)
+[`test/app_web/controllers/item_controller_test.exs#L67-L80`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0c12a6bec7aeed5562a239d0dc8eea4952250cdd/test/app_web/controllers/item_controller_test.exs#L67-L80)
 
 We've updated the paths the application redirects to
 after updating an item. 
@@ -1899,9 +1897,8 @@ when the filter is changed.
   end
 ```
 
-//CHANGEHERE
 e.g:
-[`test/app_web/controllers/item_controller_test.exs`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/50cce48a72d27b52cfeae158e3191e3cd1a8fe87/lib/app_web/controllers/item_html/index.html.heex#L18)
+[`test/app_web/controllers/item_controller_test.exs#L21-L32`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0c12a6bec7aeed5562a239d0dc8eea4952250cdd/test/app_web/controllers/item_controller_test.exs#L21-L32)
 
 Open the `lib/app_web/router.ex` and
 add the following route:
@@ -2549,10 +2546,9 @@ as we don't need it anymore.
 
 Your files should look like the following.
 
-//CHANGEHERE
 e.g:
-[`/lib/router.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/assets/package.json#L18)
-[`lib/app_web/controllers/item_controller.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/assets/package.json#L18)
+[`/lib/router.ex#L19-L29`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0c12a6bec7aeed5562a239d0dc8eea4952250cdd/lib/app_web/router.ex#L19-L29)
+[`lib/app_web/controllers/item_controller.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/auth/lib/app_web/controllers/item_controller.ex)
 
 
 
