@@ -10,9 +10,9 @@ defmodule AppWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  #pipeline :api do
+  # pipeline :api do
   #  plug :accepts, ["json"]
-  #end
+  # end
 
   pipeline :authOptional, do: plug(AuthPlugOptional)
 

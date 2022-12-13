@@ -83,7 +83,6 @@ defmodule AppWeb.ItemControllerTest do
     setup [:create_item]
 
     test "clears the completed items", %{conn: conn, item: item} do
-
       # Creating completed item
       conn = post(conn, ~p"/items", item: @public_completed_attrs)
       # Clearing completed items
@@ -97,7 +96,6 @@ defmodule AppWeb.ItemControllerTest do
     end
 
     test "clears the completed items in public (person_id=0)", %{conn: conn, item: item} do
-
       # Creating completed item
       conn = post(conn, ~p"/items", item: @public_completed_attrs)
       # Clearing completed items
