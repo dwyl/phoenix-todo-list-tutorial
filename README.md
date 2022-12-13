@@ -2395,6 +2395,30 @@ e.g: https://phxtodo.fly.dev <br />xs
 
 
 
+### 13 (Bonus 2x!) Adding REST API
+
+Our Phoenix server currently
+only returns HTML pages 
+that are server-side rendered.
+This is *awesome* 
+but we can make use of Phoenix
+to extend its capabilities.
+
+What if our server also responded
+with JSON objects?
+What if it was an API, 
+where people could communicate 
+directly and manage their items
+through it?
+
+Wouldn't that be great?
+Well, you're in luck!
+We've created 
+[a small guide ](./api.md)
+dedicated to creating this!
+
+Don't worry, it's actually quite easy! 😉
+
 
 ### Done!
 
