@@ -5,15 +5,29 @@ defmodule AppWeb.ItemControllerTest do
   import App.TodoFixtures
 
   @create_attrs %{person_id: 42, status: 0, text: "some text"}
+  @public_create_attrs %{person_id: 0, status: 0, text: "some public text"}
   @completed_attrs %{person_id: 42, status: 1, text: "some text completed"}
+  @public_completed_attrs %{person_id: 0, status: 1, text: "some public text completed"}
   @update_attrs %{person_id: 43, status: 1, text: "some updated text"}
-  # @invalid_attrs %{person_id: nil, status: nil, text: nil}
+  @invalid_attrs %{person_id: nil, status: nil, text: nil}
 
   describe "index" do
     test "lists all items", %{conn: conn} do
       conn = setup_conn(conn)
       conn = get(conn, ~p"/items")
       assert html_response(conn, 200) =~ "todos"
+    end
+
+    test "lists items in filter", %{conn: conn} do
+      conn = post(conn, ~p"/items", item: @public_create_attrs)
+
+      # After creating item, navigate to 'active' filter page
+      conn = get(conn, ~p"/items/filter/active")
+      assert html_response(conn, 200) =~ @public_create_attrs.text
+
+      # Navigate to 'completed page'
+      conn = get(conn, ~p"/items/filter/completed")
+      assert !(html_response(conn, 200) =~ @public_create_attrs.text)
     end
   end
 
@@ -32,6 +46,11 @@ defmodule AppWeb.ItemControllerTest do
 
       assert %{} = redirected_params(conn)
       assert redirected_to(conn) == ~p"/items/"
+    end
+
+    test "errors when invalid attributes are passed", %{conn: conn} do
+      conn = post(conn, ~p"/items", item: @invalid_attrs)
+      assert html_response(conn, 200) =~ "can&#39;t be blank"
     end
   end
 
@@ -53,15 +72,34 @@ defmodule AppWeb.ItemControllerTest do
       conn = put(conn, ~p"/items/#{item}", item: @update_attrs)
       assert redirected_to(conn) == ~p"/items/"
     end
+
+    test "errors when invalid attributes are passed", %{conn: conn, item: item} do
+      conn = put(conn, ~p"/items/#{item}", item: @invalid_attrs)
+      assert html_response(conn, 200) =~ "can&#39;t be blank"
+    end
   end
 
   describe "clear completed" do
     setup [:create_item]
 
     test "clears the completed items", %{conn: conn, item: item} do
-      conn = setup_conn(conn)
+
       # Creating completed item
-      conn = post(conn, ~p"/items", item: @completed_attrs)
+      conn = post(conn, ~p"/items", item: @public_completed_attrs)
+      # Clearing completed items
+      conn = get(conn, ~p"/items/clear")
+
+      items = conn.assigns.items
+      [completed_item | _tail] = conn.assigns.items
+
+      assert conn.assigns.filter == "all"
+      assert completed_item.status == 2
+    end
+
+    test "clears the completed items in public (person_id=0)", %{conn: conn, item: item} do
+
+      # Creating completed item
+      conn = post(conn, ~p"/items", item: @public_completed_attrs)
       # Clearing completed items
       conn = get(conn, ~p"/items/clear")
 

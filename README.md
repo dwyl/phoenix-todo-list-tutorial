@@ -1048,9 +1048,15 @@ describe "create item" do
     assert %{} = redirected_params(conn)
     assert redirected_to(conn) == ~p"/items/"
   end
+
+  test "errors when invalid attributes are passed", %{conn: conn} do
+    conn = post(conn, ~p"/items", item: @invalid_attrs)
+    assert html_response(conn, 200) =~ "can&#39;t be blank"
+  end
 end
 ```
 
+//CHANGEHERE
 > Updated code:
 [`/test/app_web/controllers/item_controller_test.exs#L17-L31`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3c04ee39df621cac200b4d3b45ad4045e67e388b/test/app_web/controllers/item_controller_test.exs#L17-L31)
 
@@ -1178,9 +1184,18 @@ defmodule AppWeb.ItemControllerTest do
   import App.TodoFixtures
 
   @create_attrs %{person_id: 42, status: 0, text: "some text"}
+  @public_create_attrs %{person_id: 0, status: 0, text: "some public text"}
+  @completed_attrs %{person_id: 42, status: 1, text: "some text completed"}
+  @public_completed_attrs %{person_id: 0, status: 1, text: "some public text completed"}
   @update_attrs %{person_id: 43, status: 1, text: "some updated text"}
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
 ```
+
+We are adding fixed `Item` attributes
+to later be used in tests.
+We are specifying `public` `Item`s 
+because we will later add
+*authentication* to this app.
 
 After this, locate `defp create_item()/1`
 function inside the same file. 
@@ -1761,9 +1776,15 @@ describe "update item" do
     conn = get(conn, ~p"/items/")
     assert html_response(conn, 200) =~ "some updated text"
   end
+
+  test "errors when invalid attributes are passed", %{conn: conn, item: item} do
+    conn = put(conn, ~p"/items/#{item}", item: @invalid_attrs)
+    assert html_response(conn, 200) =~ "can&#39;t be blank"
+  end
 end
 ```
 
+//CHANGEHERE
 e.g:
 [`test/app_web/controllers/item_controller_test.exs#L43-L53`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3d5d839d6053c3f6ac5140459a4c3c010d45b195/test/app_web/controllers/item_controller_test.exs#L43-L53)
 
@@ -1852,6 +1873,35 @@ The "Active" is all the items with `status==0`.
 <br />
 
 ### 9.1 Create `/:filter` Route
+
+Before starting, 
+let's add a unit test.
+We want to show filtered items
+according to the filter chosen.
+
+Open `test/app_web/controllers/item_controller_test.exs`
+and locate `describe "index" do`.
+In this block, add the following test.
+It checks if the item is properly being shown
+when the filter is changed.
+
+```elixir
+  test "lists items in filter", %{conn: conn} do
+    conn = post(conn, ~p"/items", item: @public_create_attrs)
+
+    # After creating item, navigate to 'active' filter page
+    conn = get(conn, ~p"/items/filter/active")
+    assert html_response(conn, 200) =~ @public_create_attrs.text
+
+    # Navigate to 'completed page'
+    conn = get(conn, ~p"/items/filter/completed")
+    assert !(html_response(conn, 200) =~ @public_create_attrs.text)
+  end
+```
+
+//CHANGEHERE
+e.g:
+[`test/app_web/controllers/item_controller_test.exs`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/50cce48a72d27b52cfeae158e3191e3cd1a8fe87/lib/app_web/controllers/item_html/index.html.heex#L18)
 
 Open the `lib/app_web/router.ex` and
 add the following route:
@@ -2147,9 +2197,23 @@ Add the next lines to test the
     setup [:create_item]
 
     test "clears the completed items", %{conn: conn, item: item} do
-      conn = setup_conn(conn)
+
       # Creating completed item
-      conn = post(conn, ~p"/items", item: @completed_attrs)
+      conn = post(conn, ~p"/items", item: @public_completed_attrs)
+      # Clearing completed items
+      conn = get(conn, ~p"/items/clear")
+
+      items = conn.assigns.items
+      [completed_item | _tail] = conn.assigns.items
+
+      assert conn.assigns.filter == "all"
+      assert completed_item.status == 2
+    end
+
+    test "clears the completed items in public (person_id=0)", %{conn: conn, item: item} do
+
+      # Creating completed item
+      conn = post(conn, ~p"/items", item: @public_completed_attrs)
       # Clearing completed items
       conn = get(conn, ~p"/items/clear")
 
@@ -2437,6 +2501,60 @@ it will _feel_ like an SPA!
 Try the Fly.io demo again:
 [phxtodo.fly.dev](https://phxtodo.fly.dev/)
 Feel that buttery-smooth page transition.
+
+### 11.5 Remove unused /items/:id route
+Currently, our application occurs in the same page.
+However, there is a route that we don't use 
+and is also aesthetically incompatible with the rest
+of our app.
+
+<img width="930" alt="show_route" src="https://user-images.githubusercontent.com/17494745/207366063-d0da0dec-9cbe-4ea1-863d-db18aac7e23d.png">
+
+If we check `lib/app_web/controllers/item_controller.ex`,
+you might notice the following function.
+
+```elixir
+  def show(conn, %{"id" => id}) do
+    item = Todo.get_item!(id)
+    render(conn, :show, item: item)
+  end
+```
+
+This serves the `GET /items/:id` route.
+We could do the same as we did with `edit`
+and render `index`.
+However, let's do something different 
+so we learn a bit more about routes.
+
+If we head on to `router.ex`,
+and locate the line:
+
+```elixir
+resources "/items", ItemController
+```
+
+We can change it to this.
+
+```elixir
+resources "/items", ItemController, except: [:show]
+```
+
+We are saying that we want to keep
+*all* the routes in ItemController
+**except** the one related to the `show` action.
+
+We can now safely delete it
+from `item_controller.ex`,
+as we don't need it anymore.
+
+Your files should look like the following.
+
+//CHANGEHERE
+e.g:
+[`/lib/router.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/assets/package.json#L18)
+[`lib/app_web/controllers/item_controller.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/1f2fdf6903c7a3c2f87e4340c12ac59303ce70ae/assets/package.json#L18)
+
+
 
 
 ### 12 (Bonus!) Adding authentication

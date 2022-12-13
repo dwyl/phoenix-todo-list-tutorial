@@ -67,11 +67,6 @@ defmodule AppWeb.ItemController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    item = Todo.get_item!(id)
-    render(conn, :show, item: item)
-  end
-
   def edit(conn, params) do
     index(conn, params)
   end
