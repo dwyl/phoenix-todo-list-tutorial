@@ -78,7 +78,7 @@ we are using the
 [TodoMVC](https://github.com/dwyl/javascript-todo-list-tutorial#todomvc)
 CSS to simplify our UI.
 This has several advantages
-the biggest being _minimising_ how much CSS we have to write!
+the biggest being _minimizing_ how much CSS we have to write!
 It also means we have a guide to which _features_
 need to be implemented to achieve full functionality.
 
@@ -193,8 +193,7 @@ When prompted to install dependencies,
 type <kbd>Y</kbd> followed by <kbd>Enter</kbd>.
 
 Change into the newly created `app` directory (`cd app`)
-and
-ensure you have everything you need:
+and ensure you have everything you need:
 
 ```sh
 mix setup
@@ -246,7 +245,8 @@ In creating a basic Todo List we only need one schema: `items`.
 Later we can add separate lists and tags to organise/categorise
 our `items` but for now this is all we need.
 
-Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) command to create the items table:
+Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) 
+command to create the items table:
 
 ```sh
 mix phx.gen.html Todo Item items text:string person_id:integer status:integer
@@ -895,7 +895,8 @@ e.g:
 
 
 Now that we have `default` values for `person_id` and `status`
-if you submit the `/items/new` form it will succeed.
+if you submit the `/items/new` form,
+it will succeed.
 
 
 
@@ -953,7 +954,7 @@ We are doing this by calling the
 `new/2` function inside `item_controller.ex`.
 This function *pertains* to the page in the URL `items/new`
 and renders the `new.html.heex` file.
-Hence why we call this function to successfuly embed :smile:.
+Hence why we call this function to successfully embed :smile:.
 
 Before:
 [`/lib/app_web/controllers/item_html/index.html.heex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/templates/item/index.html.eex#L36) <br />
@@ -1008,7 +1009,7 @@ we are redirected to the `index.html` template:
 
 </div>
 
-### 5.5 Update `item_controller_test.exs` to Redirect to `index`
+### 5.5 Update `item_controller_test.exs` to redirect to `index`
 
 The changes we've made to the `new.html.heex` files 
 and the steps above have broken some of our automated tests.
@@ -1732,7 +1733,7 @@ we broke a few tests! That's OK.
 They're easy to fix.
 
 Open the `test/app_web/controllers/item_controller_test.exs`
-file and cocate the test with the following text.
+file and locate the test with the following text.
 
 `test "renders form for editing chosen item"`
 
@@ -2269,7 +2270,7 @@ Open your `lib/app_web/controllers/item_html.ex` file
 and add the following function definition for `pluralise/1`:
 
 ```elixir
-# pluralise the word item when the number of items is greather/less than 1
+# pluralise the word item when the number of items is greater/less than 1
 def pluralise(items) do
   # items where status < 1 is equal to Zero or Greater than One:
   case remaining_items(items) == 0 || remaining_items(items) > 1 do
@@ -2542,7 +2543,7 @@ We are saying that we want to keep
 
 We can now safely delete it
 from `item_controller.ex`,
-as we don't need it anymore.
+as we don't need it any more.
 
 Your files should look like the following.
 
