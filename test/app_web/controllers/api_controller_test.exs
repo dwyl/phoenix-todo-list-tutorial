@@ -9,11 +9,9 @@ defmodule AppWeb.ApiControllerTest do
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
   @invalid_status_attrs %{status: 6}
 
-
   describe "list" do
     test "all items", %{conn: conn} do
       {:ok, item} = Todo.create_item(@create_attrs)
-
 
       conn = get(conn, ~p"/api/items")
 
