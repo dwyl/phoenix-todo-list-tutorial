@@ -453,7 +453,7 @@ on top of the schema definition
 inside `lib/app/todo/item.ex`.
 
 ```elixir
-  @derive {Jason.Encoder, only: [:person_id, :status, :text]}
+  @derive {Jason.Encoder, only: [:id, :person_id, :status, :text]}
   schema "items" do
     field :person_id, :integer, default: 0
     field :status, :integer, default: 0
@@ -465,7 +465,7 @@ inside `lib/app/todo/item.ex`.
 We are telling the `Jason` library 
 that when encoding or decoding `Item` structs,
 we are only interested in the
-`person_id`, `status` and `text` fields
+`id`, `person_id`, `status` and `text` fields
 (instead of other fields like
 `updated_at`, `inserted_at` or `__meta__`).
 
