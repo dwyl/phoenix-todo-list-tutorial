@@ -9,6 +9,19 @@ defmodule AppWeb.ApiControllerTest do
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
   @invalid_status_attrs %{status: 6}
 
+
+  describe "list" do
+    test "all items", %{conn: conn} do
+      {:ok, item} = Todo.create_item(@create_attrs)
+
+
+      conn = get(conn, ~p"/api/items")
+
+      assert conn.status == 200
+      assert length(Jason.decode!(response(conn, 200))) == 1
+    end
+  end
+
   describe "create" do
     test "a valid item", %{conn: conn} do
       conn = post(conn, ~p"/api/items", @create_attrs)

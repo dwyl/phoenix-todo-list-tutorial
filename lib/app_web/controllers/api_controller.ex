@@ -3,6 +3,11 @@ defmodule AppWeb.ApiController do
   alias App.Todo
   import Ecto.Changeset
 
+  def index(conn, params) do
+    items = Todo.list_items()
+    json(conn, items)
+  end
+
   def create(conn, params) do
     case Todo.create_item(params) do
       # Successfully creates item

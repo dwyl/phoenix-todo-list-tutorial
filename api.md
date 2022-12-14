@@ -69,7 +69,7 @@ add the following piece of code.
     pipe_through :api
 
     put "/items/:id/status", ApiController, :update_status
-    resources "items", ApiController, only: [:create, :update]
+    resources "items", ApiController, only: [:create, :update, :index]
   end
 ```
 
@@ -89,6 +89,7 @@ let's create it!
 Before creating our controller,
 let's define our requirements.
 We want the API to:
+- list `item`s
 - create an `item`
 - edit an `item`
 - update an `item`'s status
@@ -154,6 +155,18 @@ defmodule AppWeb.ApiControllerTest do
 
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
   @invalid_status_attrs %{status: 6}
+
+  describe "list" do
+    test "all items", %{conn: conn} do
+      {:ok, item} = Todo.create_item(@create_attrs)
+
+
+      conn = get(conn, ~p"/api/items")
+
+      assert conn.status == 200
+      assert length(Jason.decode!(response(conn, 200))) == 1
+    end
+  end
 
   describe "create" do
     test "a valid item", %{conn: conn} do
@@ -264,6 +277,11 @@ defmodule AppWeb.ApiController do
   use AppWeb, :controller
   alias App.Todo
   import Ecto.Changeset
+
+  def index(conn, params) do
+    items = Todo.list_items()
+    json(conn, items)
+  end
 
   def create(conn, params) do
     case Todo.create_item(params) do
