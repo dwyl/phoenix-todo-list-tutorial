@@ -6,7 +6,7 @@ defmodule AppWeb.ItemControllerTest do
 
   @create_attrs %{person_id: 42, status: 0, text: "some text"}
   @public_create_attrs %{person_id: 0, status: 0, text: "some public text"}
-  @completed_attrs %{person_id: 42, status: 1, text: "some text completed"}
+  # @completed_attrs %{person_id: 42, status: 1, text: "some text completed"}
   @public_completed_attrs %{person_id: 0, status: 1, text: "some public text completed"}
   @update_attrs %{person_id: 43, status: 1, text: "some updated text"}
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
@@ -82,26 +82,21 @@ defmodule AppWeb.ItemControllerTest do
   describe "clear completed" do
     setup [:create_item]
 
-    test "clears the completed items", %{conn: conn, item: item} do
+    test "clears the completed items", %{conn: conn} do
       # Creating completed item
       conn = post(conn, ~p"/items", item: @public_completed_attrs)
       # Clearing completed items
       conn = get(conn, ~p"/items/clear")
-
-      items = conn.assigns.items
       [completed_item | _tail] = conn.assigns.items
-
       assert conn.assigns.filter == "all"
       assert completed_item.status == 2
     end
 
-    test "clears the completed items in public (person_id=0)", %{conn: conn, item: item} do
+    test "clears the completed items in public (person_id=0)", %{conn: conn} do
       # Creating completed item
       conn = post(conn, ~p"/items", item: @public_completed_attrs)
       # Clearing completed items
       conn = get(conn, ~p"/items/clear")
-
-      items = conn.assigns.items
       [completed_item | _tail] = conn.assigns.items
 
       assert conn.assigns.filter == "all"
@@ -152,7 +147,6 @@ defmodule AppWeb.ItemControllerTest do
         auth_provider: "github",
         email: "test@email.com",
         exp: 1_702_132_323,
-        givenName: nil,
         iat: 1_670_595_323,
         id: 1,
         iss: "Joken",
