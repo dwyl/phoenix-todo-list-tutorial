@@ -4,7 +4,8 @@
 
 A complete beginners step-by-step tutorial
 for building a Todo List in Phoenix.<br/>
-100% functional. 0% JavaScript. Just `HTML`, `CSS` and `Elixir`.
+100% functional. 0% JavaScript. 
+Just `HTML`, `CSS` and `Elixir`.
 Fast and maintainable.
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/phoenix-todo-list-tutorial/ci.yml?label=build&style=flat-square&branch=main)
@@ -35,8 +36,9 @@ developer effectiveness (_shipping features fast_),
 UX and _accessibility_.
 The server rendered pages take less than 5ms to respond
 so the UX is _fast_.
-On Heroku (_after the "Free" App wakes up!_),
-round-trip response times are sub 100ms for all interactions,
+On Fly.io: 
+[phxtodo.fly.dev](https://phxtodo.fly.dev/)
+round-trip response times are sub 200ms for all interactions,
 so it _feels_ like a client-side rendered App.
 
 
@@ -50,16 +52,13 @@ how to build an app in Elixir/Phoenix
 from scratch.
 
 
-### Try it on Heroku: [phxtodo.fly.dev](https://phxtodo.fly.dev)
-
-<!-- wake heroku app before visit. see: https://github.com/dwyl/ping -->
-![wake-sleeping-heroku-app](https://phxtodo.fly.dev/ping)
+### Try it on Fly.io: [phxtodo.fly.dev](https://phxtodo.fly.dev)
 
 
-Try the Heroku version.
+Try the Fly.io version.
 Add a few items to the list and test the functionality.
 
-![todo-app-heroku-version](https://user-images.githubusercontent.com/194400/83279718-6e5a4a00-a1cd-11ea-90b3-f0b29a898b3d.gif)
+![phx-todo-list-example](https://user-images.githubusercontent.com/194400/208828566-c6986ac4-17b7-4d8d-9ff0-71b6136b8ebc.gif)
 
 Even with a full HTTP round-trip for each interaction,
 the response time is _fast_.
@@ -68,7 +67,7 @@ waits for the response from the server before re-rendering the page.
 The old full page refresh of yesteryear is _gone_.
 Modern browsers intelligently render just the changes!
 So the UX approximates "native"!
-Seriously, try the Heroku app on your Phone and see!
+Seriously, try the Fly.io app on your Phone and see!
 
 
 ### TodoMVC
