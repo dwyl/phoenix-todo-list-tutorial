@@ -165,6 +165,16 @@ running on your `localhost`, <br />
 let's build it from scratch
 and understand all the steps.
 
+#### Auth
+
+When running the _finished_ example app on `localhost`,
+if you want try the **`login` button**, 
+you will need to get an `AUTH_API_KEY`. [1 minute]
+See: 
+[Get your `AUTH_API_KEY`](https://github.com/dwyl/auth_plug#2-get-your-auth_api_key-)
+
+### _Build_ it!
+
 If you ran the finished app on your `localhost`
 (_and you really should!_), <br />
 you will need to change up a directory before starting the tutorial:
@@ -186,11 +196,17 @@ using the following
 command:
 
 ```sh
-mix phx.new app
+mix phx.new app --no-dashboard --no-gettext --no-mailer 
 ```
 
 When prompted to install dependencies,
 type <kbd>Y</kbd> followed by <kbd>Enter</kbd>.
+
+> **Note**: those **flags** after the `app` name
+> are just to avoid creating files we don't _need_ 
+> for this simple example. 
+> See: 
+> [hexdocs.pm/phoenix/Mix.Tasks.Phx.New](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.New.html)
 
 Change into the newly created `app` directory (`cd app`)
 and ensure you have everything you need:
