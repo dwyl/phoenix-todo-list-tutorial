@@ -105,7 +105,8 @@ defmodule AppWeb.ItemControllerTest do
 
     test "clears completed items logged-in", %{conn: conn} do
       # Creating completed item belonging to person
-      conn = setup_conn(conn)
+      conn =
+        setup_conn(conn)
         |> post(~p"/items", item: @completed_attrs)
         |> get(~p"/items/clear")
 
