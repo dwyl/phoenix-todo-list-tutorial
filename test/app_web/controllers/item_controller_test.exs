@@ -1,12 +1,12 @@
 defmodule AppWeb.ItemControllerTest do
   use AppWeb.ConnCase
   alias App.Todo
-
   import App.TodoFixtures
+  # import Plug.Conn
 
   @create_attrs %{person_id: 42, status: 0, text: "some text"}
   @public_create_attrs %{person_id: 0, status: 0, text: "some public text"}
-  # @completed_attrs %{person_id: 42, status: 1, text: "some text completed"}
+  @completed_attrs %{person_id: 42, status: 1, text: "some text completed"}
   @public_completed_attrs %{person_id: 0, status: 1, text: "some public text completed"}
   @update_attrs %{person_id: 43, status: 1, text: "some updated text"}
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
@@ -101,6 +101,17 @@ defmodule AppWeb.ItemControllerTest do
 
       assert conn.assigns.filter == "all"
       assert completed_item.status == 2
+    end
+
+    test "clears completed items logged-in", %{conn: conn} do
+      # Creating completed item belonging to person
+      conn = setup_conn(conn)
+        |> post(~p"/items", item: @completed_attrs)
+        |> get(~p"/items/clear")
+
+      assert conn.assigns.filter == "all"
+      item = List.last(conn.assigns.items)
+      assert item.status == 2
     end
   end
 
