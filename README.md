@@ -7,7 +7,7 @@ for building a Todo List in Phoenix.<br/>
 100% functional. 0% JavaScript. Just `HTML`, `CSS` and `Elixir`.
 Fast and maintainable.
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/phoenix-todo-list-tutorial/Elixir%20CI?label=build&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/phoenix-todo-list-tutorial/ci.yml?label=build&style=flat-square&branch=main)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/phoenix-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/phoenix-todo-list-tutorial?branch=master)
 [![HitCount](http://hits.dwyl.com/dwyl/phoenix-todo-list-tutorial.svg)](http://hits.dwyl.com/dwyl/phoenix-todo-list-tutorial)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/phoenix-todo-list-tutorial/issues)
@@ -165,7 +165,7 @@ running on your `localhost`, <br />
 let's build it from scratch
 and understand all the steps.
 
-#### Auth
+#### Auth [Optional]
 
 When running the _finished_ example app on `localhost`,
 if you want try the **`login` button**, 
