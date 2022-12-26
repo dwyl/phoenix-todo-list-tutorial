@@ -30,6 +30,7 @@ defmodule AppWeb.ItemController do
   def create(conn, %{"item" => item_params}) do
     person_id = get_person_id(conn)
     item_params = Map.put(item_params, "person_id", person_id)
+
     case Todo.create_item(item_params) do
       {:ok, _item} ->
         conn
@@ -45,6 +46,7 @@ defmodule AppWeb.ItemController do
     case Map.has_key?(conn.assigns, :person) do
       false ->
         0
+
       true ->
         Map.get(conn.assigns.person, :id)
     end
