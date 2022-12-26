@@ -112,7 +112,7 @@ defmodule AppWeb.ItemControllerTest do
 
       assert conn.assigns.filter == "all"
       item = List.last(conn.assigns.items)
-      assert item.status == 2
+      assert item.status == 2 # deleted
     end
   end
 

@@ -59,9 +59,12 @@ defmodule App.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
+      # github.com/dwyl/auth_plug
       {:auth_plug, "~> 1.5"},
+      # github.com/dwyl/useful
+      {:useful, "~> 1.10.0", override: true},
 
-      # Track test coverage
+      # Track test coverage: github.com/parroty/excoveralls
       {:excoveralls, "~> 0.15", only: [:test, :dev]}
     ]
   end

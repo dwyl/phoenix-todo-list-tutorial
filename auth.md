@@ -1,76 +1,66 @@
-# Adding authentication
+# Adding Authentication
 
-If you're reading this, 
-it's probably because you are interested
-in adding authentication to this app.
+This section of the tutorial
+adds Authentication via 
+[`auth_plug`](https://github.com/dwyl/auth_plug).
+It's the fastest way to add 
+[`auth`](https://github.com/dwyl/auth)
+with the _fewest_ lines of code.
 
-Don't worry, we got you covered ;)
-
-## Making schema changes
-
-Before anything else,
-we now need to change the `list_items/0` function
-in `lib/app/todo.ex`.
-This function is called to fetch the list of items.
-However, we now need to know 
-**whose user's items we need to fetch**,
-in case he's logged in.
-
-Change the function so it looks like the following.
-
-```elixir
-  def list_items(person_id \\ 0) do
-    query =
-      from(
-        i in Item,
-        select: i,
-        where: i.person_id == ^person_id,
-        order_by: [asc: i.id]
-      )
-
-    Repo.all(query)
-  end
-```
+By the end you will be able to 
+sign-in with Google or Github 
+in your Todo List App.
 
 
-## Install `auth_plug`
-
-To make authentication integration easy,
-we are going to make use of the
-[`auth_plug`](https://github.com/dwyl/auth_plug)
-library.
-It will allow for users to sign-in using common providers
-like Google or Github.
+## 1. Install `auth_plug` and `useful`
 
 Open `mix.exs` and locate the `deps` section.
-Add the following line.
+Add the following line:
 
 ```elixir
-{:auth_plug, "~> 1.5"}
+{:auth_plug, "~> 1.5"},
+{:useful, "~> 1.0.9"}
+```
+
+Once you've saved the `mix.exs` file,
+run:
+
+```sh
+mix deps.get
 ```
 
 After installing, 
-we are going to need an `AUTH_API_KEY`.
+you need an `AUTH_API_KEY`.
 To get this key, please follow 
 the official instructions -> 
-https://github.com/dwyl/auth_plug#2-get-your-auth_api_key-
+[Get your `AUTH_API_KEY`](https://github.com/dwyl/auth_plug#2-get-your-auth_api_key-)
 
-With this key, run the following command on your terminal,
-where `XXXXXXX` is the key you created.
+Once you have created your `AUTH_API_KEY`, 
+create an `.env` file in your project 
+add the following line to it:
 
 ```sh
-export AUTH_API_KEY=XXXXXXX
+export AUTH_API_KEY=88SwQD4YweF8q7iAt1R/88SwQGcsdq4gUpR9D69DFAXy/authdemo.fly.dev
 ```
 
-This will run `AUTH_API_KEY` as an env variable 
-*inside the terminal session*. If you close it,
-you need to run it again so it is set up.
+> **Note**: export the key you got from authdemo.fly.dev
+> This is just for illustration. 
 
-You can run `mix phx.server` if you want to,
-the app should look the same as before.
+Once you've saved your `.env` file,
+run:
 
-Now, in the `lib/app_web/router.ex`,
-add the following lines.
+```sh
+source .env
+```
+
+## 2. Add _Optional_ Auth to `router.ex`
+
+
+Open your 
+`lib/app_web/router.ex`
+and add the following lines:
+
+definition with the following:
 
 ```elixir
   pipeline :authOptional, do: plug(AuthPlugOptional)
@@ -79,8 +69,8 @@ add the following lines.
     pipe_through [:browser, :authOptional]
 
     get "/", ItemController, :index
-    
-    # Add these two lines
+
+    # These are the auth specific routes:
     get "/login", AuthController, :login
     get "/logout", AuthController, :logout
 
@@ -88,16 +78,19 @@ add the following lines.
   end
 ```
 
-We just created a pipeline that will run
-as **middleware**.
-We additionally added two endpoints, 
-one for login and another to logout.
+We just created the `:authOptional` pipeline 
+that will run as **middleware**.
+We additionally added two routes, 
+one for `/login` and another to `/logout`.
 They are managed by `AuthController`, 
 which we will create now.
 
+## 3. Create `auth_controller.ex`
 
-Create the file `lib/app_web/controllers/auth_controller.ex`
-and add the following lines of code.
+
+Create the file:
+`lib/app_web/controllers/auth_controller.ex`
+and add the following lines of code:
 
 ```elixir
 defmodule AppWeb.AuthController do
@@ -116,61 +109,91 @@ defmodule AppWeb.AuthController do
 end
 ```
 
-When the user logs in, he is redirected
-to the URL where the user can sign in using his preferred provider.
-On the other hand, the `logout` function handles whenever
-the user accesses `/logout` in our application. 
-It logs out the user and redirects him to the index page (`/`).
+When the user logs in, 
+they are redirected
+to the URL where they can authenticate 
+using their chosen service.
+`logout/2` as it's name suggests, handles logging out 
+and redirects back to the `/items` page.xs
 
-## Refactoring `ItemController`
+## 4. Modify `list_items/0` to allow ownership
 
-`Auth_plug` adds to assigns to the connection:
-**`:loggedin`** (which says if a user is logged in or not)
-and **`person`** (which holds information about the user that is logged in).
-The latter is not always set. If no user is logged in, `:person` doesn't exist.
+Open 
+`lib/app/todo.ex`
+and locate the 
+`list_items/0` function.
+This function is called to fetch the list of items.
+However, we now need to know 
+**who** an `item` belongs to
+in case the `person` is logged-in.
 
-We want this information in the view to conditionally render it.
-For this, we need to change a few things in `ItemController`.
-Open `lib/app_web/controllers/item_controller.ex`
-and change `index/2` to the following.
+Change the `list_items/0` function 
+to the following:
 
 ```elixir
-  def index(conn, params) do
-    item = if not is_nil(params) and Map.has_key?(params, "id") do
-      Todo.get_item!(params["id"])
-    else
-      %Item{}
-    end
+def list_items(person_id \\ 0) do
+  query =
+    from(
+      i in Item,
+      select: i,
+      where: i.person_id == ^person_id,
+      order_by: [asc: i.id]
+    )
 
-    case Map.has_key?(conn.assigns, :person) do
-      false ->
-        items = Todo.list_items()
-        changeset = Todo.change_item(item)
+  Repo.all(query)
+end
+```
 
-        render(conn, "index.html",
-          items: items,
-          changeset: changeset,
-          editing: item,
-          loggedin: Map.get(conn.assigns, :loggedin),
-          filter: Map.get(params, "filter", "all")
-        )
+## 5. Update `ItemController`
 
-      true ->
-        person_id = Map.get(conn.assigns.person, :id)
+`auth_plug` adds the 
+**`:loggedin`** 
+(`boolean` to know if the `person` is logged in or not)
+and **`person`** 
+(the `map` of information about the `person` that is logged in) 
+The latter is not always set. 
+If no `person` is logged in, 
+`:person` will not be present in `conn.assigns`.
 
-        items = Todo.list_items(person_id)
-        changeset = Todo.change_item(item)
+We want this information in the view 
+to conditionally render it.
+For this, we need to change a few things in `ItemController`.
+Open `lib/app_web/controllers/item_controller.ex`
+and change `index/2` to the following:
 
-        render(conn, "index.html",
-          items: items,
-          changeset: changeset,
-          editing: item,
-          loggedin: Map.get(conn.assigns, :loggedin),
-          person: Map.get(conn.assigns, :person),
-          filter: Map.get(params, "filter", "all")
-        )
-      end
+```elixir
+def index(conn, params) do
+  item = if not is_nil(params) and Map.has_key?(params, "id") do
+    Todo.get_item!(params["id"])
+  else
+    %Item{}
   end
+
+  case Map.has_key?(conn.assigns, :person) do
+    false ->
+      items = Todo.list_items()
+      changeset = Todo.change_item(item)
+
+      render(conn, "index.html",
+        items: items,
+        changeset: changeset,
+        editing: item,
+        filter: Map.get(params, "filter", "all")
+      )
+
+    true ->
+      person_id = Map.get(conn.assigns.person, :id)
+      items = Todo.list_items(person_id)
+      changeset = Todo.change_item(item)
+
+      render(conn, "index.html",
+        items: items,
+        changeset: changeset,
+        editing: item,
+        filter: Map.get(params, "filter", "all")
+      )
+    end
+end
 ```
 
 What we just did is simple. 
