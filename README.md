@@ -4,10 +4,11 @@
 
 A complete beginners step-by-step tutorial
 for building a Todo List in Phoenix.<br/>
-100% functional. 0% JavaScript. Just `HTML`, `CSS` and `Elixir`.
+100% functional. 0% JavaScript. 
+Just `HTML`, `CSS` and `Elixir`.
 Fast and maintainable.
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/phoenix-todo-list-tutorial/Elixir%20CI?label=build&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/phoenix-todo-list-tutorial/ci.yml?label=build&style=flat-square&branch=main)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/phoenix-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/phoenix-todo-list-tutorial?branch=master)
 [![HitCount](http://hits.dwyl.com/dwyl/phoenix-todo-list-tutorial.svg)](http://hits.dwyl.com/dwyl/phoenix-todo-list-tutorial)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/phoenix-todo-list-tutorial/issues)
@@ -21,8 +22,8 @@ Fast and maintainable.
 Todo lists are familiar to most people;
 we make lists all the time.
 _Building_ a Todo list from scratch
-is a great way to learn Elixir/Phoenix
-because the UI/UX is simple,
+is a great way to learn `Elixir`/`Phoenix`
+because the **UI/UX** is **simple**,
 so we can focus on implementation.
 
 For the team
@@ -35,8 +36,9 @@ developer effectiveness (_shipping features fast_),
 UX and _accessibility_.
 The server rendered pages take less than 5ms to respond
 so the UX is _fast_.
-On Heroku (_after the "Free" App wakes up!_),
-round-trip response times are sub 100ms for all interactions,
+On Fly.io: 
+[phxtodo.fly.dev](https://phxtodo.fly.dev/)
+round-trip response times are sub 200ms for all interactions,
 so it _feels_ like a client-side rendered App.
 
 
@@ -50,16 +52,13 @@ how to build an app in Elixir/Phoenix
 from scratch.
 
 
-### Try it on Heroku: [phxtodo.fly.dev](https://phxtodo.fly.dev)
-
-<!-- wake heroku app before visit. see: https://github.com/dwyl/ping -->
-![wake-sleeping-heroku-app](https://phxtodo.fly.dev/ping)
+### Try it on Fly.io: [phxtodo.fly.dev](https://phxtodo.fly.dev)
 
 
-Try the Heroku version.
+Try the Fly.io version.
 Add a few items to the list and test the functionality.
 
-![todo-app-heroku-version](https://user-images.githubusercontent.com/194400/83279718-6e5a4a00-a1cd-11ea-90b3-f0b29a898b3d.gif)
+![phx-todo-list-example](https://user-images.githubusercontent.com/194400/208828566-c6986ac4-17b7-4d8d-9ff0-71b6136b8ebc.gif)
 
 Even with a full HTTP round-trip for each interaction,
 the response time is _fast_.
@@ -68,7 +67,7 @@ waits for the response from the server before re-rendering the page.
 The old full page refresh of yesteryear is _gone_.
 Modern browsers intelligently render just the changes!
 So the UX approximates "native"!
-Seriously, try the Heroku app on your Phone and see!
+Seriously, try the Fly.io app on your Phone and see!
 
 
 ### TodoMVC
@@ -78,7 +77,7 @@ we are using the
 [TodoMVC](https://github.com/dwyl/javascript-todo-list-tutorial#todomvc)
 CSS to simplify our UI.
 This has several advantages
-the biggest being _minimising_ how much CSS we have to write!
+the biggest being _minimizing_ how much CSS we have to write!
 It also means we have a guide to which _features_
 need to be implemented to achieve full functionality.
 
@@ -106,10 +105,11 @@ If you feel that any line of code can use a bit more explanation/clarity,
 please don't hesitate to _inform_ us!
 We _know_ what it's like to be a beginner,
 it can be _frustrating_ when something does not make sense!
-If you're stuck, don't suffer in silence,
-asking questions on GitHub
+Asking questions on GitHub
 helps _everyone_ to learn!
 
+Please give us feedback! 🙏
+Star the repo if you found it helpful. ⭐
 
 <br />
 
@@ -165,6 +165,16 @@ running on your `localhost`, <br />
 let's build it from scratch
 and understand all the steps.
 
+#### Auth [Optional]
+
+When running the _finished_ example app on `localhost`,
+if you want try the **`login` button**, 
+you will need to get an `AUTH_API_KEY`. [1 minute]
+See: 
+[Get your `AUTH_API_KEY`](https://github.com/dwyl/auth_plug#2-get-your-auth_api_key-)
+
+### _Build_ it!
+
 If you ran the finished app on your `localhost`
 (_and you really should!_), <br />
 you will need to change up a directory before starting the tutorial:
@@ -186,15 +196,20 @@ using the following
 command:
 
 ```sh
-mix phx.new app
+mix phx.new app --no-dashboard --no-gettext --no-mailer 
 ```
 
 When prompted to install dependencies,
 type <kbd>Y</kbd> followed by <kbd>Enter</kbd>.
 
+> **Note**: those **flags** after the `app` name
+> are just to avoid creating files we don't _need_ 
+> for this simple example. 
+> See: 
+> [hexdocs.pm/phoenix/Mix.Tasks.Phx.New](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.New.html)
+
 Change into the newly created `app` directory (`cd app`)
-and
-ensure you have everything you need:
+and ensure you have everything you need:
 
 ```sh
 mix setup
@@ -246,7 +261,8 @@ In creating a basic Todo List we only need one schema: `items`.
 Later we can add separate lists and tags to organise/categorise
 our `items` but for now this is all we need.
 
-Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) command to create the items table:
+Run the following [generator](https://hexdocs.pm/phoenix/Mix.Tasks.Phx.Gen.Html.html) 
+command to create the items table:
 
 ```sh
 mix phx.gen.html Todo Item items text:string person_id:integer status:integer
@@ -895,7 +911,8 @@ e.g:
 
 
 Now that we have `default` values for `person_id` and `status`
-if you submit the `/items/new` form it will succeed.
+if you submit the `/items/new` form,
+it will succeed.
 
 
 
@@ -953,7 +970,7 @@ We are doing this by calling the
 `new/2` function inside `item_controller.ex`.
 This function *pertains* to the page in the URL `items/new`
 and renders the `new.html.heex` file.
-Hence why we call this function to successfuly embed :smile:.
+Hence why we call this function to successfully embed :smile:.
 
 Before:
 [`/lib/app_web/controllers/item_html/index.html.heex#L36`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/031df4076fc4ff84fd719a3a66c6dd2495268a50/lib/app_web/templates/item/index.html.eex#L36) <br />
@@ -1008,7 +1025,7 @@ we are redirected to the `index.html` template:
 
 </div>
 
-### 5.5 Update `item_controller_test.exs` to Redirect to `index`
+### 5.5 Update `item_controller_test.exs` to redirect to `index`
 
 The changes we've made to the `new.html.heex` files 
 and the steps above have broken some of our automated tests.
@@ -1048,11 +1065,16 @@ describe "create item" do
     assert %{} = redirected_params(conn)
     assert redirected_to(conn) == ~p"/items/"
   end
+
+  test "errors when invalid attributes are passed", %{conn: conn} do
+    conn = post(conn, ~p"/items", item: @invalid_attrs)
+    assert html_response(conn, 200) =~ "can&#39;t be blank"
+  end
 end
 ```
 
 > Updated code:
-[`/test/app_web/controllers/item_controller_test.exs#L17-L31`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3c04ee39df621cac200b4d3b45ad4045e67e388b/test/app_web/controllers/item_controller_test.exs#L17-L31)
+[`/test/app_web/controllers/item_controller_test.exs#L34-L55`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0c12a6bec7aeed5562a239d0dc8eea4952250cdd/test/app_web/controllers/item_controller_test.exs#L34-L55)
 
 If you re-run the tests `mix test` the will now all pass again.
 
@@ -1178,9 +1200,18 @@ defmodule AppWeb.ItemControllerTest do
   import App.TodoFixtures
 
   @create_attrs %{person_id: 42, status: 0, text: "some text"}
+  @public_create_attrs %{person_id: 0, status: 0, text: "some public text"}
+  @completed_attrs %{person_id: 42, status: 1, text: "some text completed"}
+  @public_completed_attrs %{person_id: 0, status: 1, text: "some public text completed"}
   @update_attrs %{person_id: 43, status: 1, text: "some updated text"}
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
 ```
+
+We are adding fixed `Item` attributes
+to later be used in tests.
+We are specifying `public` `Item`s 
+because we will later add
+*authentication* to this app.
 
 After this, locate `defp create_item()/1`
 function inside the same file. 
@@ -1718,7 +1749,7 @@ we broke a few tests! That's OK.
 They're easy to fix.
 
 Open the `test/app_web/controllers/item_controller_test.exs`
-file and cocate the test with the following text.
+file and locate the test with the following text.
 
 `test "renders form for editing chosen item"`
 
@@ -1761,11 +1792,16 @@ describe "update item" do
     conn = get(conn, ~p"/items/")
     assert html_response(conn, 200) =~ "some updated text"
   end
+
+  test "errors when invalid attributes are passed", %{conn: conn, item: item} do
+    conn = put(conn, ~p"/items/#{item}", item: @invalid_attrs)
+    assert html_response(conn, 200) =~ "can&#39;t be blank"
+  end
 end
 ```
 
 e.g:
-[`test/app_web/controllers/item_controller_test.exs#L43-L53`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/3d5d839d6053c3f6ac5140459a4c3c010d45b195/test/app_web/controllers/item_controller_test.exs#L43-L53)
+[`test/app_web/controllers/item_controller_test.exs#L67-L80`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0c12a6bec7aeed5562a239d0dc8eea4952250cdd/test/app_web/controllers/item_controller_test.exs#L67-L80)
 
 We've updated the paths the application redirects to
 after updating an item. 
@@ -1853,11 +1889,39 @@ The "Active" is all the items with `status==0`.
 
 ### 9.1 Create `/:filter` Route
 
+Before starting, 
+let's add a unit test.
+We want to show filtered items
+according to the filter chosen.
+
+Open `test/app_web/controllers/item_controller_test.exs`
+and locate `describe "index" do`.
+In this block, add the following test.
+It checks if the item is properly being shown
+when the filter is changed.
+
+```elixir
+  test "lists items in filter", %{conn: conn} do
+    conn = post(conn, ~p"/items", item: @public_create_attrs)
+
+    # After creating item, navigate to 'active' filter page
+    conn = get(conn, ~p"/items/filter/active")
+    assert html_response(conn, 200) =~ @public_create_attrs.text
+
+    # Navigate to 'completed page'
+    conn = get(conn, ~p"/items/filter/completed")
+    assert !(html_response(conn, 200) =~ @public_create_attrs.text)
+  end
+```
+
+e.g:
+[`test/app_web/controllers/item_controller_test.exs#L21-L32`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0c12a6bec7aeed5562a239d0dc8eea4952250cdd/test/app_web/controllers/item_controller_test.exs#L21-L32)
+
 Open the `lib/app_web/router.ex` and
 add the following route:
 
 ```elixir
-get "/items/:filter", ItemController, :index
+get "/items/filter/:filter", ItemController, :index
 ```
 
 e.g:
@@ -1946,23 +2010,23 @@ with the following code:
 ```elixir
   <li>
     <%= if @filter == "items" do %>
-      <a href="/items" class='selected'>
+      <a href="/items/filter/items" class="selected">
         All
       </a>
     <% else %>
-      <a href="/items">
+      <a href="/items/filter/items">
         All
       </a>
     <% end %>
   </li>
   <li>
     <%= if @filter == "active" do %>
-      <a href="/items/active" class='selected'>
+      <a href="/items/filter/active" class='selected'>
         Active
         [<%= Enum.count(filter(@items, "active")) %>]
       </a>
     <% else %>
-      <a href="/items/active">
+      <a href="/items/filter/active">
         Active
         [<%= Enum.count(filter(@items, "active")) %>]
       </a>
@@ -1970,12 +2034,12 @@ with the following code:
   </li>
   <li>
     <%= if @filter == "completed" do %>
-      <a href="/items/completed" class='selected'>
+      <a href="/items/filter/completed" class='selected'>
         Completed
         [<%= Enum.count(filter(@items, "completed")) %>]
       </a>
     <% else %>
-      <a href="/items/completed">
+      <a href="/items/filter/completed">
         Completed
         [<%= Enum.count(filter(@items, "completed")) %>]
       </a>
@@ -1994,6 +2058,31 @@ fully functioning footer filter:
 
 ![phoenix-todo-footer-nav](https://user-images.githubusercontent.com/194400/83212591-ea19af80-a157-11ea-9e0b-502af5cb61b2.gif)
 
+We can quickly cover this function we added
+with a small unit test.
+Open `test/app_web/controllers/item_html_test.exs`
+and add the following.
+
+```elixir
+  test "test filter function" do
+    items = [
+      %{text: "one", status: 0},
+      %{text: "two", status: 0},
+      %{text: "three", status: 1},
+      %{text: "four", status: 2},
+      %{text: "five", status: 2},
+      %{text: "six", status: 1},
+    ]
+
+    assert length(ItemHTML.filter(items, "items")) == 4
+    assert length(ItemHTML.filter(items, "active")) == 2
+    assert length(ItemHTML.filter(items, "completed")) == 2
+    assert length(ItemHTML.filter(items, "any")) == 4
+  end
+```
+
+And you should be done with this feature 😀.
+Awesome job!
 
 <br />
 
@@ -2018,7 +2107,7 @@ Your `scope "/"` should now look like the following:
     get "/", PageController, :home
     get "/items/toggle/:id", ItemController, :toggle
     get "/items/clear", ItemController, :clear_completed
-    get "/items/:filter", ItemController, :index
+    get "/items/filter/:filter", ItemController, :index
     resources "/items", ItemController
   end
 ```
@@ -2102,6 +2191,56 @@ should have the "Clear completed" function working:
 
 ![phoenix-todo-clear-completed](https://user-images.githubusercontent.com/194400/83244744-a3e44080-a197-11ea-90b3-5420f98bbd55.gif)
 
+It's useful to have tests cover this feature.
+Open `test/app_web/controllers/item_controller_test.exs`.
+Alongside the constants, on top of the file,
+add the following line.
+
+`@completed_attrs %{person_id: 42, status: 1, text: "some text completed"}`
+
+We will use this to create
+an item that is already completed, 
+so we can test the "clear completed"
+functionality.
+
+Add the next lines to test the
+`clear_completed/2` function.
+
+```elixir
+  describe "clear completed" do
+    setup [:create_item]
+
+    test "clears the completed items", %{conn: conn, item: item} do
+
+      # Creating completed item
+      conn = post(conn, ~p"/items", item: @public_completed_attrs)
+      # Clearing completed items
+      conn = get(conn, ~p"/items/clear")
+
+      items = conn.assigns.items
+      [completed_item | _tail] = conn.assigns.items
+
+      assert conn.assigns.filter == "all"
+      assert completed_item.status == 2
+    end
+
+    test "clears the completed items in public (person_id=0)", %{conn: conn, item: item} do
+
+      # Creating completed item
+      conn = post(conn, ~p"/items", item: @public_completed_attrs)
+      # Clearing completed items
+      conn = get(conn, ~p"/items/clear")
+
+      items = conn.assigns.items
+      [completed_item | _tail] = conn.assigns.items
+
+      assert conn.assigns.filter == "all"
+      assert completed_item.status == 2
+    end
+  end
+```
+
+
 
 <br />
 
@@ -2147,7 +2286,7 @@ Open your `lib/app_web/controllers/item_html.ex` file
 and add the following function definition for `pluralise/1`:
 
 ```elixir
-# pluralise the word item when the number of items is greather/less than 1
+# pluralise the word item when the number of items is greater/less than 1
 def pluralise(items) do
   # items where status < 1 is equal to Zero or Greater than One:
   case remaining_items(items) == 0 || remaining_items(items) > 1 do
@@ -2374,8 +2513,74 @@ Try the Fly.io demo again:
 [phxtodo.fly.dev](https://phxtodo.fly.dev/)
 Feel that buttery-smooth page transition.
 
+### 11.5 Remove unused /items/:id route
+Currently, our application occurs in the same page.
+However, there is a route that we don't use 
+and is also aesthetically incompatible with the rest
+of our app.
 
-<br />
+<img width="930" alt="show_route" src="https://user-images.githubusercontent.com/17494745/207366063-d0da0dec-9cbe-4ea1-863d-db18aac7e23d.png">
+
+If we check `lib/app_web/controllers/item_controller.ex`,
+you might notice the following function.
+
+```elixir
+  def show(conn, %{"id" => id}) do
+    item = Todo.get_item!(id)
+    render(conn, :show, item: item)
+  end
+```
+
+This serves the `GET /items/:id` route.
+We could do the same as we did with `edit`
+and render `index`.
+However, let's do something different 
+so we learn a bit more about routes.
+
+If we head on to `router.ex`,
+and locate the line:
+
+```elixir
+resources "/items", ItemController
+```
+
+We can change it to this.
+
+```elixir
+resources "/items", ItemController, except: [:show]
+```
+
+We are saying that we want to keep
+*all* the routes in ItemController
+**except** the one related to the `show` action.
+
+We can now safely delete it
+from `item_controller.ex`,
+as we don't need it any more.
+
+Your files should look like the following.
+
+e.g:
+[`/lib/router.ex#L19-L29`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/0c12a6bec7aeed5562a239d0dc8eea4952250cdd/lib/app_web/router.ex#L19-L29)
+[`lib/app_web/controllers/item_controller.ex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/auth/lib/app_web/controllers/item_controller.ex)
+
+
+
+
+### 12 (Bonus!) Adding authentication
+
+Currently, the application allows *anyone* 
+to access it and manage todo items.
+However, wouldn't it be awesome if 
+we added *authentication* so each user
+could check their own list?
+
+We created a dedicated authentication guide: 
+[`/auth.md`](./auth.md)
+to help you set this up.
+You will soon find out this is extremely easy 😀.
+
+
 ### Deploy!
 
 Deployment to Fly.io takes a few minutes,
