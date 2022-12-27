@@ -46,6 +46,7 @@ defmodule AppWeb.ItemController do
         conn
         |> put_flash(:info, "Item created successfully.")
         |> redirect(to: ~p"/items/")
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new, changeset: changeset)
     end
