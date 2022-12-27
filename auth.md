@@ -12,14 +12,13 @@ sign-in with Google or Github
 in your Todo List App.
 
 
-## 1. Install `auth_plug` and `useful`
+## 1. Install `auth_plug`
 
 Open `mix.exs` and locate the `deps` section.
 Add the following line:
 
 ```elixir
 {:auth_plug, "~> 1.5"},
-{:useful, "~> 1.0.9"}
 ```
 
 Once you've saved the `mix.exs` file,
@@ -163,65 +162,55 @@ and change `index/2` to the following:
 
 ```elixir
 def index(conn, params) do
-  item = if not is_nil(params) and Map.has_key?(params, "id") do
-    Todo.get_item!(params["id"])
-  else
-    %Item{}
-  end
+  item =
+    if not is_nil(params) and Map.has_key?(params, "id") do
+      Todo.get_item!(params["id"])
+    else
+      %Item{}
+    end
 
+  render(conn, "index.html",
+    items: Todo.list_items(get_person_id(conn)),
+    changeset: Todo.change_item(item),
+    editing: item,
+    filter: Map.get(params, "filter", "all")
+  )
+end
+
+# get the person_id from conn.assigns.person.id
+def get_person_id(conn) do
   case Map.has_key?(conn.assigns, :person) do
     false ->
-      items = Todo.list_items()
-      changeset = Todo.change_item(item)
-
-      render(conn, "index.html",
-        items: items,
-        changeset: changeset,
-        editing: item,
-        filter: Map.get(params, "filter", "all")
-      )
+      0
 
     true ->
-      person_id = Map.get(conn.assigns.person, :id)
-      items = Todo.list_items(person_id)
-      changeset = Todo.change_item(item)
-
-      render(conn, "index.html",
-        items: items,
-        changeset: changeset,
-        editing: item,
-        filter: Map.get(params, "filter", "all")
-      )
-    end
+      Map.get(conn.assigns.person, :id)
+  end
 end
 ```
 
-What we just did is simple. 
-We are adding `:loggedin` to the `conn` assigns.
-If `:person` exists, we also add it.
-If a user is logged in, 
-we get the e-mail of the user 
-and fetch all the user's items.
+This update to `index/2` is simple;
+the `get_person_id/1` function is used when 
+looking up the `Todo.list_items`
+if the `:person` is logged in, 
+and fetch their `items`.
 
 In the `create/2` function,
 change it so it looks like so.
 
 ```elixir
-  def create(conn, %{"item" => item_params}) do
-    item_params = case Map.has_key?(conn.assigns, :person) do
-      false -> item_params
-      true -> Map.put(item_params, "person_id", conn.assigns.person.id)
-    end
+def create(conn, %{"item" => item_params}) do
+  item_params = Map.put(item_params, "person_id", get_person_id(conn))
 
-    case Todo.create_item(item_params) do
-      {:ok, _item} ->
-        conn
-        |> put_flash(:info, "Item created successfully.")
-        |> redirect(to: ~p"/items/")
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
-    end
+  case Todo.create_item(item_params) do
+    {:ok, _item} ->
+      conn
+      |> put_flash(:info, "Item created successfully.")
+      |> redirect(to: ~p"/items/")
+    {:error, %Ecto.Changeset{} = changeset} ->
+      render(conn, :new, changeset: changeset)
   end
+end
 ```
 
 We are adding `person_id` to the `Item` model
@@ -231,18 +220,15 @@ Finally, let's fix `clear_completed/2`.
 Instead of having: 
 
 ```elixir
-    person_id = 0
-    query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
+person_id = 0
+query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
 ```
 
 Change it to the following.
 
 ```elixir
-    person_id = case Map.has_key?(conn.assigns, :person) do
-      false -> 0
-      true -> Map.get(conn.assigns.person, :id)
-    end
-    query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
+person_id = get_person_id(conn)
+query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
 ```
 
 We are only missing the last piece of the puzzle:
@@ -268,14 +254,12 @@ We will also have a `login` and `logout` button.
 Here's an example of the `logout` button.
 
 ```html
-     <.link
-        href="/logout"
-      >
-        Logout
-      </.link>
+<.link href="/logout">
+  Logout
+</.link>
 ```
 
-It's that simple! It's just a link
+It's that simple! Just a link
 that redirects to `/logout`, 
 which is handled by the `AuthController` 
 we created earlier.
@@ -304,39 +288,39 @@ Find `"create_item/1 with valid data creates a item"`
 and change it to the following.
 
 ```elixir
-    test "create_item/1 with valid data creates a item" do
-      valid_attrs = %{person_id: 0, status: 0, text: "some text"}
+test "create_item/1 with valid data creates a item" do
+  valid_attrs = %{person_id: 0, status: 0, text: "some text"}
 
-      assert {:ok, %Item{} = item} = Todo.create_item(valid_attrs)
-      assert item.person_id == 0
-      assert item.status == 0
-      assert item.text == "some text"
-    end
+  assert {:ok, %Item{} = item} = Todo.create_item(valid_attrs)
+  assert item.person_id == 0
+  assert item.status == 0
+  assert item.text == "some text"
+end
 ```
 
 Find `"update_item/2 with valid data updates the item"`
 and change it to the following.
 
 ```elixir
-    test "update_item/2 with valid data updates the item" do
-      item = item_fixture()
-      update_attrs = %{person_id: 1, status: 1, text: "some updated text"}
+test "update_item/2 with valid data updates the item" do
+  item = item_fixture()
+  update_attrs = %{person_id: 1, status: 1, text: "some updated text"}
 
-      assert {:ok, %Item{} = item} = Todo.update_item(item, update_attrs)
-      assert item.person_id == 1
-      assert item.status == 1
-      assert item.text == "some updated text"
-    end
+  assert {:ok, %Item{} = item} = Todo.update_item(item, update_attrs)
+  assert item.person_id == 1
+  assert item.status == 1
+  assert item.text == "some updated text"
+end
 ```
 
 Find `"list_items/0 returns all items"`
 and change it to the following.
 
 ```elixir
-  test "list_items/0 returns all items" do
-    item = item_fixture()
-    assert Todo.list_items(0) == [item]
-  end
+test "list_items/0 returns all items" do
+  item = item_fixture()
+  assert Todo.list_items(0) == [item]
+end
 ```
 
 ### `test/support/fixtures/todo_fixtures.ex`
@@ -350,17 +334,17 @@ Open `test/support/fixtures/todo_fixtures.ex`
 and change the function so it looks like so.
 
 ```elixir
-  def item_fixture(attrs \\ %{}) do
-    {:ok, item} =
-      attrs
-      |> Enum.into(%{
-        person_id: 0,
-        status: 0,
-        text: "some text"
-      })
-      |> App.Todo.create_item()
-    item
-  end
+def item_fixture(attrs \\ %{}) do
+  {:ok, item} =
+    attrs
+    |> Enum.into(%{
+      person_id: 0,
+      status: 0,
+      text: "some text"
+    })
+    |> App.Todo.create_item()
+  item
+end
 ```
 
 ### `test/app_web/controllers/auth_controller_test.exs`

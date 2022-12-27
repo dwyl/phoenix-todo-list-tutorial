@@ -22,8 +22,8 @@ Fast and maintainable.
 Todo lists are familiar to most people;
 we make lists all the time.
 _Building_ a Todo list from scratch
-is a great way to learn Elixir/Phoenix
-because the UI/UX is simple,
+is a great way to learn `Elixir`/`Phoenix`
+because the **UI/UX** is **simple**,
 so we can focus on implementation.
 
 For the team
@@ -105,10 +105,11 @@ If you feel that any line of code can use a bit more explanation/clarity,
 please don't hesitate to _inform_ us!
 We _know_ what it's like to be a beginner,
 it can be _frustrating_ when something does not make sense!
-If you're stuck, don't suffer in silence,
-asking questions on GitHub
+Asking questions on GitHub
 helps _everyone_ to learn!
 
+Please give us feedback! 🙏
+Star the repo if you found it helpful. ⭐
 
 <br />
 

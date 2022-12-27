@@ -22,26 +22,7 @@ defmodule AppWeb.ItemController do
     )
   end
 
-  def new(conn, _params) do
-    changeset = Todo.change_item(%Item{})
-    render(conn, :new, changeset: changeset)
-  end
-
-  def create(conn, %{"item" => item_params}) do
-    person_id = get_person_id(conn)
-    item_params = Map.put(item_params, "person_id", person_id)
-
-    case Todo.create_item(item_params) do
-      {:ok, _item} ->
-        conn
-        |> put_flash(:info, "Item created successfully.")
-        |> redirect(to: ~p"/items/")
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
-    end
-  end
-
+  # get the person_id from conn.assigns.person.id
   def get_person_id(conn) do
     case Map.has_key?(conn.assigns, :person) do
       false ->
@@ -49,6 +30,24 @@ defmodule AppWeb.ItemController do
 
       true ->
         Map.get(conn.assigns.person, :id)
+    end
+  end
+
+  def new(conn, _params) do
+    changeset = Todo.change_item(%Item{})
+    render(conn, :new, changeset: changeset)
+  end
+
+  def create(conn, %{"item" => item_params}) do
+    item_params = Map.put(item_params, "person_id", get_person_id(conn))
+
+    case Todo.create_item(item_params) do
+      {:ok, _item} ->
+        conn
+        |> put_flash(:info, "Item created successfully.")
+        |> redirect(to: ~p"/items/")
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, :new, changeset: changeset)
     end
   end
 
