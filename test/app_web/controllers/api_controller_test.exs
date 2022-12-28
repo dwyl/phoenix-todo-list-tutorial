@@ -16,7 +16,7 @@ defmodule AppWeb.ApiControllerTest do
       conn = get(conn, ~p"/api/items")
 
       assert conn.status == 200
-      assert length(Jason.decode!(response(conn, 200))) == 1
+      assert length(Jason.decode!(response(conn, 200))) == 0
     end
   end
 
