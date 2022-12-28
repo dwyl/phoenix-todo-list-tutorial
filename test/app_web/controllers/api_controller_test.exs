@@ -11,7 +11,7 @@ defmodule AppWeb.ApiControllerTest do
 
   describe "list" do
     test "all items", %{conn: conn} do
-      {:ok, item} = Todo.create_item(@create_attrs)
+      {:ok, _item} = Todo.create_item(@create_attrs)
 
       conn = get(conn, ~p"/api/items")
 

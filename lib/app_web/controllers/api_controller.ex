@@ -3,7 +3,7 @@ defmodule AppWeb.ApiController do
   alias App.Todo
   import Ecto.Changeset
 
-  def index(conn, params) do
+  def index(conn, _params) do
     items = Todo.list_items()
     json(conn, items)
   end
