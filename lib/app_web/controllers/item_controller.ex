@@ -14,15 +14,23 @@ defmodule AppWeb.ItemController do
         %Item{}
       end
 
-    items = Todo.list_items()
-    changeset = Todo.change_item(item)
-
     render(conn, "index.html",
-      items: items,
-      changeset: changeset,
+      items: Todo.list_items(get_person_id(conn)),
+      changeset: Todo.change_item(item),
       editing: item,
       filter: Map.get(params, "filter", "all")
     )
+  end
+
+  # get the person_id from conn.assigns.person.id
+  def get_person_id(conn) do
+    case Map.has_key?(conn.assigns, :person) do
+      false ->
+        0
+
+      true ->
+        Map.get(conn.assigns.person, :id)
+    end
   end
 
   def new(conn, _params) do
@@ -31,6 +39,8 @@ defmodule AppWeb.ItemController do
   end
 
   def create(conn, %{"item" => item_params}) do
+    item_params = Map.put(item_params, "person_id", get_person_id(conn))
+
     case Todo.create_item(item_params) do
       {:ok, _item} ->
         conn
@@ -40,11 +50,6 @@ defmodule AppWeb.ItemController do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new, changeset: changeset)
     end
-  end
-
-  def show(conn, %{"id" => id}) do
-    item = Todo.get_item!(id)
-    render(conn, :show, item: item)
   end
 
   def edit(conn, params) do
@@ -89,7 +94,7 @@ defmodule AppWeb.ItemController do
   end
 
   def clear_completed(conn, _param) do
-    person_id = 0
+    person_id = get_person_id(conn)
     query = from(i in Item, where: i.person_id == ^person_id, where: i.status == 1)
     Repo.update_all(query, set: [status: 2])
     # render the main template:

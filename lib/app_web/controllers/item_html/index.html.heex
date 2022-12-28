@@ -1,96 +1,131 @@
-<section class="todoapp">
-  <header class="header">
-    <h1>todos</h1>
-    <%= if @editing.id do %>
-      <.link href={~p"/items"} method="get" class="new-todo">
-        Click here to create a new item!
-      </.link>
-    <% else %>
-      <%= new(Map.put(assigns, :action, ~p"/items/new")) %>
-    <% end %>
-  </header>
-  <section class="main" style="display: block;">
-    <input id="toggle-all" class="toggle-all" type="checkbox" />
-    <label for="toggle-all">Mark all as complete</label>
-    <ul class="todo-list">
-      <%= for item <- filter(@items, @filter) do %>
-        <li data-id={item.id} class={complete(item)}>
-          <%= if item.status == 1 do %>
-            <.link href={~p"/items/toggle/#{item.id}"} class="toggle checked">
-              type="checkbox"
+<div>
+  <section class="todoapp">
+    <header class="header">
+      <h1>todos</h1>
+
+      <div class="fixed top-8 right-0 mr-10">
+        <%= if @loggedin do %>
+          <span class="mt-4">
+            <b>
+              <%= if @person.username do %>
+                @<%= @person.username %>
+              <% else %>
+                <%= @person.givenName %>
+              <% end %>
+            </b>
+          </span>
+          <div class="flex flex-col items-end">
+            <.link
+              class="inline-block px-6 py-2.5 bg-red-500 text-white font-medium text-xs leading-tight 
+              uppercase rounded shadow-md hover:bg-red-600 hover:shadow-lg focus:bg-[#f76e6e] focus:shadow-lg 
+              focus:outline-none focus:ring-0 active:bg-red-500 active:shadow-lg transition duration-150 ease-in-out"
+              href="/logout"
+            >
+              Logout
             </.link>
-          <% else %>
-            <.link href={~p"/items/toggle/#{item.id}"} type="checkbox" class="toggle"></.link>
-          <% end %>
-
-          <div class="view">
-            <%= if item.id == @editing.id do %>
-              <%= edit(
-                Map.put(assigns, :action, ~p"/items/#{item.id}/edit")
-                |> Map.put(:item, item)
-              ) %>
-            <% else %>
-              <.link href={~p"/items/#{item}/edit"} class="dblclick">
-                <label><%= item.text %></label>
-              </.link>
-              <span></span>
-              <!-- used for CSS Double Click -->
-            <% end %>
-
-            <.link class="destroy" href={~p"/items/#{item}"} method="delete"></.link>
           </div>
-        </li>
+        <% else %>
+          Hi Friend! <br />
+          <.link
+            class="max-h-[35px] inline-block px-6 py-2.5 bg-blue-500 text-white font-medium text-xs 
+            leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 
+            focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+            href="/login"
+          >
+            Login
+          </.link>
+        <% end %>
+      </div>
+
+      <%= if @editing.id do %>
+        <.link href={~p"/items"} method="get" class="new-todo">
+          Click here to create a new item!
+        </.link>
+      <% else %>
+        <%= new(Map.put(assigns, :action, ~p"/items/new")) %>
       <% end %>
-    </ul>
-  </section>
-  <%= if got_items?(@items) do %>
-    <footer class="footer" style="display: block;">
-      <span class="todo-count">
-        <%= remaining_items(@items) %> <%= pluralise(@items) %> left
-      </span>
-      <ul class="filters">
-        <li>
-          <%= if @filter == "items" do %>
-            <a href="/items" class="selected">
-              All
-            </a>
-          <% else %>
-            <a href="/items">
-              All
-            </a>
-          <% end %>
-        </li>
-        <li>
-          <%= if @filter == "active" do %>
-            <a href="/items/active" class="selected">
-              Active
-              [<%= Enum.count(filter(@items, "active")) %>]
-            </a>
-          <% else %>
-            <a href="/items/active">
-              Active
-              [<%= Enum.count(filter(@items, "active")) %>]
-            </a>
-          <% end %>
-        </li>
-        <li>
-          <%= if @filter == "completed" do %>
-            <a href="/items/completed" class="selected">
-              Completed
-              [<%= Enum.count(filter(@items, "completed")) %>]
-            </a>
-          <% else %>
-            <a href="/items/completed">
-              Completed
-              [<%= Enum.count(filter(@items, "completed")) %>]
-            </a>
-          <% end %>
-        </li>
+    </header>
+    <section class="main" style="display: block;">
+      <input id="toggle-all" class="toggle-all" type="checkbox" />
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class="todo-list">
+        <%= for item <- filter(@items, @filter) do %>
+          <li data-id={item.id} class={complete(item)}>
+            <%= if item.status == 1 do %>
+              <.link href={~p"/items/toggle/#{item.id}"} class="toggle checked">
+                type="checkbox"
+              </.link>
+            <% else %>
+              <.link href={~p"/items/toggle/#{item.id}"} type="checkbox" class="toggle"></.link>
+            <% end %>
+            <div class="view">
+              <%= if item.id == @editing.id do %>
+                <%= edit(
+                  Map.put(assigns, :action, ~p"/items/#{item.id}/edit")
+                  |> Map.put(:item, item)
+                ) %>
+              <% else %>
+                <.link href={~p"/items/#{item}/edit"} class="dblclick">
+                  <label><%= item.text %></label>
+                </.link>
+                <span></span>
+                <!-- used for CSS Double Click -->
+              <% end %>
+              <.link class="destroy" href={~p"/items/#{item}"} method="delete"></.link>
+            </div>
+          </li>
+        <% end %>
       </ul>
-      <a class="clear-completed" href="/items/clear">
-        Clear completed
-        [<%= Enum.count(filter(@items, "completed")) %>]
-      </a>
-    </footer>
-  <% end %>
-</section>
+    </section>
+    <%= if got_items?(@items) do %>
+      <footer class="footer" style="display: block;">
+        <span class="todo-count">
+          <%= remaining_items(@items) %> <%= pluralise(@items) %> left
+        </span>
+        <ul class="filters">
+          <li>
+            <%= if @filter == "items" do %>
+              <a href="/items/filter/items" class="selected">
+                All
+              </a>
+            <% else %>
+              <a href="/items/filter/items">
+                All
+              </a>
+            <% end %>
+          </li>
+          <li>
+            <%= if @filter == "active" do %>
+              <a href="/items/filter/active" class="selected">
+                Active
+                [<%= Enum.count(filter(@items, "active")) %>]
+              </a>
+            <% else %>
+              <a href="/items/filter/active">
+                Active
+                [<%= Enum.count(filter(@items, "active")) %>]
+              </a>
+            <% end %>
+          </li>
+          <li>
+            <%= if @filter == "completed" do %>
+              <a href="/items/filter/completed" class="selected">
+                Completed
+                [<%= Enum.count(filter(@items, "completed")) %>]
+              </a>
+            <% else %>
+              <a href="/items/filter/completed">
+                Completed
+                [<%= Enum.count(filter(@items, "completed")) %>]
+              </a>
+            <% end %>
+          </li>
+        </ul>
+        <a class="clear-completed" href="/items/clear">
+          Clear completed
+          [<%= Enum.count(filter(@items, "completed")) %>]
+        </a>
+      </footer>
+    <% end %>
+  </section>
+</div>

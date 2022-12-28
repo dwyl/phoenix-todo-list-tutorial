@@ -13,7 +13,7 @@ defmodule App.TodoTest do
 
     test "list_items/0 returns all items" do
       item = item_fixture()
-      assert Todo.list_items() == [item]
+      assert Todo.list_items(0) == [item]
     end
 
     test "get_item!/1 returns the item with given id" do
