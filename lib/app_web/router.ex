@@ -11,7 +11,7 @@ defmodule AppWeb.Router do
   end
 
   pipeline :api do
-   plug :accepts, ["json"]
+    plug :accepts, ["json"]
   end
 
   pipeline :authOptional, do: plug(AuthPlugOptional)
