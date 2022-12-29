@@ -32,6 +32,6 @@ defmodule AppWeb.Router do
     pipe_through :api
 
     put "/items/:id/status", ApiController, :update_status
-    resources "items", ApiController, only: [:create, :update, :index]
+    resources "/items", ApiController, only: [:create, :update, :index]
   end
 end
