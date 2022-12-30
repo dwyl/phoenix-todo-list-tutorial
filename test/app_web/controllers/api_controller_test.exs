@@ -5,7 +5,6 @@ defmodule AppWeb.ApiControllerTest do
   @create_attrs %{person_id: 42, status: 0, text: "some text"}
   @update_attrs %{person_id: 43, status: 0, text: "some updated text"}
   @update_status_attrs %{status: 1}
-
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
   @invalid_status_attrs %{status: 6}
 

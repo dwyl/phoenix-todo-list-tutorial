@@ -1,28 +1,21 @@
-# Making Phoenix serve `JSON` requests
+<div align="center">
 
-This guide will help you demonstrate
-how to *extend* the Phoenix server
-so it also acts as an **API**,
-serving calls and returning `JSON` responses.
+# Create a Basic `REST` API to Return `JSON` Data
 
-We could have used 
-[**Content Negotiation**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation)
-to achieve this
-(inclusively, we maintain a repo
-that makes this seamless and quite easy
-to implement - 
-https://github.com/dwyl/content 😉).
-However, we are going to leverage
-what Phoenix already gives us 
-and use a *scoped router* 
-that will only accept JSON requests.
+</div>
 
-## Adding `/api` scope and pipeline
-If we head on to our 
-`lib/router.ex` file, 
-you might notice that there is a 
-`pipeline :browser` that is used 
-inside the `scope "/"`.
+This guide demonstrates
+how to *extend* a `Phoenix` App
+so it also acts as an **API** 
+returning `JSON` data.
+
+## Add `/api` scope and pipeline
+
+Open the 
+`lib/router.ex` file.
+There is already a
+`pipeline :browser` 
+that is used inside the `scope "/"`.
 
 ```elixir
   pipeline :browser do
@@ -73,9 +66,8 @@ add the following piece of code.
   end
 ```
 
-We are creating a pipeline `:api`
-that only accepts requests headers that
-accept JSON objects.
+This creates a pipeline `:api`
+that only accepts requests for `JSON` data.
 
 We have also added a scope.
 All routes starting with `/api`
@@ -85,44 +77,44 @@ and handled by the `ApiController`.
 Speaking of which, 
 let's create it!
 
-## Creating API controller
+## Create the API Controller
+
 Before creating our controller,
 let's define our requirements.
 We want the API to:
+
 - list `item`s
 - create an `item`
 - edit an `item`
 - update an `item`'s status
 
-Should be quite manageable.
 We want each endpoint to respond appropriately
-if something wrong happens.
-That is, if any data is invalid,
+if any data is invalid,
 the response body and status
-should tell the user what went wrong.
+should inform the user what went wrong.
 We can leverage `changesets` 
-to validate the `Item` object 
-and check if it correctly formatted.
+to validate the `Item` 
+and check if it's correctly formatted.
 
 Since we now know what to do,
 let's create our tests.
 
-### Adding tests
-Before writing any tests,
+### Adding Tests
+
+Before writing tests,
 we need to change the 
 `test/support/fixtures/todo_fixtures.ex` file.
 This file contains a function
-that is used to create `Item` objects for testing.
+that is used to create an `Item` for testing.
 
-Currently, the returned default `Item` object 
-is invalid.
+Currently, the returned default `Item` is invalid.
 This is because it returns a `status: 42`, 
 which according to our requirements, 
 doesn't make sense.
 The `status` field can only be `0`, `1` or `2`.
 
-Change the `item_fixture` function
-so it looks like so.
+Change the `item_fixture/1` function
+so it looks like this:
 
 ```elixir
   def item_fixture(attrs \\ %{}) do
@@ -138,11 +130,11 @@ so it looks like so.
   end
 ```
 
-Now, let's move on to create
+Now, let's create
 our controller tests.
-Inside `test/app_web/controllers`, 
-create a file called
-`api_controller_test.exs`.
+Create a file with the path: 
+`test/app_web/controllers/api_controller_test.exs`
+and add the following code:
 
 ```elixir
 defmodule AppWeb.ApiControllerTest do
@@ -152,15 +144,12 @@ defmodule AppWeb.ApiControllerTest do
   @create_attrs %{person_id: 42, status: 0, text: "some text"}
   @update_attrs %{person_id: 43, status: 0, text: "some updated text"}
   @update_status_attrs %{status: 1}
-
   @invalid_attrs %{person_id: nil, status: nil, text: nil}
   @invalid_status_attrs %{status: 6}
 
   describe "list" do
     test "all items", %{conn: conn} do
       {:ok, item} = Todo.create_item(@create_attrs)
-
-
       conn = get(conn, ~p"/api/items")
 
       assert conn.status == 200
@@ -236,7 +225,6 @@ defmodule AppWeb.ApiControllerTest do
 end
 ```
 
-That's a lot!
 Let's break down what we just wrote.
 We've created constants for each scenario we want:
 testing valid or invalid attributes 
@@ -247,24 +235,24 @@ for each endpoint:
 
 The `ApiController` will have these three functions.
 Let's look at the `describe "create"` suite.
-The first test checks if a valid item is created.
+The first test checks if a **valid `item`** is created.
 If it is created, 
-the item should be returned to the user in JSON format.
-The second test checks if an invalid item
+the item should be returned to the user in `JSON` format.
+The second test checks if an **_invalid_ `item`**
 was attempted to be created.
-It should return a response with [HTTP Status Code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
-400 (meaning the client made a bad request)
+It should return a response with 
+[HTTP Status Code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+`400` (meaning the client made a bad request)
 and an error text accompanying the body.
 These tests are replicated
 on the other two functions.
 
 If you run the tests `mix test`,
-they will obviously fail, 
-since these functions aren't defined.
+they will fail, 
+because these functions aren't defined.
 
-It's high time we do that, though! 😄
+### Create API Controller
 
-### Creating API controller
 Let's create our API controller.
 Inside `lib/app_web/controllers`,
 create a file called 
@@ -354,16 +342,15 @@ defmodule AppWeb.ApiController do
 end
 ```
 
-Phew, that's a lot!
-Don't worry, let's go over it!
 We have created three functions, 
-each one referring to the endpoints 
+each coresponding to the endpoints 
+`[:create, :update, :index]`
 we defined earlier in `router.ex`.
 They all follow the same flow:
 try to do an action;
 if it fails, return an error to the user.
 
-Let's go over the `update/2` function, for example.
+Let's review the `update/2` function.
 The `params` parameter gives us information
 about the body of the request 
 and the URL parameter.
@@ -378,23 +365,22 @@ with the new text.
 }
 ```
 
-which can be accessed in the `params` map
-through the `text` field.
+which can be accessed as `params.text`.
 
 Next, we use the passed `id` 
 to check and fetch the item from the database.
 After this, we pass the fetched item
-with the new text to change 
+with the new `text` to update 
 (calling `Todo.update_item`).
 
 Depending on the success of the operation,
-different results are yielded to the user.
+different results are returned to the user.
 If it succeeds, 
 the updated item is returned to the user,
-alongside an HTTP status code of 200.
+alongside an HTTP status code of `200`.
 On the other hand, if there's an error,
 an error is returned to the user,
-alongside an HTTP status code of 400.
+alongside an HTTP status code of `400`.
 
 The error is fetched from the changeset
 (that validates the passed attributes)
@@ -405,7 +391,8 @@ it just fetches the errors from the `changeset` struct
 and converts it to a map that can be
 serializable to JSON format.
 
-If we use [Postman](https://www.postman.com/)
+If we use 
+[Postman](https://www.postman.com/)
 to make an API call, 
 you will see the API in action.
 
@@ -442,8 +429,9 @@ if the `status` number is between `0` and `1`
 and checking the length of the `text` to be updated.
 
 This is great. 
-*However*, a `changeset` struct is not serializable to JSON.
-We need to tell the JSON serializer
+*However*, a `changeset` struct 
+is not serializable to `JSON`.
+We need to tell the `JSON` serializer
 which fields we want to retain in the `Item` schema.
 
 For this,
@@ -470,10 +458,13 @@ we are only interested in the
 `updated_at`, `inserted_at` or `__meta__`).
 
 ## Congratulations!
+
 Congratulations, 
 you just added REST API capabilities 
-to your Phoenix server!
+to your `Phoenix` server!
 It now serves a Todo application
 **and** also serves an API for people to use it.
 
-That's awesome, isn't it? ✨
+## Try It!
+
+> update this section once the API is deployed to Fly.io ...

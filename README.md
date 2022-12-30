@@ -2567,12 +2567,12 @@ e.g:
 
 
 
-### 12 (Bonus!) Adding authentication
+### 12. Authentication (Optional)
 
 Currently, the application allows *anyone* 
-to access it and manage todo items.
-However, wouldn't it be awesome if 
-we added *authentication* so each user
+to access it and manage todo `items`.
+Wouldn't it be great if 
+we added *authentication* so each `person`
 could check their own list?
 
 We created a dedicated authentication guide: 
@@ -2600,30 +2600,23 @@ e.g: https://phxtodo.fly.dev <br />xs
 
 
 
-### 13 (Bonus 2x!) Adding REST API
+### 13. REST API (Optional)
 
-Our Phoenix server currently
-only returns HTML pages 
-that are server-side rendered.
-This is *awesome* 
-but we can make use of Phoenix
+Our `Phoenix` server currently
+only returns **`HTML` pages** 
+that are **_server-side_ rendered**.
+This is already *awesome* 
+but we can make use of `Phoenix`
 to extend its capabilities.
 
 What if our server also responded
-with JSON objects?
-What if it was an API, 
-where people could communicate 
-directly and manage their items
-through it?
+with `JSON`?
+You're in luck!
+We've created small guide
+for creating a `REST API`:
+[**`api.md`**](./api.md)
 
-Wouldn't that be great?
-Well, you're in luck!
-We've created 
-[a small guide ](./api.md)
-dedicated to creating this!
-
-Don't worry, it's actually quite easy! 😉
-
+<br />
 
 ### Done!
 
