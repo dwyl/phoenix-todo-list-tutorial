@@ -10,10 +10,6 @@ defmodule AppWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  # pipeline :api do
-  #  plug :accepts, ["json"]
-  # end
-
   pipeline :authOptional, do: plug(AuthPlugOptional)
 
   scope "/", AppWeb do
@@ -28,8 +24,14 @@ defmodule AppWeb.Router do
     resources "/items", ItemController, except: [:show]
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", AppWeb do
-  #   pipe_through :api
-  # end
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
+  scope "/api", AppWeb do
+    pipe_through :api
+
+    put "/items/:id/status", ApiController, :update_status
+    resources "/items", ApiController, only: [:create, :update, :index]
+  end
 end
