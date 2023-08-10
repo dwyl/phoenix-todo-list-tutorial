@@ -546,7 +546,7 @@ e.g:
 
 ### 3.4 _Simplify_ The Layout Template
 
-Open your `lib/app_web/components/layouts/app.html.eex` file
+Open your `lib/app_web/components/layouts/app.html.heex` file
 and replace the contents with the following code:
 
 ```html
@@ -557,8 +557,8 @@ and replace the contents with the following code:
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Phoenix Todo List</title>
-    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
-    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <link rel="stylesheet" href={~p"/assets/app.css"}/>
+    <script defer type="text/javascript" src={~p"/assets/app.js"}></script>
   </head>
   <body>
     <main role="main" class="container">
@@ -572,7 +572,7 @@ and replace the contents with the following code:
 > Before:
 [`lib/app_web/components/layouts/app.html.eex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/bddacda93ecd892fe0907210bab335e6b6e5e489/lib/app_web/templates/layout/app.html.eex) <br />
 > After:
-[`lib/app_web/components/layouts/app.html.eex#L12`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8bcc3239d975f5b706514d1a88ea47ca57e5239a/lib/app_web/components/layouts/app.html.heex#L12)
+[`lib/app_web/components/layouts/app.html.heex`](https://github.com/dwyl/phoenix-todo-list-tutorial/blob/8bcc3239d975f5b706514d1a88ea47ca57e5239a/lib/app_web/components/layouts/app.html.heex)
 
 `<%= @inner_content %>` is where the Todo App will be rendered.
 
