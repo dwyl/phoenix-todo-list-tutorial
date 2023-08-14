@@ -62,7 +62,7 @@ defmodule App.MixProject do
       # github.com/dwyl/auth_plug
       {:auth_plug, "~> 1.5"},
       # github.com/dwyl/useful
-      {:useful, "~> 1.11.0", override: true},
+      {:useful, "~> 1.12.0", override: true},
 
       # Track test coverage: github.com/parroty/excoveralls
       {:excoveralls, "~> 0.15", only: [:test, :dev]}
